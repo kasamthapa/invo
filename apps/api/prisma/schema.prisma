@@ -1,0 +1,331 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Tenancy ----------
+
+model Store {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  phone     String?
+  address   String?
+  panVat    String?
+  currency  String   @default("NPR")
+  ownerId   String
+  owner     User     @relation("StoreOwner", fields: [ownerId], references: [id])
+
+  users          User[]          @relation("StoreUsers")
+  products       Product[]
+  bills          Bill[]
+  stockMovements StockMovement[]
+  suppliers      Supplier[]
+  purchases      Purchase[]
+  customers      Customer[]
+  expenses       Expense[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model User {
+  id           String   @id @default(uuid())
+  storeId      String
+  store        Store    @relation("StoreUsers", fields: [storeId], references: [id])
+  name         String
+  phone        String?
+  email        String?
+  passwordHash String
+  role         Role     @default(OWNER)
+
+  ownedStores      Store[]         @relation("StoreOwner")
+  createdBills     Bill[]
+  createdMoves     StockMovement[]
+  createdPurchases Purchase[]
+  createdExpenses  Expense[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([storeId])
+}
+
+enum Role {
+  OWNER
+  STAFF
+}
+
+// ---------- Catalog ----------
+
+model Product {
+  id          String  @id @default(uuid())
+  storeId     String
+  store       Store   @relation(fields: [storeId], references: [id])
+  code        String
+  name        String
+  description String?
+  category    String?
+  basePrice   Int
+  visible     Boolean @default(true)
+
+  variants Product_Variant[]
+  images   ProductImage[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([storeId, code])
+  @@index([storeId])
+}
+
+model ProductImage {
+  id        String  @id @default(uuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  variantId String?
+  url       String
+  sortOrder Int     @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+}
+
+model Product_Variant {
+  id          String  @id @default(uuid())
+  productId   String
+  product     Product @relation(fields: [productId], references: [id])
+  variantCode String
+  attributes  Json
+  price       Int?
+  currentQty  Int     @default(0)
+  lowStockAt  Int?
+
+  movements     StockMovement[]
+  billItems     BillItem[]
+  purchaseItems PurchaseItem[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([productId, variantCode])
+  @@index([productId])
+}
+
+// ---------- Stock ledger (APPEND-ONLY) ----------
+
+model StockMovement {
+  id          String          @id @default(uuid())
+  storeId     String
+  store       Store           @relation(fields: [storeId], references: [id])
+  variantId   String
+  variant     Product_Variant @relation(fields: [variantId], references: [id])
+  delta       Int
+  reason      MovementReason
+  refType     String?
+  refId       String?
+  note        String?
+  createdById String
+  createdBy   User            @relation(fields: [createdById], references: [id])
+  createdAt   DateTime        @default(now())
+
+  @@index([variantId])
+  @@index([storeId])
+  @@index([refType, refId])
+}
+
+enum MovementReason {
+  OPENING_STOCK
+  RESTOCK
+  SALE
+  RETURN
+  MANUAL_ADJUSTMENT
+  VOID_REVERSAL
+}
+
+// ---------- Billing ----------
+
+model Bill {
+  id              String         @id @default(uuid())
+  storeId         String
+  store           Store          @relation(fields: [storeId], references: [id])
+  billNumber      Int
+  customerId      String?
+  customer        Customer?      @relation(fields: [customerId], references: [id])
+  customerName    String?
+  customerPhone   String?
+  customerAddress String?
+  subtotal        Int
+  discount        Int            @default(0)
+  vatAmount       Int            @default(0)
+  total           Int
+  paymentStatus   PaymentStatus  @default(UNPAID)
+  paymentMethod   PaymentMethod?
+  paymentProofUrl String?
+  status          BillStatus     @default(ACTIVE)
+  publicToken     String         @unique
+  notes           String?
+  createdById     String
+  createdBy       User           @relation(fields: [createdById], references: [id])
+
+  items BillItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([storeId, billNumber])
+  @@index([storeId])
+}
+
+model BillItem {
+  id              String          @id @default(uuid())
+  billId          String
+  bill            Bill            @relation(fields: [billId], references: [id])
+  variantId       String
+  variant         Product_Variant @relation(fields: [variantId], references: [id])
+  productCodeSnap String
+  productNameSnap String
+  attributesSnap  Json
+  unitPrice       Int
+  quantity        Int
+  lineTotal       Int
+
+  createdAt DateTime @default(now())
+
+  @@index([billId])
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  PARTIAL
+  COD_PENDING
+}
+
+enum PaymentMethod {
+  CASH
+  KHALTI
+  ESEWA
+  FONEPAY
+  BANK_TRANSFER
+  COD
+}
+
+enum BillStatus {
+  ACTIVE
+  VOIDED
+}
+
+// ---------- Purchases / restock ----------
+
+model Supplier {
+  id      String  @id @default(uuid())
+  storeId String
+  store   Store   @relation(fields: [storeId], references: [id])
+  name    String
+  phone   String?
+  note    String?
+
+  purchases Purchase[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([storeId])
+}
+
+model Purchase {
+  id           String    @id @default(uuid())
+  storeId      String
+  store        Store     @relation(fields: [storeId], references: [id])
+  supplierId   String?
+  supplier     Supplier? @relation(fields: [supplierId], references: [id])
+  purchaseDate DateTime  @default(now())
+  totalCost    Int
+  note         String?
+  createdById  String
+  createdBy    User      @relation(fields: [createdById], references: [id])
+
+  items PurchaseItem[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([storeId])
+}
+
+model PurchaseItem {
+  id         String          @id @default(uuid())
+  purchaseId String
+  purchase   Purchase        @relation(fields: [purchaseId], references: [id])
+  variantId  String
+  variant    Product_Variant @relation(fields: [variantId], references: [id])
+  quantity   Int
+  costPrice  Int
+  lineTotal  Int
+
+  createdAt DateTime @default(now())
+
+  @@index([purchaseId])
+}
+
+// ---------- Customers ----------
+
+model Customer {
+  id      String  @id @default(uuid())
+  storeId String
+  store   Store   @relation(fields: [storeId], references: [id])
+  name    String
+  phone   String?
+  address String?
+  note    String?
+
+  bills Bill[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([storeId])
+  @@index([storeId, phone])
+}
+
+// ---------- Expenses ----------
+
+model Expense {
+  id          String          @id @default(uuid())
+  storeId     String
+  store       Store           @relation(fields: [storeId], references: [id])
+  amount      Int
+  category    ExpenseCategory @default(OTHER)
+  expenseDate DateTime        @default(now())
+  note        String?
+  createdById String
+  createdBy   User            @relation(fields: [createdById], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([storeId])
+}
+
+enum ExpenseCategory {
+  DELIVERY
+  PACKAGING
+  RENT
+  MARKETING
+  SALARY
+  OTHER
+}
