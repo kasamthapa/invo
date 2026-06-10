@@ -17,8 +17,8 @@ model Store {
   address   String?
   panVat    String?
   currency  String   @default("NPR")
-  ownerId   String
-  owner     User     @relation("StoreOwner", fields: [ownerId], references: [id])
+  ownerId   String?
+  owner     User?    @relation("StoreOwner", fields: [ownerId], references: [id])
 
   users          User[]          @relation("StoreUsers")
   products       Product[]

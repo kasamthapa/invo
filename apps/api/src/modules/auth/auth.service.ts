@@ -25,7 +25,6 @@ export async function register(input: RegisterInput): Promise<AuthResponse> {
         name: input.storeName,
         slug: input.storeSlug,
         currency: 'NPR',
-        ownerId: userId,
       },
     })
     const user = await tx.user.create({
@@ -38,7 +37,11 @@ export async function register(input: RegisterInput): Promise<AuthResponse> {
         role: 'OWNER',
       },
     })
-    return { store, user }
+    const updatedStore = await tx.store.update({
+      where: { id: storeId },
+      data: { ownerId: userId },
+    })
+    return { store: updatedStore, user }
   })
 
   const accessToken = signAccessToken({ userId: user.id, storeId: store.id, role: user.role })
