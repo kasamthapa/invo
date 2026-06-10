@@ -49,6 +49,7 @@ model User {
   createdMoves     StockMovement[]
   createdPurchases Purchase[]
   createdExpenses  Expense[]
+  refreshTokens    RefreshToken[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -328,4 +329,17 @@ enum ExpenseCategory {
   MARKETING
   SALARY
   OTHER
+}
+
+// ---------- Auth ----------
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
