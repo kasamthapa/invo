@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import authRouter from "./modules/auth/auth.router.js";
 import productsRouter from "./modules/products/products.router.js";
+import billsRouter from "./modules/bills/bills.router.js";
 
 const app = express();
 const PORT = process.env.PORT ?? 3001;
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use("/auth", authRouter);
 app.use("/products", productsRouter);
+app.use("/bills", billsRouter);
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", app: "invo-api", timestamp: new Date().toISOString() });
