@@ -10,6 +10,7 @@ import purchasesRouter from "./modules/purchases/purchases.router.js";
 import customersRouter from "./modules/customers/customers.router.js";
 import expensesRouter from "./modules/expenses/expenses.router.js";
 import storesRouter from "./modules/stores/stores.router.js";
+import dashboardRouter from "./modules/dashboard/dashboard.router.js";
 
 const app = express();
 const PORT = process.env.PORT ?? 3001;
@@ -26,6 +27,7 @@ app.use("/purchases", purchasesRouter);
 app.use("/customers", customersRouter);
 app.use("/expenses", expensesRouter);
 app.use("/store", storesRouter);
+app.use("/dashboard", dashboardRouter);
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", app: "invo-api", timestamp: new Date().toISOString() });
