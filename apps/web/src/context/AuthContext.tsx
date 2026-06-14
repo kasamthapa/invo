@@ -104,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify({
           storeName: input.storeName,
           storeSlug: input.storeSlug,
-          name: input.name,
+          ownerName: input.name,
           phone: input.phone,
           password: input.password,
         }),
