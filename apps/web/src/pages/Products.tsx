@@ -1,7 +1,176 @@
-export default function Products() {
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Package, ChevronRight, Search, Plus } from 'lucide-react'
+import { useProducts } from '../hooks/useProducts'
+import { formatNPR } from '../utils/money'
+import type { Product } from '../types/product'
+
+function totalStock(product: Product): number {
+  return product.variants.reduce((sum, v) => sum + v.currentQty, 0)
+}
+
+function hasLowStock(product: Product): boolean {
+  return product.variants.some(
+    (v) => v.lowStockAt !== null && v.currentQty <= v.lowStockAt,
+  )
+}
+
+function SkeletonRow() {
   return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <p className="text-zinc-600 text-sm">Products — coming soon</p>
+    <div className="flex items-center gap-3 px-4 py-3 animate-pulse">
+      <div className="w-14 h-14 rounded-lg bg-zinc-800 flex-shrink-0" />
+      <div className="flex-1 space-y-2">
+        <div className="h-4 bg-zinc-800 rounded w-3/4" />
+        <div className="h-3 bg-zinc-800 rounded w-1/2" />
+        <div className="h-3 bg-zinc-800 rounded w-1/3" />
+      </div>
+    </div>
+  )
+}
+
+function ProductRow({ product }: { product: Product }) {
+  const stock = totalStock(product)
+  const lowStock = hasLowStock(product)
+  const thumbnail = product.images[0]?.url ?? null
+
+  return (
+    <Link
+      to={`/app/products/${product.id}`}
+      className="flex items-center gap-3 px-4 py-3 active:bg-zinc-800/60 transition-colors"
+    >
+      <div className="w-14 h-14 rounded-lg bg-zinc-800 flex-shrink-0 overflow-hidden flex items-center justify-center">
+        {thumbnail ? (
+          <img
+            src={thumbnail}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <Package size={24} className="text-zinc-600" />
+        )}
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1.5">
+          <p className="text-white text-sm font-medium truncate">{product.name}</p>
+          {lowStock && (
+            <span className="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0" />
+          )}
+        </div>
+        <p className="text-zinc-400 text-xs mt-0.5 truncate">
+          {product.code}
+          {product.category ? ` · ${product.category}` : ''}
+        </p>
+        <div className="flex items-center gap-1.5 mt-0.5">
+          <span className="text-zinc-500 text-xs">
+            {product.variants.length} {product.variants.length === 1 ? 'variant' : 'variants'}
+          </span>
+          <span className="text-zinc-700 text-xs">·</span>
+          {stock === 0 ? (
+            <span className="text-red-400 text-xs">Out of stock</span>
+          ) : (
+            <span className="text-zinc-500 text-xs">{stock} in stock</span>
+          )}
+        </div>
+        <p className="text-zinc-300 text-xs mt-0.5">{formatNPR(product.basePrice)}</p>
+      </div>
+
+      <ChevronRight size={16} className="text-zinc-600 flex-shrink-0" />
+    </Link>
+  )
+}
+
+export default function Products() {
+  const [search, setSearch] = useState('')
+  const { data: products, isLoading, isError, refetch } = useProducts()
+
+  const filtered = products?.filter((p) => {
+    const q = search.toLowerCase()
+    return p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q)
+  }) ?? []
+
+  return (
+    <div className="flex flex-col min-h-full">
+      {/* Sticky header */}
+      <div className="sticky top-0 z-10 bg-zinc-900 px-4 pt-4 pb-3 space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-white font-semibold text-lg">Products</h1>
+            {products && (
+              <p className="text-zinc-400 text-xs">{products.length} products</p>
+            )}
+          </div>
+          <Link
+            to="/app/products/new"
+            className="flex items-center gap-1 bg-emerald-500 text-white text-xs font-medium px-3 py-1.5 rounded-lg active:opacity-80"
+          >
+            <Plus size={14} />
+            Add
+          </Link>
+        </div>
+
+        <div className="relative">
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
+          <input
+            type="text"
+            placeholder="Search by name or code…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full bg-zinc-800 text-white text-sm placeholder-zinc-500 rounded-xl pl-9 pr-4 py-2.5 outline-none focus:ring-1 focus:ring-zinc-600"
+          />
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1">
+        {isLoading && (
+          <div className="divide-y divide-zinc-800/50">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <SkeletonRow key={i} />
+            ))}
+          </div>
+        )}
+
+        {isError && (
+          <div className="flex flex-col items-center justify-center min-h-[40vh] px-6 text-center gap-3">
+            <p className="text-zinc-400 text-sm">Couldn't load products.</p>
+            <button
+              onClick={() => void refetch()}
+              className="text-emerald-400 text-sm font-medium active:opacity-70"
+            >
+              Tap to retry
+            </button>
+          </div>
+        )}
+
+        {!isLoading && !isError && filtered.length === 0 && (
+          <div className="flex flex-col items-center justify-center min-h-[40vh] px-6 text-center gap-4">
+            <Package size={40} className="text-zinc-700" />
+            {search ? (
+              <p className="text-zinc-500 text-sm">No products match "{search}"</p>
+            ) : (
+              <>
+                <p className="text-zinc-400 text-sm">No products yet.</p>
+                <p className="text-zinc-600 text-xs">Add your first product to get started.</p>
+                <Link
+                  to="/app/products/new"
+                  className="bg-emerald-500 text-white text-sm font-medium px-5 py-2.5 rounded-xl active:opacity-80"
+                >
+                  Add Product
+                </Link>
+              </>
+            )}
+          </div>
+        )}
+
+        {!isLoading && !isError && filtered.length > 0 && (
+          <div className="divide-y divide-zinc-800/50">
+            {filtered.map((product) => (
+              <ProductRow key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
