@@ -22,6 +22,8 @@ import Products from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
 import ProductForm from './pages/ProductForm'
 import NewBill from './pages/NewBill'
+import Bills from './pages/Bills'
+import BillDetail from './pages/BillDetail'
 import Customers from './pages/Customers'
 import More from './pages/More'
 
@@ -52,6 +54,8 @@ createRoot(document.getElementById('root')!).render(
               <Route path="products/:id" element={<ProductDetail />} />
               <Route path="products/:id/edit" element={<ProductForm />} />
               <Route path="bill/new" element={<NewBill />} />
+              <Route path="bills" element={<Bills />} />
+              <Route path="bills/:id" element={<BillDetail />} />
               <Route path="customers" element={<Customers />} />
               <Route path="more" element={<More />} />
             </Route>
