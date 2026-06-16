@@ -25,6 +25,11 @@ import NewBill from './pages/NewBill'
 import Bills from './pages/Bills'
 import BillDetail from './pages/BillDetail'
 import Customers from './pages/Customers'
+import CustomerDetail from './pages/CustomerDetail'
+import Suppliers from './pages/Suppliers'
+import Purchases from './pages/Purchases'
+import NewPurchase from './pages/NewPurchase'
+import Expenses from './pages/Expenses'
 import More from './pages/More'
 
 createRoot(document.getElementById('root')!).render(
@@ -57,6 +62,11 @@ createRoot(document.getElementById('root')!).render(
               <Route path="bills" element={<Bills />} />
               <Route path="bills/:id" element={<BillDetail />} />
               <Route path="customers" element={<Customers />} />
+              <Route path="customers/:id" element={<CustomerDetail />} />
+              <Route path="suppliers" element={<Suppliers />} />
+              <Route path="purchases" element={<Purchases />} />
+              <Route path="purchases/new" element={<NewPurchase />} />
+              <Route path="expenses" element={<Expenses />} />
               <Route path="more" element={<More />} />
             </Route>
 
