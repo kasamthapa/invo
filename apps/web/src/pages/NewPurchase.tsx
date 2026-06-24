@@ -367,7 +367,7 @@ export default function NewPurchase() {
 
       {/* Sticky submit */}
       {lines.length > 0 && (
-        <div className="fixed bottom-16 left-0 right-0 px-4 pb-3 pt-2 bg-zinc-900/95 backdrop-blur-sm border-t border-zinc-800 max-w-[480px] mx-auto">
+        <div className="fixed bottom-16 md:bottom-0 left-0 md:left-60 right-0 px-4 pb-3 pt-2 bg-[var(--color-bg)]/95 backdrop-blur-sm border-t border-[var(--color-border)]">
           <button
             onClick={() => void handleSubmit()}
             disabled={createPurchase.isPending}
