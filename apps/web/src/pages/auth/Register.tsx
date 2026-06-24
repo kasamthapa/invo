@@ -68,112 +68,114 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-900 flex flex-col items-center justify-center px-6 py-12">
-      <div className="w-full max-w-[360px]">
+    <div className="min-h-screen bg-[var(--color-bg)] flex flex-col items-center justify-center px-6 py-12">
+      <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white tracking-tight">INVO</h1>
-          <p className="text-zinc-400 text-sm mt-2">Create your store</p>
+          <h1 className="text-4xl font-bold text-[var(--color-text)] tracking-tight">INVO</h1>
+          <p className="text-[var(--color-text-2)] text-sm mt-2">Create your store</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-zinc-400 text-xs uppercase tracking-wider mb-1.5">
-              Store name
-            </label>
-            <input
-              type="text"
-              value={storeName}
-              onChange={(e) => handleStoreNameChange(e.target.value)}
-              placeholder="Sapana Closet"
-              required
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-zinc-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-zinc-400 text-xs uppercase tracking-wider mb-1.5">
-              Store slug
-            </label>
-            <input
-              type="text"
-              value={storeSlug}
-              onChange={(e) => handleSlugChange(e.target.value)}
-              placeholder="sapana-closet"
-              autoCapitalize="none"
-              autoCorrect="off"
-              required
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-zinc-500"
-            />
-            {storeSlug && (
-              <p className="text-zinc-600 text-xs mt-1.5 px-1">
-                Catalog: /shop/{storeSlug}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-zinc-400 text-xs uppercase tracking-wider mb-1.5">
-              Your name
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Sapana Shrestha"
-              required
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-zinc-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-zinc-400 text-xs uppercase tracking-wider mb-1.5">
-              Phone
-            </label>
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="9800000001"
-              required
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-zinc-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-zinc-400 text-xs uppercase tracking-wider mb-1.5">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Min 8 characters"
-              required
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-zinc-500"
-            />
-          </div>
-
-          {error && (
-            <div className="bg-red-900/30 border border-red-700 rounded-xl px-4 py-3">
-              <p className="text-red-400 text-sm">{error}</p>
+        <div className="md:bg-[var(--color-surface)] md:border md:border-[var(--color-border)] md:rounded-2xl md:p-8">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-[var(--color-text-2)] text-xs uppercase tracking-wider mb-1.5">
+                Store name
+              </label>
+              <input
+                type="text"
+                value={storeName}
+                onChange={(e) => handleStoreNameChange(e.target.value)}
+                placeholder="Sapana Closet"
+                required
+                className="w-full bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-[var(--color-text)] placeholder-[var(--color-text-3)] text-sm focus:outline-none focus:border-[var(--color-border-2)]"
+              />
             </div>
-          )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-white text-black font-semibold rounded-xl py-3.5 text-sm mt-2 active:opacity-80 disabled:opacity-50"
-          >
-            {loading ? 'Creating store…' : 'Create store'}
-          </button>
-        </form>
+            <div>
+              <label className="block text-[var(--color-text-2)] text-xs uppercase tracking-wider mb-1.5">
+                Store slug
+              </label>
+              <input
+                type="text"
+                value={storeSlug}
+                onChange={(e) => handleSlugChange(e.target.value)}
+                placeholder="sapana-closet"
+                autoCapitalize="none"
+                autoCorrect="off"
+                required
+                className="w-full bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-[var(--color-text)] placeholder-[var(--color-text-3)] text-sm focus:outline-none focus:border-[var(--color-border-2)]"
+              />
+              {storeSlug && (
+                <p className="text-[var(--color-text-3)] text-xs mt-1.5 px-1">
+                  Catalog: /shop/{storeSlug}
+                </p>
+              )}
+            </div>
 
-        <p className="text-center text-zinc-500 text-sm mt-8">
-          Already have a store?{' '}
-          <Link to="/login" className="text-white font-medium">
-            Sign in
-          </Link>
-        </p>
+            <div>
+              <label className="block text-[var(--color-text-2)] text-xs uppercase tracking-wider mb-1.5">
+                Your name
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Sapana Shrestha"
+                required
+                className="w-full bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-[var(--color-text)] placeholder-[var(--color-text-3)] text-sm focus:outline-none focus:border-[var(--color-border-2)]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[var(--color-text-2)] text-xs uppercase tracking-wider mb-1.5">
+                Phone
+              </label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="9800000001"
+                required
+                className="w-full bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-[var(--color-text)] placeholder-[var(--color-text-3)] text-sm focus:outline-none focus:border-[var(--color-border-2)]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[var(--color-text-2)] text-xs uppercase tracking-wider mb-1.5">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Min 8 characters"
+                required
+                className="w-full bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-[var(--color-text)] placeholder-[var(--color-text-3)] text-sm focus:outline-none focus:border-[var(--color-border-2)]"
+              />
+            </div>
+
+            {error && (
+              <div className="bg-red-900/30 border border-red-700 rounded-lg px-4 py-3">
+                <p className="text-[var(--color-danger)] text-sm">{error}</p>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[var(--color-text)] text-[var(--color-bg)] font-semibold rounded-lg py-3.5 text-sm mt-2 active:opacity-80 hover:opacity-90 disabled:opacity-50 transition-opacity"
+            >
+              {loading ? 'Creating store…' : 'Create store'}
+            </button>
+          </form>
+
+          <p className="text-center text-[var(--color-text-3)] text-sm mt-8">
+            Already have a store?{' '}
+            <Link to="/login" className="text-[var(--color-text)] font-medium hover:underline">
+              Sign in
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   )
