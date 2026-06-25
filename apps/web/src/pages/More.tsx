@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { ChevronRight, Receipt, Users, ShoppingCart, Truck, CreditCard, ExternalLink, Share2 } from 'lucide-react'
+import { ChevronRight, Receipt, Users, ShoppingCart, Truck, CreditCard, ExternalLink, Share2, Settings } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 function NavRow({
@@ -88,6 +88,7 @@ export default function More() {
             <NavRow to="/app/expenses" icon={CreditCard} label="Expenses" />
           </>
         )}
+        <NavRow to="/app/settings" icon={Settings} label="Settings" />
         <NavRow to={catalogUrl} icon={ExternalLink} label="My Catalog" external />
         <button
           onClick={() => void handleShareCatalog()}

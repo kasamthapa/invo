@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { Home, Package, CirclePlus, Users, MoreHorizontal, Receipt, ShoppingCart, Truck, CreditCard } from 'lucide-react'
+import { Home, Package, CirclePlus, Users, MoreHorizontal, Receipt, ShoppingCart, Truck, CreditCard, Settings } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 const MOBILE_NAV = [
@@ -18,6 +18,7 @@ const SIDEBAR_NAV = [
   { to: '/app/purchases', icon: ShoppingCart, label: 'Purchases', end: false, ownerOnly: true },
   { to: '/app/suppliers', icon: Truck, label: 'Suppliers', end: false, ownerOnly: true },
   { to: '/app/expenses', icon: CreditCard, label: 'Expenses', end: false, ownerOnly: true },
+  { to: '/app/settings', icon: Settings, label: 'Settings', end: false, ownerOnly: false },
 ]
 
 function SidebarLink({ to, icon: Icon, label, end }: { to: string; icon: React.ElementType; label: string; end: boolean }) {

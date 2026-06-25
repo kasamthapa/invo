@@ -30,6 +30,7 @@ import Suppliers from './pages/Suppliers'
 import Purchases from './pages/Purchases'
 import NewPurchase from './pages/NewPurchase'
 import Expenses from './pages/Expenses'
+import Settings from './pages/Settings'
 import More from './pages/More'
 
 createRoot(document.getElementById('root')!).render(
@@ -67,6 +68,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="purchases" element={<Purchases />} />
               <Route path="purchases/new" element={<NewPurchase />} />
               <Route path="expenses" element={<Expenses />} />
+              <Route path="settings" element={<Settings />} />
               <Route path="more" element={<More />} />
             </Route>
 
