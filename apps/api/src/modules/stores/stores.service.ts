@@ -1,6 +1,18 @@
 import { prisma } from '../../lib/prisma.js'
 import type { PublicStoreResponse, PublicProductResponse, PublicVariantResponse } from './stores.types.js'
 
+export async function updateStoreProfile(
+  storeId: string,
+  data: { name?: string },
+): Promise<{ id: string; name: string; slug: string }> {
+  const store = await prisma.store.update({
+    where: { id: storeId },
+    data: { name: data.name },
+    select: { id: true, name: true, slug: true },
+  })
+  return store
+}
+
 export async function getPublicCatalog(slug: string): Promise<PublicStoreResponse> {
   const store = await prisma.store.findFirst({
     where: { slug, deletedAt: null },

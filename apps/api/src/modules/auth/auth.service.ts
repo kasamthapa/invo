@@ -109,3 +109,18 @@ export async function refresh(token: string): Promise<{ accessToken: string }> {
 export async function logout(token: string): Promise<void> {
   await prisma.refreshToken.deleteMany({ where: { token } })
 }
+
+export async function changePassword(
+  userId: string,
+  currentPassword: string,
+  newPassword: string,
+): Promise<void> {
+  const user = await prisma.user.findUnique({ where: { id: userId } })
+  if (!user) throw new Error('USER_NOT_FOUND')
+
+  const match = await bcrypt.compare(currentPassword, user.passwordHash)
+  if (!match) throw new Error('WRONG_PASSWORD')
+
+  const passwordHash = await bcrypt.hash(newPassword, 12)
+  await prisma.user.update({ where: { id: userId }, data: { passwordHash } })
+}

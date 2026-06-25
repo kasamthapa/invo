@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import type { AuthRequest } from '../../middleware/authenticate.js'
 import { z } from 'zod'
 import * as authService from './auth.service.js'
 
@@ -43,6 +44,10 @@ function mapServiceError(err: unknown): { status: number; error: string } {
         return { status: 401, error: 'Invalid refresh token' }
       case 'REFRESH_TOKEN_EXPIRED':
         return { status: 401, error: 'Refresh token expired' }
+      case 'WRONG_PASSWORD':
+        return { status: 401, error: 'Current password is incorrect' }
+      case 'USER_NOT_FOUND':
+        return { status: 404, error: 'User not found' }
     }
   }
   return { status: 500, error: 'Internal server error' }
@@ -110,6 +115,27 @@ export async function logout(req: Request, res: Response): Promise<void> {
   } catch (err) {
     const { status, error } = mapServiceError(err)
     if (status === 500) console.error('[logout]', err)
+    res.status(status).json({ error })
+  }
+}
+
+const changePasswordSchema = z.object({
+  currentPassword: z.string(),
+  newPassword: z.string().min(8),
+})
+
+export async function changePassword(req: AuthRequest, res: Response): Promise<void> {
+  const parsed = changePasswordSchema.safeParse(req.body)
+  if (!parsed.success) {
+    res.status(400).json({ error: 'Validation error', details: parsed.error.errors })
+    return
+  }
+  try {
+    await authService.changePassword(req.user!.userId, parsed.data.currentPassword, parsed.data.newPassword)
+    res.status(200).json({ message: 'Password changed' })
+  } catch (err) {
+    const { status, error } = mapServiceError(err)
+    if (status === 500) console.error('[changePassword]', err)
     res.status(status).json({ error })
   }
 }
