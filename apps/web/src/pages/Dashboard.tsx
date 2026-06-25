@@ -30,25 +30,25 @@ function getNepalDateString(): string {
 }
 
 function payBadgeColor(status: string): string {
-  if (status === 'PAID') return 'bg-emerald-500/20 text-emerald-400'
+  if (status === 'PAID') return 'bg-[var(--success-light)] text-[var(--success)]'
   if (status === 'COD_PENDING') return 'bg-blue-500/20 text-blue-400'
   if (status === 'UNPAID') return 'bg-amber-500/20 text-amber-400'
-  return 'bg-zinc-700 text-zinc-400'
+  return 'bg-[var(--border-2)] text-[var(--text-muted)]'
 }
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function SectionHeading({ children }: { children: ReactNode }) {
   return (
-    <p className="text-[var(--color-text-2)] text-xs uppercase tracking-wider mb-3">{children}</p>
+    <p className="text-[var(--text-secondary)] text-xs uppercase tracking-wider mb-3">{children}</p>
   )
 }
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-4">
-      <p className="text-[var(--color-text-3)] text-xs mb-1">{label}</p>
-      <p className="text-[var(--color-text)] text-xl font-bold">{value}</p>
+    <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-4">
+      <p className="text-[var(--text-muted)] text-xs mb-1">{label}</p>
+      <p className="text-[var(--text-primary)] text-xl font-bold">{value}</p>
     </div>
   )
 }
@@ -57,20 +57,20 @@ function SkeletonDashboard() {
   return (
     <div className="pt-2 space-y-6 animate-pulse">
       <div className="space-y-2">
-        <div className="h-6 bg-[var(--color-surface)] rounded w-2/3" />
-        <div className="h-4 bg-[var(--color-surface)] rounded w-1/3" />
-        <div className="h-3 bg-[var(--color-surface)] rounded w-1/2" />
+        <div className="h-6 bg-[var(--bg-surface)] rounded w-2/3" />
+        <div className="h-4 bg-[var(--bg-surface)] rounded w-1/3" />
+        <div className="h-3 bg-[var(--bg-surface)] rounded w-1/2" />
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="h-20 bg-[var(--color-surface)] rounded-xl" />
-        <div className="h-20 bg-[var(--color-surface)] rounded-xl" />
-        <div className="h-20 bg-[var(--color-surface)] rounded-xl" />
-        <div className="h-20 bg-[var(--color-surface)] rounded-xl" />
+        <div className="h-20 bg-[var(--bg-surface)] rounded-xl" />
+        <div className="h-20 bg-[var(--bg-surface)] rounded-xl" />
+        <div className="h-20 bg-[var(--bg-surface)] rounded-xl" />
+        <div className="h-20 bg-[var(--bg-surface)] rounded-xl" />
       </div>
-      <div className="h-24 bg-[var(--color-surface)] rounded-xl" />
+      <div className="h-24 bg-[var(--bg-surface)] rounded-xl" />
       <div className="space-y-2">
-        <div className="h-16 bg-[var(--color-surface)] rounded-xl" />
-        <div className="h-16 bg-[var(--color-surface)] rounded-xl" />
+        <div className="h-16 bg-[var(--bg-surface)] rounded-xl" />
+        <div className="h-16 bg-[var(--bg-surface)] rounded-xl" />
       </div>
     </div>
   )
@@ -87,10 +87,10 @@ export default function Dashboard() {
   if (isError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3 text-center px-6">
-        <p className="text-zinc-400 text-sm">Couldn't load dashboard.</p>
+        <p className="text-[var(--text-muted)] text-sm">Couldn't load dashboard.</p>
         <button
           onClick={() => void refetch()}
-          className="text-emerald-400 text-sm font-medium active:opacity-70"
+          className="text-[var(--success)] text-sm font-medium active:opacity-70"
         >
           Tap to retry
         </button>
@@ -109,11 +109,11 @@ export default function Dashboard() {
     <div className="pb-8 space-y-6">
       {/* ── Greeting ── */}
       <div className="pt-2 pb-1">
-        <h2 className="text-[var(--color-text)] text-2xl font-bold">
+        <h2 className="text-[var(--text-primary)] text-2xl font-bold">
           {getNepalGreeting()}, {user?.name?.split(' ')[0] ?? 'Seller'} 👋
         </h2>
-        <p className="text-[var(--color-text-2)] text-sm mt-0.5">{store?.name}</p>
-        <p className="text-[var(--color-text-3)] text-xs mt-1">{getNepalDateString()}</p>
+        <p className="text-[var(--text-secondary)] text-sm mt-0.5">{store?.name}</p>
+        <p className="text-[var(--text-muted)] text-xs mt-1">{getNepalDateString()}</p>
       </div>
 
       {/* ── Today ── */}
@@ -135,15 +135,15 @@ export default function Dashboard() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3">
             <StatCard label="Revenue" value={formatNPR(data!.monthRevenue!)} />
             <StatCard label="Expenses" value={formatNPR(data!.monthExpenses ?? 0)} />
-            <div className="col-span-2 md:col-span-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-4">
-              <p className="text-[var(--color-text-3)] text-xs mb-1">Profit</p>
+            <div className="col-span-2 md:col-span-1 bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-4">
+              <p className="text-[var(--text-muted)] text-xs mb-1">Profit</p>
               <p
                 className={`text-xl font-bold ${
                   (data!.monthProfit ?? 0) > 0
-                    ? 'text-emerald-400'
+                    ? 'text-[var(--success)]'
                     : (data!.monthProfit ?? 0) < 0
                     ? 'text-red-400'
-                    : 'text-[var(--color-text-2)]'
+                    : 'text-[var(--text-secondary)]'
                 }`}
               >
                 {formatNPR(data!.monthProfit ?? 0)}
@@ -204,11 +204,11 @@ export default function Dashboard() {
             {visibleAlerts.map((alert) => (
               <div
                 key={alert.variantId}
-                className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl px-4 py-3"
+                className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl px-4 py-3"
               >
-                <p className="text-[var(--color-text)] text-sm font-medium">{alert.productName}</p>
+                <p className="text-[var(--text-primary)] text-sm font-medium">{alert.productName}</p>
                 <div className="flex items-center justify-between mt-0.5">
-                  <p className="text-[var(--color-text-3)] text-xs">{alert.variantCode}</p>
+                  <p className="text-[var(--text-muted)] text-xs">{alert.variantCode}</p>
                   <p className="text-amber-400 text-xs font-medium">
                     {alert.currentQty} left ⚠
                   </p>
@@ -219,7 +219,7 @@ export default function Dashboard() {
           {extraAlerts > 0 && (
             <Link
               to="/app/products"
-              className="block text-center text-[var(--color-text-2)] text-xs py-2 active:opacity-70 mt-1"
+              className="block text-center text-[var(--text-secondary)] text-xs py-2 active:opacity-70 mt-1"
             >
               + {extraAlerts} more low-stock items
             </Link>
@@ -232,7 +232,7 @@ export default function Dashboard() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <SectionHeading>Recent bills</SectionHeading>
-            <Link to="/app/bills" className="text-[var(--color-accent)] text-xs active:opacity-70 hover:underline -mt-3">
+            <Link to="/app/bills" className="text-[var(--accent)] text-xs active:opacity-70 hover:underline -mt-3">
               See all →
             </Link>
           </div>
@@ -243,23 +243,23 @@ export default function Dashboard() {
                 <Link
                   key={bill.id}
                   to={`/app/bills/${bill.id}`}
-                  className={`flex items-center justify-between bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl px-4 py-3 active:opacity-70 hover:bg-[var(--color-surface-2)] transition-colors ${voided ? 'opacity-50' : ''}`}
+                  className={`flex items-center justify-between bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl px-4 py-3 active:opacity-70 hover:bg-[var(--bg-surface-2)] transition-colors ${voided ? 'opacity-50' : ''}`}
                 >
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className={`text-[var(--color-text)] text-sm font-medium ${voided ? 'line-through' : ''}`}>
+                      <p className={`text-[var(--text-primary)] text-sm font-medium ${voided ? 'line-through' : ''}`}>
                         Bill #{bill.billNumber}
                       </p>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${payBadgeColor(bill.paymentStatus)}`}>
                         {bill.paymentStatus.replace('_', ' ')}
                       </span>
                     </div>
-                    <p className="text-[var(--color-text-3)] text-xs mt-0.5 truncate">
+                    <p className="text-[var(--text-muted)] text-xs mt-0.5 truncate">
                       {bill.customerName ? `${bill.customerName} · ` : ''}
                       {new Date(bill.createdAt).toLocaleDateString('en-NP', { month: 'short', day: 'numeric' })}
                     </p>
                   </div>
-                  <p className="text-[var(--color-text)] text-sm font-semibold flex-shrink-0 ml-3">
+                  <p className="text-[var(--text-primary)] text-sm font-semibold flex-shrink-0 ml-3">
                     {formatNPR(bill.total)}
                   </p>
                 </Link>
@@ -275,13 +275,13 @@ export default function Dashboard() {
         <div className="flex gap-3">
           <Link
             to="/app/bill/new"
-            className="flex-1 bg-[var(--color-accent)] hover:bg-[var(--color-accent-2)] text-white text-sm font-semibold py-3.5 rounded-lg text-center active:opacity-80 transition-colors"
+            className="flex-1 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--text-primary)] text-sm font-semibold py-3.5 rounded-lg text-center active:opacity-80 transition-colors"
           >
             + New Bill
           </Link>
           <Link
             to="/app/products/new"
-            className="flex-1 bg-[var(--color-surface)] border border-[var(--color-border)] hover:bg-[var(--color-surface-2)] text-[var(--color-text)] text-sm font-semibold py-3.5 rounded-lg text-center active:opacity-80 transition-colors"
+            className="flex-1 bg-[var(--bg-surface)] border border-[var(--border)] hover:bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm font-semibold py-3.5 rounded-lg text-center active:opacity-80 transition-colors"
           >
             + Add Product
           </Link>

@@ -23,20 +23,20 @@ function NavRow({
         className="flex items-center justify-between px-4 py-3.5 active:opacity-70"
       >
         <div className="flex items-center gap-3">
-          <Icon size={18} className="text-zinc-400" />
-          <span className="text-white text-sm">{label}</span>
+          <Icon size={18} className="text-[var(--text-muted)]" />
+          <span className="text-[var(--text-primary)] text-sm">{label}</span>
         </div>
-        <ExternalLink size={14} className="text-zinc-600" />
+        <ExternalLink size={14} className="text-[var(--text-muted)]" />
       </a>
     )
   }
   return (
     <Link to={to} className="flex items-center justify-between px-4 py-3.5 active:opacity-70">
       <div className="flex items-center gap-3">
-        <Icon size={18} className="text-zinc-400" />
-        <span className="text-white text-sm">{label}</span>
+        <Icon size={18} className="text-[var(--text-muted)]" />
+        <span className="text-[var(--text-primary)] text-sm">{label}</span>
       </div>
-      <ChevronRight size={16} className="text-zinc-600" />
+      <ChevronRight size={16} className="text-[var(--text-muted)]" />
     </Link>
   )
 }
@@ -67,18 +67,18 @@ export default function More() {
   return (
     <div className="px-4 py-6 space-y-4 pb-10">
       {/* Store card */}
-      <div className="bg-zinc-800 rounded-xl p-4">
-        <p className="text-white font-bold text-lg leading-tight">{store?.name}</p>
-        <p className="text-zinc-400 text-sm mt-0.5">@{store?.slug}</p>
+      <div className="bg-[var(--bg-surface-2)] rounded-xl p-4">
+        <p className="text-[var(--text-primary)] font-bold text-lg leading-tight">{store?.name}</p>
+        <p className="text-[var(--text-muted)] text-sm mt-0.5">@{store?.slug}</p>
         <span className={`inline-block mt-2 text-xs px-2 py-0.5 rounded-full font-medium ${
-          isOwner ? 'bg-emerald-500/20 text-emerald-400' : 'bg-zinc-700 text-zinc-400'
+          isOwner ? 'bg-[var(--success-light)] text-[var(--success)]' : 'bg-[var(--border-2)] text-[var(--text-muted)]'
         }`}>
           {user?.role}
         </span>
       </div>
 
       {/* Navigation */}
-      <div className="bg-zinc-800 rounded-xl divide-y divide-zinc-700/60">
+      <div className="bg-[var(--bg-surface-2)] rounded-xl divide-y divide-[var(--border-2)]/60">
         <NavRow to="/app/bills" icon={Receipt} label="Bills" />
         <NavRow to="/app/customers" icon={Users} label="Customers" />
         {isOwner && (
@@ -94,10 +94,10 @@ export default function More() {
           className="w-full flex items-center justify-between px-4 py-3.5 active:opacity-70"
         >
           <div className="flex items-center gap-3">
-            <Share2 size={18} className="text-zinc-400" />
-            <span className="text-white text-sm">Share Catalog</span>
+            <Share2 size={18} className="text-[var(--text-muted)]" />
+            <span className="text-[var(--text-primary)] text-sm">Share Catalog</span>
           </div>
-          <span className={`text-xs font-medium ${copied ? 'text-emerald-400' : 'text-zinc-600'}`}>
+          <span className={`text-xs font-medium ${copied ? 'text-[var(--success)]' : 'text-[var(--text-muted)]'}`}>
             {copied ? 'Copied!' : 'Copy link'}
           </span>
         </button>
@@ -106,13 +106,13 @@ export default function More() {
       {/* Logout */}
       <button
         onClick={() => void handleLogout()}
-        className="w-full bg-zinc-800 text-red-400 font-medium rounded-xl py-3.5 text-sm active:opacity-80"
+        className="w-full bg-[var(--bg-surface-2)] text-red-400 font-medium rounded-xl py-3.5 text-sm active:opacity-80"
       >
         Log out
       </button>
 
       {/* Footer */}
-      <p className="text-zinc-700 text-xs text-center pt-2">Invo v1.0 · Made for Nepal 🇳🇵</p>
+      <p className="text-[var(--text-placeholder)] text-xs text-center pt-2">Invo v1.0 · Made for Nepal 🇳🇵</p>
     </div>
   )
 }

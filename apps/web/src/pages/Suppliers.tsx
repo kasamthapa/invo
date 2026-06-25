@@ -9,8 +9,8 @@ import type { Supplier } from '../types/supplier'
 function OwnerGate() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-2 px-6 text-center">
-      <p className="text-zinc-400 text-sm font-medium">Owner access required</p>
-      <p className="text-zinc-600 text-xs">This section is only available to store owners.</p>
+      <p className="text-[var(--text-muted)] text-sm font-medium">Owner access required</p>
+      <p className="text-[var(--text-muted)] text-xs">This section is only available to store owners.</p>
     </div>
   )
 }
@@ -50,10 +50,10 @@ function SupplierSheet({
   return (
     <div className="fixed inset-0 z-50 flex flex-col justify-end">
       <div className="absolute inset-0 bg-black/70" onClick={onClose} />
-      <div className="relative bg-zinc-900 rounded-t-2xl px-4 pt-5 pb-8 space-y-4">
+      <div className="relative bg-[var(--bg-app)] rounded-t-2xl px-4 pt-5 pb-8 space-y-4">
         <div className="flex items-center justify-between mb-1">
-          <h3 className="text-white font-semibold text-base">{isEdit ? 'Edit Supplier' : 'Add Supplier'}</h3>
-          <button onClick={onClose} className="text-zinc-400 active:opacity-70"><X size={20} /></button>
+          <h3 className="text-[var(--text-primary)] font-semibold text-base">{isEdit ? 'Edit Supplier' : 'Add Supplier'}</h3>
+          <button onClick={onClose} className="text-[var(--text-muted)] active:opacity-70"><X size={20} /></button>
         </div>
         {error && <p className="text-red-400 text-sm bg-red-900/20 border border-red-800/40 rounded-lg px-3 py-2">{error}</p>}
         {[
@@ -62,20 +62,20 @@ function SupplierSheet({
           { label: 'Note', value: note, onChange: setNote, placeholder: 'Optional note' },
         ].map(({ label, value, onChange, placeholder }) => (
           <div key={label}>
-            <label className="text-zinc-500 text-xs uppercase tracking-wider block mb-1">{label}</label>
+            <label className="text-[var(--text-muted)] text-xs uppercase tracking-wider block mb-1">{label}</label>
             <input
               type="text"
               value={value}
               onChange={(e) => onChange(e.target.value)}
               placeholder={placeholder}
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-zinc-600 outline-none focus:border-zinc-500"
+              className="w-full bg-[var(--bg-surface-2)] border border-[var(--border-2)] rounded-xl px-4 py-2.5 text-[var(--text-primary)] text-sm placeholder-[var(--text-placeholder)] outline-none focus:border-[var(--accent)]"
             />
           </div>
         ))}
         <button
           onClick={() => void handleSubmit()}
           disabled={isPending}
-          className="w-full bg-emerald-500 text-white font-semibold py-3.5 rounded-xl active:opacity-80 disabled:opacity-50 mt-2"
+          className="w-full bg-[var(--accent)] text-[var(--text-primary)] font-semibold py-3.5 rounded-xl active:opacity-80 disabled:opacity-50 mt-2"
         >
           {isPending ? 'Saving…' : isEdit ? 'Save Changes' : 'Add Supplier'}
         </button>
@@ -97,16 +97,16 @@ export default function Suppliers() {
       {sheet === 'add' && <SupplierSheet onClose={() => setSheet(null)} />}
       {sheet && sheet !== 'add' && <SupplierSheet supplier={sheet} onClose={() => setSheet(null)} />}
 
-      <div className="sticky top-0 z-10 bg-zinc-900 px-4 pt-4 pb-3">
+      <div className="sticky top-0 z-10 bg-[var(--bg-app)] px-4 pt-4 pb-3">
         <div className="flex items-center gap-3 mb-1">
-          <Link to="/app/more" className="text-zinc-400 active:opacity-70"><ChevronLeft size={20} /></Link>
+          <Link to="/app/more" className="text-[var(--text-muted)] active:opacity-70"><ChevronLeft size={20} /></Link>
           <div className="flex-1">
-            <h1 className="text-white font-semibold text-lg">Suppliers</h1>
-            {suppliers && <p className="text-zinc-400 text-xs">{suppliers.length} suppliers</p>}
+            <h1 className="text-[var(--text-primary)] font-semibold text-lg">Suppliers</h1>
+            {suppliers && <p className="text-[var(--text-muted)] text-xs">{suppliers.length} suppliers</p>}
           </div>
           <button
             onClick={() => setSheet('add')}
-            className="flex items-center gap-1 bg-emerald-500 text-white text-xs font-medium px-3 py-1.5 rounded-lg active:opacity-80"
+            className="flex items-center gap-1 bg-[var(--accent)] text-[var(--text-primary)] text-xs font-medium px-3 py-1.5 rounded-lg active:opacity-80"
           >
             <Plus size={14} />Add
           </button>
@@ -115,24 +115,24 @@ export default function Suppliers() {
 
       {isLoading && (
         <div className="flex items-center justify-center min-h-[40vh]">
-          <div className="w-6 h-6 border-2 border-zinc-600 border-t-white rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-[var(--border-2)] border-t-[var(--accent)] rounded-full animate-spin" />
         </div>
       )}
 
       {isError && (
         <div className="flex flex-col items-center justify-center min-h-[40vh] gap-3 text-center px-6">
-          <p className="text-zinc-400 text-sm">Couldn't load suppliers.</p>
-          <button onClick={() => void refetch()} className="text-emerald-400 text-sm font-medium">Tap to retry</button>
+          <p className="text-[var(--text-muted)] text-sm">Couldn't load suppliers.</p>
+          <button onClick={() => void refetch()} className="text-[var(--success)] text-sm font-medium">Tap to retry</button>
         </div>
       )}
 
       {!isLoading && !isError && (!suppliers || suppliers.length === 0) && (
         <div className="flex flex-col items-center justify-center min-h-[40vh] gap-3 text-center px-6">
-          <Truck size={40} className="text-zinc-700" />
-          <p className="text-zinc-400 text-sm">No suppliers yet.</p>
+          <Truck size={40} className="text-[var(--text-placeholder)]" />
+          <p className="text-[var(--text-muted)] text-sm">No suppliers yet.</p>
           <button
             onClick={() => setSheet('add')}
-            className="bg-emerald-500 text-white text-sm font-medium px-5 py-2.5 rounded-xl active:opacity-80"
+            className="bg-[var(--accent)] text-[var(--text-primary)] text-sm font-medium px-5 py-2.5 rounded-xl active:opacity-80"
           >
             Add Supplier
           </button>
@@ -140,21 +140,21 @@ export default function Suppliers() {
       )}
 
       {!isLoading && !isError && suppliers && suppliers.length > 0 && (
-        <div className="divide-y divide-zinc-800/50">
+        <div className="divide-y divide-[var(--border)]">
           {suppliers.map((s) => (
             <div key={s.id} className="flex items-center gap-3 px-4 py-3">
               <div className="flex-1 min-w-0" onClick={() => setSheet(s)} role="button">
-                <p className="text-white text-sm font-medium truncate">{s.name}</p>
-                {s.phone && <p className="text-zinc-500 text-xs mt-0.5">{s.phone}</p>}
-                {s.note && <p className="text-zinc-600 text-xs mt-0.5 truncate">{s.note}</p>}
-                <p className="text-zinc-700 text-xs mt-0.5">Added {formatDate(s.createdAt)}</p>
+                <p className="text-[var(--text-primary)] text-sm font-medium truncate">{s.name}</p>
+                {s.phone && <p className="text-[var(--text-muted)] text-xs mt-0.5">{s.phone}</p>}
+                {s.note && <p className="text-[var(--text-muted)] text-xs mt-0.5 truncate">{s.note}</p>}
+                <p className="text-[var(--text-placeholder)] text-xs mt-0.5">Added {formatDate(s.createdAt)}</p>
               </div>
               <button
                 onClick={() => {
                   if (!confirm(`Delete ${s.name}?`)) return
                   void deleteSupplier.mutateAsync(s.id)
                 }}
-                className="text-zinc-600 active:text-red-400 px-2 py-1 text-xs"
+                className="text-[var(--text-muted)] active:text-red-400 px-2 py-1 text-xs"
               >
                 Delete
               </button>

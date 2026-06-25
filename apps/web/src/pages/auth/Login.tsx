@@ -34,17 +34,17 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] flex flex-col items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-[var(--bg-app)] flex flex-col items-center justify-center px-6 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-[var(--color-text)] tracking-tight">INVO</h1>
-          <p className="text-[var(--color-text-2)] text-sm mt-2">Sign in to your store</p>
+          <h1 className="text-4xl font-bold text-[var(--text-primary)] tracking-tight">INVO</h1>
+          <p className="text-[var(--text-secondary)] text-sm mt-2">Sign in to your store</p>
         </div>
 
-        <div className="md:bg-[var(--color-surface)] md:border md:border-[var(--color-border)] md:rounded-2xl md:p-8">
+        <div className="md:bg-[var(--bg-surface)] md:border md:border-[var(--border)] md:rounded-2xl md:p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-[var(--color-text-2)] text-xs uppercase tracking-wider mb-1.5">
+              <label className="block text-[var(--text-secondary)] text-xs uppercase tracking-wider mb-1.5">
                 Store slug
               </label>
               <input
@@ -55,12 +55,12 @@ export default function Login() {
                 autoCapitalize="none"
                 autoCorrect="off"
                 required
-                className="w-full bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-[var(--color-text)] placeholder-[var(--color-text-3)] text-sm focus:outline-none focus:border-[var(--color-border-2)]"
+                className="w-full bg-[var(--bg-surface-2)] border border-[var(--border)] rounded-lg px-4 py-3 text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm focus:outline-none focus:border-[var(--border-2)]"
               />
             </div>
 
             <div>
-              <label className="block text-[var(--color-text-2)] text-xs uppercase tracking-wider mb-1.5">
+              <label className="block text-[var(--text-secondary)] text-xs uppercase tracking-wider mb-1.5">
                 Phone
               </label>
               <input
@@ -69,12 +69,12 @@ export default function Login() {
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="9800000001"
                 required
-                className="w-full bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-[var(--color-text)] placeholder-[var(--color-text-3)] text-sm focus:outline-none focus:border-[var(--color-border-2)]"
+                className="w-full bg-[var(--bg-surface-2)] border border-[var(--border)] rounded-lg px-4 py-3 text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm focus:outline-none focus:border-[var(--border-2)]"
               />
             </div>
 
             <div>
-              <label className="block text-[var(--color-text-2)] text-xs uppercase tracking-wider mb-1.5">
+              <label className="block text-[var(--text-secondary)] text-xs uppercase tracking-wider mb-1.5">
                 Password
               </label>
               <input
@@ -83,28 +83,28 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-[var(--color-text)] placeholder-[var(--color-text-3)] text-sm focus:outline-none focus:border-[var(--color-border-2)]"
+                className="w-full bg-[var(--bg-surface-2)] border border-[var(--border)] rounded-lg px-4 py-3 text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm focus:outline-none focus:border-[var(--border-2)]"
               />
             </div>
 
             {error && (
               <div className="bg-red-900/30 border border-red-700 rounded-lg px-4 py-3">
-                <p className="text-[var(--color-danger)] text-sm">{error}</p>
+                <p className="text-[var(--danger)] text-sm">{error}</p>
               </div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[var(--color-text)] text-[var(--color-bg)] font-semibold rounded-lg py-3.5 text-sm mt-2 active:opacity-80 hover:opacity-90 disabled:opacity-50 transition-opacity"
+              className="w-full bg-[var(--text-primary)] text-[var(--bg-app)] font-semibold rounded-lg py-3.5 text-sm mt-2 active:opacity-80 hover:opacity-90 disabled:opacity-50 transition-opacity"
             >
               {loading ? 'Signing in…' : 'Sign in'}
             </button>
           </form>
 
-          <p className="text-center text-[var(--color-text-3)] text-sm mt-8">
+          <p className="text-center text-[var(--text-muted)] text-sm mt-8">
             New seller?{' '}
-            <Link to="/register" className="text-[var(--color-text)] font-medium hover:underline">
+            <Link to="/register" className="text-[var(--text-primary)] font-medium hover:underline">
               Create your store
             </Link>
           </p>

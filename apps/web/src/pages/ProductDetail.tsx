@@ -13,17 +13,17 @@ function VariantRow({ variant, basePrice }: { variant: ProductVariant; basePrice
   const attributeLabel = Object.values(variant.attributes).join(' / ')
 
   return (
-    <div className="bg-zinc-800 rounded-xl px-4 py-3 space-y-1">
+    <div className="bg-[var(--bg-surface-2)] rounded-xl px-4 py-3 space-y-1">
       <div className="flex items-center justify-between">
-        <p className="text-white text-sm font-medium">{attributeLabel || 'Default'}</p>
-        <p className="text-white text-sm">{formatNPR(effectivePrice)}</p>
+        <p className="text-[var(--text-primary)] text-sm font-medium">{attributeLabel || 'Default'}</p>
+        <p className="text-[var(--text-primary)] text-sm">{formatNPR(effectivePrice)}</p>
       </div>
-      <p className="text-zinc-500 text-xs">{variant.variantCode}</p>
+      <p className="text-[var(--text-muted)] text-xs">{variant.variantCode}</p>
       <div className="flex items-center gap-2">
         {isOutOfStock ? (
           <span className="text-xs text-red-400 font-medium">Out of stock</span>
         ) : (
-          <span className="text-xs text-zinc-400">{variant.currentQty} in stock</span>
+          <span className="text-xs text-[var(--text-muted)]">{variant.currentQty} in stock</span>
         )}
         {isLowStock && (
           <span className="text-xs text-amber-400 font-medium bg-amber-400/10 px-2 py-0.5 rounded-full">
@@ -42,7 +42,7 @@ export default function ProductDetail() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-6 h-6 border-2 border-zinc-600 border-t-white rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[var(--border-2)] border-t-[var(--accent)] rounded-full animate-spin" />
       </div>
     )
   }
@@ -50,8 +50,8 @@ export default function ProductDetail() {
   if (isError || !product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3 px-6 text-center">
-        <p className="text-zinc-400 text-sm">Product not found.</p>
-        <Link to="/app/products" className="text-emerald-400 text-sm font-medium active:opacity-70">
+        <p className="text-[var(--text-muted)] text-sm">Product not found.</p>
+        <Link to="/app/products" className="text-[var(--success)] text-sm font-medium active:opacity-70">
           ← Back to products
         </Link>
       </div>
@@ -64,14 +64,14 @@ export default function ProductDetail() {
       <div className="flex items-center justify-between px-4 pt-4 pb-3">
         <Link
           to="/app/products"
-          className="flex items-center gap-1 text-zinc-400 active:opacity-70"
+          className="flex items-center gap-1 text-[var(--text-muted)] active:opacity-70"
         >
           <ChevronLeft size={20} />
           <span className="text-sm">Products</span>
         </Link>
         <Link
           to={`/app/products/${product.id}/edit`}
-          className="text-emerald-400 text-sm font-medium active:opacity-70"
+          className="text-[var(--success)] text-sm font-medium active:opacity-70"
         >
           Edit
         </Link>
@@ -90,29 +90,29 @@ export default function ProductDetail() {
           ))}
         </div>
       ) : (
-        <div className="mx-4 aspect-square max-w-[360px] bg-zinc-800 rounded-xl flex items-center justify-center">
-          <Package size={48} className="text-zinc-600" />
+        <div className="mx-4 aspect-square max-w-[360px] bg-[var(--bg-surface-2)] rounded-xl flex items-center justify-center">
+          <Package size={48} className="text-[var(--text-muted)]" />
         </div>
       )}
 
       {/* Product info */}
       <div className="px-4 mt-4 space-y-1">
         <div className="flex items-start justify-between gap-3">
-          <h1 className="text-white font-semibold text-xl leading-tight flex-1">{product.name}</h1>
-          <p className="text-white font-medium text-lg flex-shrink-0">{formatNPR(product.basePrice)}</p>
+          <h1 className="text-[var(--text-primary)] font-semibold text-xl leading-tight flex-1">{product.name}</h1>
+          <p className="text-[var(--text-primary)] font-medium text-lg flex-shrink-0">{formatNPR(product.basePrice)}</p>
         </div>
-        <p className="text-zinc-400 text-sm">
+        <p className="text-[var(--text-muted)] text-sm">
           {product.code}
           {product.category ? ` · ${product.category}` : ''}
         </p>
         {product.description && (
-          <p className="text-zinc-400 text-sm pt-1 leading-relaxed">{product.description}</p>
+          <p className="text-[var(--text-muted)] text-sm pt-1 leading-relaxed">{product.description}</p>
         )}
       </div>
 
       {/* Variants */}
       <div className="px-4 mt-6 space-y-3">
-        <h2 className="text-white font-medium text-base">
+        <h2 className="text-[var(--text-primary)] font-medium text-base">
           Variants ({product.variants.length})
         </h2>
         {product.variants.map((variant) => (

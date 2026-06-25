@@ -66,7 +66,7 @@ const ATTR_PRESETS = ['color', 'size', 'weight']
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-zinc-400 text-xs uppercase tracking-widest font-medium px-4 pt-5 pb-2">
+    <h2 className="text-[var(--text-muted)] text-xs uppercase tracking-widest font-medium px-4 pt-5 pb-2">
       {children}
     </h2>
   )
@@ -87,12 +87,12 @@ function Field({
 }) {
   return (
     <div className="px-4 mb-4">
-      <label className="block text-zinc-400 text-xs uppercase tracking-wider mb-1.5">
+      <label className="block text-[var(--text-muted)] text-xs uppercase tracking-wider mb-1.5">
         {label}
         {required && <span className="text-red-400 ml-0.5">*</span>}
       </label>
       {children}
-      {hint && !error && <p className="text-zinc-600 text-xs mt-1">{hint}</p>}
+      {hint && !error && <p className="text-[var(--text-muted)] text-xs mt-1">{hint}</p>}
       {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
     </div>
   )
@@ -118,10 +118,10 @@ function TextInput({
       readOnly={readOnly}
       onChange={onChange ? (e) => onChange(e.target.value) : undefined}
       placeholder={placeholder}
-      className={`w-full bg-zinc-800 border rounded-xl px-4 py-3 text-sm outline-none focus:border-zinc-500 ${
+      className={`w-full bg-[var(--bg-surface-2)] border rounded-xl px-4 py-3 text-sm outline-none focus:border-[var(--accent)] ${
         readOnly
-          ? 'text-zinc-500 border-zinc-700 cursor-default'
-          : 'text-white border-zinc-700 focus:border-zinc-500'
+          ? 'text-[var(--text-muted)] border-[var(--border-2)] cursor-default'
+          : 'text-[var(--text-primary)] border-[var(--border-2)] focus:border-[var(--accent)]'
       }`}
     />
   )
@@ -352,7 +352,7 @@ export default function ProductForm() {
   if (isEdit && productLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-6 h-6 border-2 border-zinc-600 border-t-white rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[var(--border-2)] border-t-[var(--accent)] rounded-full animate-spin" />
       </div>
     )
   }
@@ -368,7 +368,7 @@ export default function ProductForm() {
       <div className="flex items-center justify-between px-4 pt-4 pb-3">
         <Link
           to={isEdit && id ? `/app/products/${id}` : '/app/products'}
-          className="flex items-center gap-1 text-zinc-400 active:opacity-70"
+          className="flex items-center gap-1 text-[var(--text-muted)] active:opacity-70"
         >
           <ChevronLeft size={20} />
           <span className="text-sm">{isEdit ? 'Product' : 'Products'}</span>
@@ -376,7 +376,7 @@ export default function ProductForm() {
         <button
           onClick={() => void handleSubmit()}
           disabled={isBusy}
-          className="bg-emerald-500 text-white text-sm font-semibold px-4 py-1.5 rounded-lg active:opacity-80 disabled:opacity-50"
+          className="bg-[var(--accent)] text-[var(--text-primary)] text-sm font-semibold px-4 py-1.5 rounded-lg active:opacity-80 disabled:opacity-50"
         >
           {isBusy ? 'Saving…' : isEdit ? (savedOk ? 'Saved ✓' : 'Save') : 'Create'}
         </button>
@@ -437,7 +437,7 @@ export default function ProductForm() {
           onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
           placeholder="Optional product description…"
           rows={3}
-          className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white text-sm placeholder-zinc-600 outline-none focus:border-zinc-500 resize-none"
+          className="w-full bg-[var(--bg-surface-2)] border border-[var(--border-2)] rounded-xl px-4 py-3 text-[var(--text-primary)] text-sm placeholder-[var(--text-placeholder)] outline-none focus:border-[var(--accent)] resize-none"
         />
       </Field>
 
@@ -446,7 +446,7 @@ export default function ProductForm() {
           type="button"
           onClick={() => setForm((f) => ({ ...f, visible: !f.visible }))}
           className={`w-10 h-6 rounded-full transition-colors flex-shrink-0 ${
-            form.visible ? 'bg-emerald-500' : 'bg-zinc-700'
+            form.visible ? 'bg-[var(--accent)]' : 'bg-[var(--border-2)]'
           }`}
         >
           <span
@@ -455,7 +455,7 @@ export default function ProductForm() {
             }`}
           />
         </button>
-        <span className="text-zinc-300 text-sm">Visible on public catalog</span>
+        <span className="text-[var(--text-secondary)] text-sm">Visible on public catalog</span>
       </div>
 
       {/* ── Section 2: Variants ── */}
@@ -470,9 +470,9 @@ export default function ProductForm() {
         const variantError = errors[`variant_${vIdx}`]
 
         return (
-          <div key={variant.id} className="mx-4 mb-4 bg-zinc-800 rounded-xl p-4">
+          <div key={variant.id} className="mx-4 mb-4 bg-[var(--bg-surface-2)] rounded-xl p-4">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-white text-sm font-medium">Variant {vIdx + 1}</span>
+              <span className="text-[var(--text-primary)] text-sm font-medium">Variant {vIdx + 1}</span>
               {form.variants.length > 1 && (
                 <button
                   type="button"
@@ -491,7 +491,7 @@ export default function ProductForm() {
                   key={preset}
                   type="button"
                   onClick={() => addPresetAttr(variant.id, preset)}
-                  className="text-zinc-400 text-xs bg-zinc-700 px-2.5 py-1 rounded-lg active:opacity-70"
+                  className="text-[var(--text-muted)] text-xs bg-[var(--border-2)] px-2.5 py-1 rounded-lg active:opacity-70"
                 >
                   + {preset}
                 </button>
@@ -507,19 +507,19 @@ export default function ProductForm() {
                     value={attr.key}
                     onChange={(e) => updateAttr(variant.id, aIdx, 'key', e.target.value)}
                     placeholder="color"
-                    className="flex-1 bg-zinc-700 border border-zinc-600 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-zinc-500 placeholder-zinc-500"
+                    className="flex-1 bg-[var(--border-2)] border border-[var(--border-2)] rounded-lg px-3 py-2 text-[var(--text-primary)] text-xs outline-none focus:border-[var(--accent)] placeholder-[var(--text-placeholder)]"
                   />
                   <input
                     type="text"
                     value={attr.value}
                     onChange={(e) => updateAttr(variant.id, aIdx, 'value', e.target.value)}
                     placeholder="Red"
-                    className="flex-1 bg-zinc-700 border border-zinc-600 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-zinc-500 placeholder-zinc-500"
+                    className="flex-1 bg-[var(--border-2)] border border-[var(--border-2)] rounded-lg px-3 py-2 text-[var(--text-primary)] text-xs outline-none focus:border-[var(--accent)] placeholder-[var(--text-placeholder)]"
                   />
                   <button
                     type="button"
                     onClick={() => removeAttr(variant.id, aIdx)}
-                    className="text-zinc-500 active:text-red-400 flex-shrink-0"
+                    className="text-[var(--text-muted)] active:text-red-400 flex-shrink-0"
                   >
                     <X size={14} />
                   </button>
@@ -530,14 +530,14 @@ export default function ProductForm() {
             <button
               type="button"
               onClick={() => addAttr(variant.id)}
-              className="flex items-center gap-1 text-zinc-400 text-xs mb-3 active:opacity-70"
+              className="flex items-center gap-1 text-[var(--text-muted)] text-xs mb-3 active:opacity-70"
             >
               <Plus size={12} /> Add attribute
             </button>
 
             {codePreview && (
-              <p className="text-zinc-500 text-xs mb-3">
-                Code: <span className="text-zinc-400 font-mono">{codePreview}</span>
+              <p className="text-[var(--text-muted)] text-xs mb-3">
+                Code: <span className="text-[var(--text-muted)] font-mono">{codePreview}</span>
               </p>
             )}
 
@@ -547,7 +547,7 @@ export default function ProductForm() {
 
             <div className="space-y-3">
               <div>
-                <label className="block text-zinc-500 text-xs mb-1">
+                <label className="block text-[var(--text-muted)] text-xs mb-1">
                   Price (NPR) — leave empty to use base price
                 </label>
                 <input
@@ -555,26 +555,26 @@ export default function ProductForm() {
                   value={variant.price}
                   onChange={(e) => updateVariant(variant.id, { price: e.target.value })}
                   placeholder="2700"
-                  className="w-full bg-zinc-700 border border-zinc-600 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-zinc-500 placeholder-zinc-500"
+                  className="w-full bg-[var(--border-2)] border border-[var(--border-2)] rounded-lg px-3 py-2 text-[var(--text-primary)] text-sm outline-none focus:border-[var(--accent)] placeholder-[var(--text-placeholder)]"
                 />
               </div>
 
               {!isEdit && (
                 <div>
-                  <label className="block text-zinc-500 text-xs mb-1">Opening Stock</label>
+                  <label className="block text-[var(--text-muted)] text-xs mb-1">Opening Stock</label>
                   <input
                     type="number"
                     value={variant.openingStock}
                     onChange={(e) => updateVariant(variant.id, { openingStock: e.target.value })}
                     placeholder="0"
                     min="0"
-                    className="w-full bg-zinc-700 border border-zinc-600 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-zinc-500 placeholder-zinc-500"
+                    className="w-full bg-[var(--border-2)] border border-[var(--border-2)] rounded-lg px-3 py-2 text-[var(--text-primary)] text-sm outline-none focus:border-[var(--accent)] placeholder-[var(--text-placeholder)]"
                   />
                 </div>
               )}
 
               <div>
-                <label className="block text-zinc-500 text-xs mb-1">
+                <label className="block text-[var(--text-muted)] text-xs mb-1">
                   Low Stock Alert at — leave empty to disable
                 </label>
                 <input
@@ -583,7 +583,7 @@ export default function ProductForm() {
                   onChange={(e) => updateVariant(variant.id, { lowStockAt: e.target.value })}
                   placeholder="2"
                   min="0"
-                  className="w-full bg-zinc-700 border border-zinc-600 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-zinc-500 placeholder-zinc-500"
+                  className="w-full bg-[var(--border-2)] border border-[var(--border-2)] rounded-lg px-3 py-2 text-[var(--text-primary)] text-sm outline-none focus:border-[var(--accent)] placeholder-[var(--text-placeholder)]"
                 />
               </div>
             </div>
@@ -594,7 +594,7 @@ export default function ProductForm() {
       <button
         type="button"
         onClick={() => setForm((f) => ({ ...f, variants: [...f.variants, newVariant()] }))}
-        className="mx-4 flex items-center gap-2 text-emerald-400 text-sm font-medium active:opacity-70 mb-2"
+        className="mx-4 flex items-center gap-2 text-[var(--success)] text-sm font-medium active:opacity-70 mb-2"
       >
         <Plus size={16} /> Add Variant
       </button>
@@ -635,12 +635,12 @@ export default function ProductForm() {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={uploadMutation.isPending}
-              className="flex items-center gap-2 bg-zinc-800 border border-zinc-700 text-zinc-300 text-sm px-4 py-2.5 rounded-xl active:opacity-80 disabled:opacity-50"
+              className="flex items-center gap-2 bg-[var(--bg-surface-2)] border border-[var(--border-2)] text-[var(--text-secondary)] text-sm px-4 py-2.5 rounded-xl active:opacity-80 disabled:opacity-50"
             >
               <Camera size={16} />
               {uploadMutation.isPending ? 'Uploading…' : 'Add Photos'}
             </button>
-            <p className="text-zinc-600 text-xs mt-2">Up to 5 images, max 5 MB each</p>
+            <p className="text-[var(--text-muted)] text-xs mt-2">Up to 5 images, max 5 MB each</p>
           </div>
         </>
       )}

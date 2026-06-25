@@ -18,11 +18,11 @@ function hasLowStock(product: Product): boolean {
 function SkeletonRow() {
   return (
     <div className="flex items-center gap-3 px-4 py-3 animate-pulse">
-      <div className="w-14 h-14 rounded-lg bg-[var(--color-surface)] flex-shrink-0" />
+      <div className="w-14 h-14 rounded-lg bg-[var(--bg-surface)] flex-shrink-0" />
       <div className="flex-1 space-y-2">
-        <div className="h-4 bg-[var(--color-surface)] rounded w-3/4" />
-        <div className="h-3 bg-[var(--color-surface)] rounded w-1/2" />
-        <div className="h-3 bg-[var(--color-surface)] rounded w-1/3" />
+        <div className="h-4 bg-[var(--bg-surface)] rounded w-3/4" />
+        <div className="h-3 bg-[var(--bg-surface)] rounded w-1/2" />
+        <div className="h-3 bg-[var(--bg-surface)] rounded w-1/3" />
       </div>
     </div>
   )
@@ -36,9 +36,9 @@ function ProductRow({ product }: { product: Product }) {
   return (
     <Link
       to={`/app/products/${product.id}`}
-      className="flex items-center gap-3 px-4 py-3 active:bg-[var(--color-surface)]/60 transition-colors"
+      className="flex items-center gap-3 px-4 py-3 active:bg-[var(--bg-surface)]/60 transition-colors"
     >
-      <div className="w-14 h-14 rounded-lg bg-[var(--color-surface)] flex-shrink-0 overflow-hidden flex items-center justify-center">
+      <div className="w-14 h-14 rounded-lg bg-[var(--bg-surface)] flex-shrink-0 overflow-hidden flex items-center justify-center">
         {thumbnail ? (
           <img
             src={thumbnail}
@@ -46,36 +46,36 @@ function ProductRow({ product }: { product: Product }) {
             className="w-full h-full object-cover"
           />
         ) : (
-          <Package size={24} className="text-[var(--color-text-3)]" />
+          <Package size={24} className="text-[var(--text-muted)]" />
         )}
       </div>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5">
-          <p className="text-[var(--color-text)] text-sm font-medium truncate">{product.name}</p>
+          <p className="text-[var(--text-primary)] text-sm font-medium truncate">{product.name}</p>
           {lowStock && (
             <span className="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0" />
           )}
         </div>
-        <p className="text-[var(--color-text-2)] text-xs mt-0.5 truncate">
+        <p className="text-[var(--text-secondary)] text-xs mt-0.5 truncate">
           {product.code}
           {product.category ? ` · ${product.category}` : ''}
         </p>
         <div className="flex items-center gap-1.5 mt-0.5">
-          <span className="text-[var(--color-text-3)] text-xs">
+          <span className="text-[var(--text-muted)] text-xs">
             {product.variants.length} {product.variants.length === 1 ? 'variant' : 'variants'}
           </span>
-          <span className="text-[var(--color-text-3)] text-xs">·</span>
+          <span className="text-[var(--text-muted)] text-xs">·</span>
           {stock === 0 ? (
             <span className="text-red-400 text-xs">Out of stock</span>
           ) : (
-            <span className="text-[var(--color-text-3)] text-xs">{stock} in stock</span>
+            <span className="text-[var(--text-muted)] text-xs">{stock} in stock</span>
           )}
         </div>
-        <p className="text-[var(--color-text-2)] text-xs mt-0.5">{formatNPR(product.basePrice)}</p>
+        <p className="text-[var(--text-secondary)] text-xs mt-0.5">{formatNPR(product.basePrice)}</p>
       </div>
 
-      <ChevronRight size={16} className="text-[var(--color-text-3)] flex-shrink-0" />
+      <ChevronRight size={16} className="text-[var(--text-muted)] flex-shrink-0" />
     </Link>
   )
 }
@@ -92,17 +92,17 @@ export default function Products() {
   return (
     <div className="flex flex-col min-h-full">
       {/* Sticky header */}
-      <div className="sticky top-0 z-10 bg-[var(--color-bg)] px-4 pt-4 pb-3 space-y-3">
+      <div className="sticky top-0 z-10 bg-[var(--bg-app)] px-4 pt-4 pb-3 space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-[var(--color-text)] font-semibold text-lg">Products</h1>
+            <h1 className="text-[var(--text-primary)] font-semibold text-lg">Products</h1>
             {products && (
-              <p className="text-[var(--color-text-2)] text-xs">{products.length} products</p>
+              <p className="text-[var(--text-secondary)] text-xs">{products.length} products</p>
             )}
           </div>
           <Link
             to="/app/products/new"
-            className="flex items-center gap-1 bg-emerald-500 text-[var(--color-text)] text-xs font-medium px-3 py-1.5 rounded-lg active:opacity-80"
+            className="flex items-center gap-1 bg-[var(--accent)] text-[var(--text-primary)] text-xs font-medium px-3 py-1.5 rounded-lg active:opacity-80"
           >
             <Plus size={14} />
             Add
@@ -110,13 +110,13 @@ export default function Products() {
         </div>
 
         <div className="relative">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-3)] pointer-events-none" />
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none" />
           <input
             type="text"
             placeholder="Search by name or code…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[var(--color-surface)] text-[var(--color-text)] text-sm placeholder-zinc-500 rounded-xl pl-9 pr-4 py-2.5 outline-none focus:ring-1 focus:ring-zinc-600"
+            className="w-full bg-[var(--bg-surface)] text-[var(--text-primary)] text-sm placeholder-[var(--text-placeholder)] rounded-xl pl-9 pr-4 py-2.5 outline-none focus:ring-1 focus:ring-[var(--accent)]/20"
           />
         </div>
       </div>
@@ -124,7 +124,7 @@ export default function Products() {
       {/* Content */}
       <div className="flex-1">
         {isLoading && (
-          <div className="divide-y divide-zinc-800/50">
+          <div className="divide-y divide-[var(--border)]">
             {Array.from({ length: 5 }).map((_, i) => (
               <SkeletonRow key={i} />
             ))}
@@ -133,10 +133,10 @@ export default function Products() {
 
         {isError && (
           <div className="flex flex-col items-center justify-center min-h-[40vh] px-6 text-center gap-3">
-            <p className="text-[var(--color-text-2)] text-sm">Couldn't load products.</p>
+            <p className="text-[var(--text-secondary)] text-sm">Couldn't load products.</p>
             <button
               onClick={() => void refetch()}
-              className="text-emerald-400 text-sm font-medium active:opacity-70"
+              className="text-[var(--success)] text-sm font-medium active:opacity-70"
             >
               Tap to retry
             </button>
@@ -145,16 +145,16 @@ export default function Products() {
 
         {!isLoading && !isError && filtered.length === 0 && (
           <div className="flex flex-col items-center justify-center min-h-[40vh] px-6 text-center gap-4">
-            <Package size={40} className="text-[var(--color-text-3)]" />
+            <Package size={40} className="text-[var(--text-muted)]" />
             {search ? (
-              <p className="text-[var(--color-text-3)] text-sm">No products match "{search}"</p>
+              <p className="text-[var(--text-muted)] text-sm">No products match "{search}"</p>
             ) : (
               <>
-                <p className="text-[var(--color-text-2)] text-sm">No products yet.</p>
-                <p className="text-[var(--color-text-3)] text-xs">Add your first product to get started.</p>
+                <p className="text-[var(--text-secondary)] text-sm">No products yet.</p>
+                <p className="text-[var(--text-muted)] text-xs">Add your first product to get started.</p>
                 <Link
                   to="/app/products/new"
-                  className="bg-emerald-500 text-[var(--color-text)] text-sm font-medium px-5 py-2.5 rounded-xl active:opacity-80"
+                  className="bg-[var(--accent)] text-[var(--text-primary)] text-sm font-medium px-5 py-2.5 rounded-xl active:opacity-80"
                 >
                   Add Product
                 </Link>
@@ -164,7 +164,7 @@ export default function Products() {
         )}
 
         {!isLoading && !isError && filtered.length > 0 && (
-          <div className="divide-y divide-zinc-800/50">
+          <div className="divide-y divide-[var(--border)]">
             {filtered.map((product) => (
               <ProductRow key={product.id} product={product} />
             ))}

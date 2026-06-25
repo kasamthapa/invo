@@ -80,19 +80,19 @@ function VariantPickerContent({
     <div className={isPanel ? '' : 'px-4 pt-4 pb-8'}>
       <div className="flex items-start justify-between mb-1">
         <div>
-          <h3 className="text-[var(--color-text)] font-semibold text-base">{product.name}</h3>
-          <p className="text-[var(--color-text-2)] text-xs mt-0.5">
+          <h3 className="text-[var(--text-primary)] font-semibold text-base">{product.name}</h3>
+          <p className="text-[var(--text-secondary)] text-xs mt-0.5">
             {product.code} · {formatNPR(product.basePrice)}
           </p>
         </div>
-        <button onClick={onClose} className="text-[var(--color-text-3)] active:opacity-70 ml-4 mt-0.5">
+        <button onClick={onClose} className="text-[var(--text-muted)] active:opacity-70 ml-4 mt-0.5">
           <X size={20} />
         </button>
       </div>
 
-      <div className="h-px bg-[var(--color-border)] my-4" />
+      <div className="h-px bg-[var(--border)] my-4" />
 
-      <p className="text-[var(--color-text-2)] text-xs uppercase tracking-wider mb-3">Select variant</p>
+      <p className="text-[var(--text-secondary)] text-xs uppercase tracking-wider mb-3">Select variant</p>
       <div className="flex flex-wrap gap-2 mb-4">
         {product.variants.map((v) => {
           const outOfStock = v.currentQty === 0
@@ -104,15 +104,15 @@ function VariantPickerContent({
               disabled={outOfStock}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 outOfStock
-                  ? 'bg-[var(--color-surface-2)] text-[var(--color-text-3)] line-through cursor-not-allowed'
+                  ? 'bg-[var(--bg-surface-2)] text-[var(--text-muted)] line-through cursor-not-allowed'
                   : isSelected
-                  ? 'bg-[var(--color-text)] text-[var(--color-bg)]'
-                  : 'bg-[var(--color-surface-2)] text-[var(--color-text-2)] active:opacity-70 hover:bg-[var(--color-border)]'
+                  ? 'bg-[var(--text-primary)] text-[var(--bg-app)]'
+                  : 'bg-[var(--bg-surface-2)] text-[var(--text-secondary)] active:opacity-70 hover:bg-[var(--border)]'
               }`}
             >
               {attrsDisplay(v.attributes) || 'Default'}
               {!outOfStock && (
-                <span className={`ml-1.5 text-xs ${isSelected ? 'opacity-60' : 'text-[var(--color-text-3)]'}`}>
+                <span className={`ml-1.5 text-xs ${isSelected ? 'opacity-60' : 'text-[var(--text-muted)]'}`}>
                   {v.currentQty}▸
                 </span>
               )}
@@ -123,35 +123,35 @@ function VariantPickerContent({
 
       {selected && (
         <>
-          <div className="h-px bg-[var(--color-border)] mb-4" />
+          <div className="h-px bg-[var(--border)] mb-4" />
 
-          <p className="text-[var(--color-text-2)] text-xs uppercase tracking-wider mb-3">Quantity</p>
+          <p className="text-[var(--text-secondary)] text-xs uppercase tracking-wider mb-3">Quantity</p>
           <div className="flex items-center gap-4 mb-4">
             <button
               onClick={() => setQty((q) => Math.max(1, q - 1))}
-              className="w-10 h-10 rounded-full bg-[var(--color-surface-2)] flex items-center justify-center text-[var(--color-text)] active:opacity-70 hover:bg-[var(--color-border)]"
+              className="w-10 h-10 rounded-full bg-[var(--bg-surface-2)] flex items-center justify-center text-[var(--text-primary)] active:opacity-70 hover:bg-[var(--border)]"
             >
               <Minus size={16} />
             </button>
-            <span className="text-[var(--color-text)] text-xl font-semibold w-10 text-center">{qty}</span>
+            <span className="text-[var(--text-primary)] text-xl font-semibold w-10 text-center">{qty}</span>
             <button
               onClick={() => setQty((q) => Math.min(selected.currentQty, q + 1))}
-              className="w-10 h-10 rounded-full bg-[var(--color-surface-2)] flex items-center justify-center text-[var(--color-text)] active:opacity-70 hover:bg-[var(--color-border)]"
+              className="w-10 h-10 rounded-full bg-[var(--bg-surface-2)] flex items-center justify-center text-[var(--text-primary)] active:opacity-70 hover:bg-[var(--border)]"
             >
               <Plus size={16} />
             </button>
           </div>
 
-          <p className="text-[var(--color-text-2)] text-sm mb-4">
+          <p className="text-[var(--text-secondary)] text-sm mb-4">
             {formatNPR(getEffectivePrice(selected, product))} × {qty} ={' '}
-            <span className="text-[var(--color-text)] font-semibold">
+            <span className="text-[var(--text-primary)] font-semibold">
               {formatNPR(getEffectivePrice(selected, product) * qty)}
             </span>
           </p>
 
           <button
             onClick={handleAdd}
-            className="w-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-2)] text-white font-semibold py-3.5 rounded-lg active:opacity-80 transition-colors"
+            className="w-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--text-primary)] font-semibold py-3.5 rounded-lg active:opacity-80 transition-colors"
           >
             Add to Bill
           </button>
@@ -180,20 +180,20 @@ function SuccessScreen({ bill, onNew }: { bill: { id: string; billNumber: number
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] px-6 text-center gap-5 max-w-md mx-auto">
-      <CheckCircle size={56} className="text-[var(--color-accent)]" />
+      <CheckCircle size={56} className="text-[var(--accent)]" />
       <div>
-        <h2 className="text-[var(--color-text)] font-bold text-2xl">Bill Created</h2>
-        <p className="text-[var(--color-text-2)] text-sm mt-1">
+        <h2 className="text-[var(--text-primary)] font-bold text-2xl">Bill Created</h2>
+        <p className="text-[var(--text-secondary)] text-sm mt-1">
           Bill #{bill.billNumber} · {formatNPR(bill.total)}
         </p>
       </div>
 
-      <div className="h-px bg-[var(--color-border)] w-full" />
+      <div className="h-px bg-[var(--border)] w-full" />
 
       <div className="flex flex-col gap-3 w-full">
         <button
           onClick={() => void handleCopy()}
-          className="flex items-center justify-center gap-2 bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] text-sm font-medium py-3 rounded-lg active:opacity-80 hover:bg-[var(--color-surface-2)] transition-colors"
+          className="flex items-center justify-center gap-2 bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text-primary)] text-sm font-medium py-3 rounded-lg active:opacity-80 hover:bg-[var(--bg-surface-2)] transition-colors"
         >
           <Copy size={16} />
           {copied ? 'Copied!' : 'Copy bill link'}
@@ -202,25 +202,25 @@ function SuccessScreen({ bill, onNew }: { bill: { id: string; billNumber: number
           href={publicUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] text-sm font-medium py-3 rounded-lg active:opacity-80 hover:bg-[var(--color-surface-2)] transition-colors"
+          className="flex items-center justify-center gap-2 bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text-primary)] text-sm font-medium py-3 rounded-lg active:opacity-80 hover:bg-[var(--bg-surface-2)] transition-colors"
         >
           <ExternalLink size={16} />
           View bill
         </a>
       </div>
 
-      <div className="h-px bg-[var(--color-border)] w-full" />
+      <div className="h-px bg-[var(--border)] w-full" />
 
       <div className="flex flex-col gap-3 w-full">
         <button
           onClick={onNew}
-          className="bg-[var(--color-accent)] hover:bg-[var(--color-accent-2)] text-white font-semibold py-3 rounded-lg active:opacity-80 transition-colors"
+          className="bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--text-primary)] font-semibold py-3 rounded-lg active:opacity-80 transition-colors"
         >
           + Create another bill
         </button>
         <button
           onClick={() => navigate('/app/bills')}
-          className="text-[var(--color-text-2)] text-sm active:opacity-70 hover:underline"
+          className="text-[var(--text-secondary)] text-sm active:opacity-70 hover:underline"
         >
           View all bills →
         </button>
@@ -248,8 +248,8 @@ function PillSelector({
           onClick={() => onChange(opt.value)}
           className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
             value === opt.value
-              ? 'bg-[var(--color-text)] text-[var(--color-bg)] font-medium'
-              : 'bg-[var(--color-surface-2)] text-[var(--color-text-2)] active:opacity-70 hover:bg-[var(--color-border)]'
+              ? 'bg-[var(--text-primary)] text-[var(--bg-app)] font-medium'
+              : 'bg-[var(--bg-surface-2)] text-[var(--text-secondary)] active:opacity-70 hover:bg-[var(--border)]'
           }`}
         >
           {opt.label}
@@ -366,12 +366,12 @@ export default function NewBill() {
     <>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <Link to="/app" className="flex items-center gap-1 text-[var(--color-text-2)] active:opacity-70 hover:text-[var(--color-text)]">
+        <Link to="/app" className="flex items-center gap-1 text-[var(--text-secondary)] active:opacity-70 hover:text-[var(--text-primary)]">
           <ChevronLeft size={20} />
           <span className="text-sm">Home</span>
         </Link>
-        <h1 className="text-[var(--color-text)] font-semibold text-lg">New Bill</h1>
-        <button onClick={handleClear} className="text-[var(--color-text-3)] text-sm active:opacity-70 hover:text-[var(--color-text-2)]">
+        <h1 className="text-[var(--text-primary)] font-semibold text-lg">New Bill</h1>
+        <button onClick={handleClear} className="text-[var(--text-muted)] text-sm active:opacity-70 hover:text-[var(--text-secondary)]">
           Clear
         </button>
       </div>
@@ -384,29 +384,29 @@ export default function NewBill() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search product by code or name…"
-          className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] text-sm placeholder-[var(--color-text-3)] rounded-lg px-4 py-2.5 outline-none focus:border-[var(--color-border-2)]"
+          className="w-full bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text-primary)] text-sm placeholder-[var(--text-muted)] rounded-lg px-4 py-2.5 outline-none focus:border-[var(--border-2)]"
         />
         {search && (
-          <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-3)]">
+          <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
             <X size={14} />
           </button>
         )}
 
         {searchResults.length > 0 && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-[var(--color-surface)] rounded-lg overflow-hidden shadow-xl z-30 border border-[var(--color-border)]">
+          <div className="absolute top-full left-0 right-0 mt-1 bg-[var(--bg-surface)] rounded-lg overflow-hidden shadow-xl z-30 border border-[var(--border)]">
             {searchResults.map((p) => (
               <button
                 key={p.id}
                 onClick={() => { setPickerProduct(p); setSearch('') }}
-                className="w-full flex items-center justify-between px-4 py-3 hover:bg-[var(--color-surface-2)] active:bg-[var(--color-surface-2)] border-b border-[var(--color-border)] last:border-0 transition-colors"
+                className="w-full flex items-center justify-between px-4 py-3 hover:bg-[var(--bg-surface-2)] active:bg-[var(--bg-surface-2)] border-b border-[var(--border)] last:border-0 transition-colors"
               >
                 <div className="text-left">
-                  <p className="text-[var(--color-text)] text-sm font-medium">{p.name}</p>
-                  <p className="text-[var(--color-text-3)] text-xs">
+                  <p className="text-[var(--text-primary)] text-sm font-medium">{p.name}</p>
+                  <p className="text-[var(--text-muted)] text-xs">
                     {p.code}{p.category ? ` · ${p.category}` : ''}
                   </p>
                 </div>
-                <p className="text-[var(--color-text-2)] text-sm flex-shrink-0 ml-3">
+                <p className="text-[var(--text-secondary)] text-sm flex-shrink-0 ml-3">
                   {formatNPR(p.basePrice)}
                 </p>
               </button>
@@ -415,8 +415,8 @@ export default function NewBill() {
         )}
 
         {search.trim().length > 0 && searchResults.length === 0 && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-[var(--color-surface)] rounded-lg px-4 py-3 border border-[var(--color-border)]">
-            <p className="text-[var(--color-text-3)] text-sm">No products found</p>
+          <div className="absolute top-full left-0 right-0 mt-1 bg-[var(--bg-surface)] rounded-lg px-4 py-3 border border-[var(--border)]">
+            <p className="text-[var(--text-muted)] text-sm">No products found</p>
           </div>
         )}
       </div>
@@ -424,7 +424,7 @@ export default function NewBill() {
       {/* Empty state */}
       {lines.length === 0 && (
         <div className="flex items-center justify-center min-h-[20vh]">
-          <p className="text-[var(--color-text-3)] text-sm text-center">
+          <p className="text-[var(--text-muted)] text-sm text-center">
             Search for a product above to start building the bill
           </p>
         </div>
@@ -432,42 +432,42 @@ export default function NewBill() {
 
       {/* Line items */}
       {lines.length > 0 && (
-        <div className="divide-y divide-[var(--color-border)] mb-5">
+        <div className="divide-y divide-[var(--border)] mb-5">
           {lines.map((line) => (
             <div key={line.id} className="py-3">
               <div className="flex items-start justify-between">
-                <p className="text-[var(--color-text)] text-sm font-medium leading-tight flex-1 truncate pr-2">
+                <p className="text-[var(--text-primary)] text-sm font-medium leading-tight flex-1 truncate pr-2">
                   {line.productName}
                 </p>
-                <button onClick={() => removeLine(line.id)} className="text-[var(--color-text-3)] active:text-red-400 hover:text-red-400 flex-shrink-0 mt-0.5">
+                <button onClick={() => removeLine(line.id)} className="text-[var(--text-muted)] active:text-red-400 hover:text-red-400 flex-shrink-0 mt-0.5">
                   <X size={15} />
                 </button>
               </div>
               <div className="flex items-center justify-between mt-1.5">
                 <div className="flex items-center gap-2">
-                  <p className="text-[var(--color-text-2)] text-xs">{line.attributesDisplay}</p>
-                  <span className="text-[var(--color-text-3)] text-xs">×</span>
+                  <p className="text-[var(--text-secondary)] text-xs">{line.attributesDisplay}</p>
+                  <span className="text-[var(--text-muted)] text-xs">×</span>
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => updateLineQty(line.id, -1)}
-                      className="w-6 h-6 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text)] active:opacity-70"
+                      className="w-6 h-6 rounded-full bg-[var(--bg-surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-primary)] active:opacity-70"
                     >
                       <Minus size={10} />
                     </button>
-                    <span className="text-[var(--color-text)] text-sm w-6 text-center font-medium">
+                    <span className="text-[var(--text-primary)] text-sm w-6 text-center font-medium">
                       {line.quantity}
                     </span>
                     <button
                       onClick={() => updateLineQty(line.id, 1)}
-                      className="w-6 h-6 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text)] active:opacity-70"
+                      className="w-6 h-6 rounded-full bg-[var(--bg-surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-primary)] active:opacity-70"
                     >
                       <Plus size={10} />
                     </button>
                   </div>
                 </div>
-                <p className="text-[var(--color-text)] text-sm font-semibold">{formatNPR(line.lineTotal)}</p>
+                <p className="text-[var(--text-primary)] text-sm font-semibold">{formatNPR(line.lineTotal)}</p>
               </div>
-              <p className="text-[var(--color-text-3)] text-xs mt-0.5">
+              <p className="text-[var(--text-muted)] text-xs mt-0.5">
                 {line.variantCode} · {formatNPR(line.effectivePrice)}×{line.quantity}
               </p>
             </div>
@@ -477,50 +477,50 @@ export default function NewBill() {
 
       {/* Summary */}
       {lines.length > 0 && (
-        <div className="space-y-4 pt-2 border-t border-[var(--color-border)]">
+        <div className="space-y-4 pt-2 border-t border-[var(--border)]">
           <div className="grid grid-cols-2 gap-3 pt-2">
             <div>
-              <label className="text-[var(--color-text-3)] text-xs uppercase tracking-wider block mb-1">Customer name</label>
+              <label className="text-[var(--text-muted)] text-xs uppercase tracking-wider block mb-1">Customer name</label>
               <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="Optional"
-                className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg px-3 py-2 text-[var(--color-text)] text-sm placeholder-[var(--color-text-3)] outline-none focus:border-[var(--color-border-2)]" />
+                className="w-full bg-[var(--bg-surface)] border border-[var(--border)] rounded-lg px-3 py-2 text-[var(--text-primary)] text-sm placeholder-[var(--text-muted)] outline-none focus:border-[var(--border-2)]" />
             </div>
             <div>
-              <label className="text-[var(--color-text-3)] text-xs uppercase tracking-wider block mb-1">Phone</label>
+              <label className="text-[var(--text-muted)] text-xs uppercase tracking-wider block mb-1">Phone</label>
               <input type="tel" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} placeholder="Optional"
-                className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg px-3 py-2 text-[var(--color-text)] text-sm placeholder-[var(--color-text-3)] outline-none focus:border-[var(--color-border-2)]" />
+                className="w-full bg-[var(--bg-surface)] border border-[var(--border)] rounded-lg px-3 py-2 text-[var(--text-primary)] text-sm placeholder-[var(--text-muted)] outline-none focus:border-[var(--border-2)]" />
             </div>
           </div>
 
           <div>
-            <label className="text-[var(--color-text-3)] text-xs uppercase tracking-wider block mb-1">Discount (NPR)</label>
+            <label className="text-[var(--text-muted)] text-xs uppercase tracking-wider block mb-1">Discount (NPR)</label>
             <input type="number" value={discount} onChange={(e) => setDiscount(e.target.value)} placeholder="0" min="0"
-              className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg px-3 py-2 text-[var(--color-text)] text-sm placeholder-[var(--color-text-3)] outline-none focus:border-[var(--color-border-2)]" />
+              className="w-full bg-[var(--bg-surface)] border border-[var(--border)] rounded-lg px-3 py-2 text-[var(--text-primary)] text-sm placeholder-[var(--text-muted)] outline-none focus:border-[var(--border-2)]" />
           </div>
 
           <div>
-            <label className="text-[var(--color-text-3)] text-xs uppercase tracking-wider block mb-2">Payment method</label>
+            <label className="text-[var(--text-muted)] text-xs uppercase tracking-wider block mb-2">Payment method</label>
             <PillSelector options={PAYMENT_METHODS} value={paymentMethod} onChange={setPaymentMethod} />
           </div>
 
           <div>
-            <label className="text-[var(--color-text-3)] text-xs uppercase tracking-wider block mb-2">Payment status</label>
+            <label className="text-[var(--text-muted)] text-xs uppercase tracking-wider block mb-2">Payment status</label>
             <PillSelector options={PAYMENT_STATUSES} value={paymentStatus} onChange={setPaymentStatus} />
           </div>
 
-          <div className="space-y-1 pt-2 border-t border-[var(--color-border)]">
+          <div className="space-y-1 pt-2 border-t border-[var(--border)]">
             <div className="flex justify-between text-sm">
-              <span className="text-[var(--color-text-2)]">Subtotal</span>
-              <span className="text-[var(--color-text)]">{formatNPR(subtotal)}</span>
+              <span className="text-[var(--text-secondary)]">Subtotal</span>
+              <span className="text-[var(--text-primary)]">{formatNPR(subtotal)}</span>
             </div>
             {discountPaisa > 0 && (
               <div className="flex justify-between text-sm">
-                <span className="text-[var(--color-text-2)]">Discount</span>
+                <span className="text-[var(--text-secondary)]">Discount</span>
                 <span className="text-red-400">-{formatNPR(discountPaisa)}</span>
               </div>
             )}
             <div className="flex justify-between text-base font-bold pt-1">
-              <span className="text-[var(--color-text)]">Total</span>
-              <span className="text-[var(--color-text)]">{formatNPR(total)}</span>
+              <span className="text-[var(--text-primary)]">Total</span>
+              <span className="text-[var(--text-primary)]">{formatNPR(total)}</span>
             </div>
           </div>
 
@@ -535,7 +535,7 @@ export default function NewBill() {
             <button
               onClick={() => void handleConfirm()}
               disabled={lines.length === 0 || total < 0 || createBill.isPending}
-              className="w-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-2)] text-white font-bold py-4 rounded-lg text-base active:opacity-80 disabled:opacity-50 transition-colors"
+              className="w-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--text-primary)] font-bold py-4 rounded-lg text-base active:opacity-80 disabled:opacity-50 transition-colors"
             >
               {createBill.isPending ? 'Creating…' : `Confirm Bill — ${formatNPR(total)}`}
             </button>
@@ -551,7 +551,7 @@ export default function NewBill() {
       {pickerProduct && (
         <div className="md:hidden fixed inset-0 z-50 flex flex-col justify-end">
           <div className="absolute inset-0 bg-black/70" onClick={() => setPickerProduct(null)} />
-          <div className="relative bg-[var(--color-bg)] rounded-t-2xl max-h-[80vh] overflow-y-auto">
+          <div className="relative bg-[var(--bg-app)] rounded-t-2xl max-h-[80vh] overflow-y-auto">
             <VariantPickerContent
               product={pickerProduct}
               onAdd={(line) => { setLines((prev) => [...prev, line]); setSearch('') }}
@@ -570,7 +570,7 @@ export default function NewBill() {
       {/* Desktop right panel: variant picker */}
       {pickerProduct && (
         <div className="hidden md:block w-80 flex-shrink-0">
-          <div className="sticky top-0 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-5 overflow-y-auto max-h-[calc(100vh-120px)]">
+          <div className="sticky top-0 bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-5 overflow-y-auto max-h-[calc(100vh-120px)]">
             <VariantPickerContent
               product={pickerProduct}
               onAdd={(line) => { setLines((prev) => [...prev, line]); setSearch('') }}
@@ -583,11 +583,11 @@ export default function NewBill() {
 
       {/* Mobile sticky confirm button */}
       {lines.length > 0 && (
-        <div className="md:hidden fixed bottom-16 left-0 right-0 px-4 pb-3 pt-2 bg-[var(--color-bg)]/95 backdrop-blur-sm border-t border-[var(--color-border)]">
+        <div className="md:hidden fixed bottom-16 left-0 right-0 px-4 pb-3 pt-2 bg-[var(--bg-app)]/95 backdrop-blur-sm border-t border-[var(--border)]">
           <button
             onClick={() => void handleConfirm()}
             disabled={lines.length === 0 || total < 0 || createBill.isPending}
-            className="w-full bg-[var(--color-accent)] text-white font-bold py-4 rounded-lg text-base active:opacity-80 disabled:opacity-50"
+            className="w-full bg-[var(--accent)] text-[var(--text-primary)] font-bold py-4 rounded-lg text-base active:opacity-80 disabled:opacity-50"
           >
             {createBill.isPending ? 'Creating…' : `Confirm Bill — ${formatNPR(total)}`}
           </button>

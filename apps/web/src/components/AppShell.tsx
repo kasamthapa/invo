@@ -28,8 +28,8 @@ function SidebarLink({ to, icon: Icon, label, end }: { to: string; icon: React.E
       className={({ isActive }) =>
         `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
           isActive
-            ? 'bg-[var(--color-surface-2)] text-[var(--color-text)]'
-            : 'text-[var(--color-text-2)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-2)]/50'
+            ? 'bg-[var(--bg-surface-2)] text-[var(--text-primary)]'
+            : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-2)]/50'
         }`
       }
     >
@@ -44,12 +44,12 @@ export default function AppShell() {
   const isOwner = user?.role === 'OWNER'
 
   return (
-    <div className="flex h-screen bg-[var(--color-bg)]">
+    <div className="flex h-screen bg-[var(--bg-app)]">
       {/* ── Desktop sidebar ── */}
-      <aside className="hidden md:flex w-60 flex-col flex-shrink-0 border-r border-[var(--color-border)] bg-[var(--color-surface)]">
+      <aside className="hidden md:flex w-60 flex-col flex-shrink-0 border-r border-[var(--border)] bg-[var(--bg-surface)]">
         <div className="px-5 pt-6 pb-4">
-          <p className="text-[var(--color-text)] font-bold text-lg tracking-tight">Invo</p>
-          <p className="text-[var(--color-text-3)] text-xs mt-0.5 truncate">{store?.name}</p>
+          <p className="text-[var(--text-primary)] font-bold text-lg tracking-tight">Invo</p>
+          <p className="text-[var(--text-muted)] text-xs mt-0.5 truncate">{store?.name}</p>
         </div>
 
         <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
@@ -58,20 +58,20 @@ export default function AppShell() {
           ))}
         </nav>
 
-        <div className="px-5 py-4 border-t border-[var(--color-border)]">
-          <p className="text-[var(--color-text)] text-sm font-medium truncate">{user?.name}</p>
-          <p className="text-[var(--color-text-3)] text-xs capitalize">{user?.role?.toLowerCase()}</p>
+        <div className="px-5 py-4 border-t border-[var(--border)]">
+          <p className="text-[var(--text-primary)] text-sm font-medium truncate">{user?.name}</p>
+          <p className="text-[var(--text-muted)] text-xs capitalize">{user?.role?.toLowerCase()}</p>
         </div>
       </aside>
 
       {/* ── Main area ── */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile header */}
-        <header className="md:hidden flex items-center justify-between px-4 h-12 border-b border-[var(--color-border)] bg-[var(--color-surface)] flex-shrink-0">
-          <span className="text-[var(--color-text)] font-semibold text-base tracking-tight">
+        <header className="md:hidden flex items-center justify-between px-4 h-12 border-b border-[var(--border)] bg-[var(--bg-surface)] flex-shrink-0">
+          <span className="text-[var(--text-primary)] font-semibold text-base tracking-tight">
             {store?.name ?? 'Invo'}
           </span>
-          <span className="text-[var(--color-text-3)] text-xs uppercase tracking-wider font-medium">
+          <span className="text-[var(--text-muted)] text-xs uppercase tracking-wider font-medium">
             INVO
           </span>
         </header>
@@ -85,7 +85,7 @@ export default function AppShell() {
 
         {/* Mobile bottom nav */}
         <nav
-          className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--color-surface)]/95 backdrop-blur-sm border-t border-[var(--color-border)]"
+          className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--bg-surface)]/95 backdrop-blur-sm border-t border-[var(--border)]"
           style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
         >
           <div className="flex items-center justify-around h-16">
@@ -95,7 +95,7 @@ export default function AppShell() {
                 to={to}
                 end={end}
                 className={({ isActive }) =>
-                  `flex flex-col items-center gap-0.5 px-3 py-2 ${isActive ? 'text-[var(--color-text)]' : 'text-[var(--color-text-3)]'}`
+                  `flex flex-col items-center gap-0.5 px-3 py-2 ${isActive ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`
                 }
               >
                 <Icon size={22} strokeWidth={1.8} />
@@ -109,10 +109,10 @@ export default function AppShell() {
                 `flex flex-col items-center gap-0.5 px-2 ${isActive ? 'opacity-100' : 'opacity-90'}`
               }
             >
-              <span className="bg-[var(--color-accent)] rounded-full p-3 shadow-lg shadow-emerald-900/40">
-                <CirclePlus size={24} strokeWidth={2} className="text-white" />
+              <span className="bg-[var(--accent)] rounded-full p-3 shadow-lg shadow-blue-900/20">
+                <CirclePlus size={24} strokeWidth={2} className="text-[var(--text-primary)]" />
               </span>
-              <span className="text-[10px] font-medium text-[var(--color-text-3)]">New Bill</span>
+              <span className="text-[10px] font-medium text-[var(--text-muted)]">New Bill</span>
             </NavLink>
 
             {MOBILE_NAV.slice(2).map(({ to, icon: Icon, label, end }) => (
@@ -121,7 +121,7 @@ export default function AppShell() {
                 to={to}
                 end={end}
                 className={({ isActive }) =>
-                  `flex flex-col items-center gap-0.5 px-3 py-2 ${isActive ? 'text-[var(--color-text)]' : 'text-[var(--color-text-3)]'}`
+                  `flex flex-col items-center gap-0.5 px-3 py-2 ${isActive ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`
                 }
               >
                 <Icon size={22} strokeWidth={1.8} />
