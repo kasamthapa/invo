@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import AppShell from './components/AppShell'
 
 // Public pages
+import LandingPage from './pages/LandingPage'
 import PublicBill from './pages/PublicBill'
 import PublicCatalog from './pages/PublicCatalog'
 
@@ -72,9 +73,9 @@ createRoot(document.getElementById('root')!).render(
               <Route path="more" element={<More />} />
             </Route>
 
-            {/* Root redirect */}
-            <Route path="/" element={<Navigate to="/app" replace />} />
-            <Route path="*" element={<Navigate to="/app" replace />} />
+            {/* Landing page */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
