@@ -17,7 +17,7 @@
   --text-muted: #868e96;
   --text-placeholder: #adb5bd;
 
-  /* Accent — blue for professional inventory feel */
+  /* Accent - blue for professional inventory feel */
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
   --accent-light: #eff6ff;
@@ -60,4 +60,140 @@ input:focus, textarea:focus, select:focus {
 }
 input::placeholder, textarea::placeholder {
   color: var(--text-placeholder);
+}
+
+@keyframes invo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes invo-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes invo-shine {
+  from {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-18deg);
+  }
+}
+
+@keyframes invo-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes invo-pulse {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.motion-rise {
+  animation: invo-rise 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.motion-rise-slow {
+  animation: invo-rise 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.motion-delay-1 {
+  animation-delay: 90ms;
+}
+
+.motion-delay-2 {
+  animation-delay: 180ms;
+}
+
+.motion-delay-3 {
+  animation-delay: 270ms;
+}
+
+.motion-float {
+  animation: invo-float 5.5s ease-in-out infinite;
+}
+
+.motion-float-late {
+  animation: invo-float 6.5s ease-in-out 800ms infinite;
+}
+
+.motion-progress {
+  transform-origin: left;
+  animation: invo-fill 1100ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.motion-pulse {
+  animation: invo-pulse 2.2s ease-in-out infinite;
+}
+
+.premium-lift {
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background-color 220ms ease;
+}
+
+.premium-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+.premium-shine {
+  overflow: hidden;
+  position: relative;
+}
+
+.premium-shine::after {
+  animation: invo-shine 5s ease-in-out infinite;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.34),
+    transparent
+  );
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 38%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-rise,
+  .motion-rise-slow,
+  .motion-float,
+  .motion-float-late,
+  .motion-progress,
+  .motion-pulse,
+  .premium-shine::after {
+    animation: none;
+  }
+
+  .premium-lift,
+  .premium-lift:hover {
+    transform: none;
+  }
 }

@@ -138,10 +138,13 @@ function Navbar() {
           </Link>
           <Link
             to="/register"
-            className="inline-flex h-10 items-center gap-2 rounded-md bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 transition hover:bg-blue-700"
+            className="group premium-lift inline-flex h-10 items-center gap-2 rounded-md bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 transition hover:bg-blue-700"
           >
             Start free
-            <ArrowRight size={16} />
+            <ArrowRight
+              size={16}
+              className="transition group-hover:translate-x-0.5"
+            />
           </Link>
         </div>
       </div>
@@ -152,10 +155,10 @@ function Navbar() {
 function DashboardMockup() {
   return (
     <div className="relative mx-auto max-w-[620px]">
-      <div className="absolute -left-5 top-10 hidden h-24 w-24 rounded-lg border border-blue-100 bg-blue-50/80 blur-2xl md:block" />
-      <div className="absolute -right-4 bottom-8 hidden h-28 w-28 rounded-lg border border-slate-100 bg-slate-100/80 blur-2xl md:block" />
+      <div className="motion-float absolute -left-5 top-10 hidden h-24 w-24 rounded-lg border border-blue-100 bg-blue-50/80 blur-2xl md:block" />
+      <div className="motion-float-late absolute -right-4 bottom-8 hidden h-28 w-28 rounded-lg border border-slate-100 bg-slate-100/80 blur-2xl md:block" />
 
-      <div className="relative overflow-hidden rounded-lg border border-slate-200 bg-slate-950 p-2 shadow-2xl shadow-slate-900/20">
+      <div className="motion-rise-slow motion-delay-2 premium-shine relative overflow-hidden rounded-lg border border-slate-200 bg-slate-950 p-2 shadow-2xl shadow-slate-900/20">
         <div className="flex items-center gap-2 border-b border-white/10 px-2 pb-2">
           <div className="flex gap-1.5">
             <span className="h-2.5 w-2.5 rounded-full bg-slate-600" />
@@ -177,7 +180,7 @@ function DashboardMockup() {
               (item, index) => (
                 <div
                   key={item}
-                  className={`mb-1 rounded-md px-3 py-2 text-xs font-medium ${
+                  className={`mb-1 rounded-md px-3 py-2 text-xs font-medium transition ${
                     index === 0
                       ? "bg-blue-50 text-blue-700"
                       : "text-slate-500"
@@ -199,7 +202,7 @@ function DashboardMockup() {
                   Sapana Closet
                 </h2>
               </div>
-              <div className="inline-flex h-9 items-center gap-2 rounded-md bg-slate-950 px-3 text-xs font-semibold text-white">
+              <div className="premium-lift inline-flex h-9 items-center gap-2 rounded-md bg-slate-950 px-3 text-xs font-semibold text-white">
                 <ReceiptText size={14} />
                 New bill
               </div>
@@ -213,7 +216,7 @@ function DashboardMockup() {
               ].map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-md border border-slate-200 bg-white p-3"
+                  className="premium-lift rounded-md border border-slate-200 bg-white p-3"
                 >
                   <p className="text-[10px] font-semibold uppercase text-slate-400">
                     {stat.label}
@@ -273,7 +276,7 @@ function DashboardMockup() {
                   <span className="text-xs font-semibold text-slate-950">
                     Stock health
                   </span>
-                  <span className="rounded bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-700">
+                  <span className="motion-pulse rounded bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-700">
                     LIVE
                   </span>
                 </div>
@@ -290,7 +293,7 @@ function DashboardMockup() {
                       </div>
                       <div className="h-2 rounded-full bg-slate-100">
                         <div
-                          className="h-2 rounded-full bg-blue-600"
+                          className="motion-progress h-2 rounded-full bg-blue-600"
                           style={{ width: value }}
                         />
                       </div>
@@ -312,39 +315,39 @@ function Hero() {
       <div className="absolute inset-x-0 top-0 h-[520px] bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_72%)]" />
       <div className="relative mx-auto grid max-w-7xl gap-12 px-5 pb-16 pt-14 sm:px-6 md:pb-20 md:pt-20 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
         <div className="flex flex-col justify-center">
-          <div className="mb-6 inline-flex w-fit items-center gap-2 rounded-md border border-blue-100 bg-white px-3 py-2 text-sm font-semibold text-blue-700 shadow-sm">
+          <div className="motion-rise mb-6 inline-flex w-fit items-center gap-2 rounded-md border border-blue-100 bg-white px-3 py-2 text-sm font-semibold text-blue-700 shadow-sm">
             <Store size={16} />
             Built for Nepali social sellers
           </div>
-          <h1 className="max-w-2xl text-5xl font-bold leading-[1.05] tracking-tight text-slate-950 sm:text-6xl">
+          <h1 className="motion-rise motion-delay-1 max-w-2xl text-5xl font-bold leading-[1.05] tracking-tight text-slate-950 sm:text-6xl">
             Run your store.{" "}
             <span className="text-slate-400">Not spreadsheets.</span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+          <p className="motion-rise motion-delay-2 mt-6 max-w-xl text-lg leading-8 text-slate-600">
             Invo helps Instagram, TikTok, and Daraz sellers replace scattered
             spreadsheets with fast billing, accurate inventory, and a shareable
             catalog that works beautifully on mobile data.
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="motion-rise motion-delay-3 mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               to="/register"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-blue-600 px-6 text-base font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
+              className="group premium-lift inline-flex h-12 items-center justify-center gap-2 rounded-md bg-blue-600 px-6 text-base font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
             >
               Create free store
-              <ArrowRight size={18} />
+              <ArrowRight size={18} className="transition group-hover:translate-x-1" />
             </Link>
             <a
               href="#features"
-              className="inline-flex h-12 items-center justify-center rounded-md border border-slate-200 bg-white px-6 text-base font-semibold text-slate-800 transition hover:border-slate-300 hover:bg-slate-50"
+              className="premium-lift inline-flex h-12 items-center justify-center rounded-md border border-slate-200 bg-white px-6 text-base font-semibold text-slate-800 transition hover:border-slate-300 hover:bg-slate-50"
             >
               See product flow
             </a>
           </div>
 
-          <div className="mt-8 grid max-w-xl grid-cols-3 divide-x divide-slate-200 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="motion-rise motion-delay-3 mt-8 grid max-w-xl grid-cols-3 divide-x divide-slate-200 rounded-lg border border-slate-200 bg-white shadow-sm">
             {TRUST_STATS.map((stat) => (
-              <div key={stat.label} className="p-4">
+              <div key={stat.label} className="premium-lift p-4">
                 <p className="text-lg font-semibold text-slate-950">
                   {stat.value}
                 </p>
@@ -386,7 +389,7 @@ function PainPoints() {
               return (
                 <div
                   key={point.title}
-                  className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+                  className="motion-rise premium-lift rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
                 >
                   <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-slate-100 text-slate-700">
                     <Icon size={19} />
@@ -409,7 +412,7 @@ function PainPoints() {
 
 function BillMockup() {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-xl shadow-slate-200/70">
+    <div className="premium-lift rounded-lg border border-slate-200 bg-white p-4 shadow-xl shadow-slate-200/70">
       <div className="mb-4 flex items-center justify-between">
         <div>
           <p className="text-xs font-semibold uppercase text-slate-400">
@@ -435,7 +438,7 @@ function BillMockup() {
         ].map(([code, name, variant, price]) => (
           <div
             key={code}
-            className="grid grid-cols-[68px_1fr_auto] items-center gap-3 border-b border-slate-100 px-3 py-3 last:border-b-0"
+            className="grid grid-cols-[68px_1fr_auto] items-center gap-3 border-b border-slate-100 px-3 py-3 transition hover:bg-slate-50 last:border-b-0"
           >
             <span className="rounded bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-600">
               {code}
@@ -468,9 +471,9 @@ function BillMockup() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between rounded-md bg-slate-950 px-4 py-3 text-white">
+      <div className="group flex items-center justify-between rounded-md bg-slate-950 px-4 py-3 text-white transition hover:bg-blue-600">
         <span className="text-sm font-semibold">Confirm and share bill</span>
-        <ArrowRight size={17} />
+        <ArrowRight size={17} className="transition group-hover:translate-x-1" />
       </div>
     </div>
   );
@@ -478,7 +481,7 @@ function BillMockup() {
 
 function InventoryMockup() {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white shadow-xl shadow-slate-200/70">
+    <div className="premium-lift rounded-lg border border-slate-200 bg-white shadow-xl shadow-slate-200/70">
       <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
         <div>
           <p className="text-xs font-semibold uppercase text-slate-400">
@@ -500,7 +503,7 @@ function InventoryMockup() {
       ].map(([name, code, variant, stock, price], index) => (
         <div
           key={code}
-          className="grid grid-cols-[1fr_auto] gap-4 border-b border-slate-100 px-4 py-3 last:border-b-0 sm:grid-cols-[1fr_84px_92px]"
+          className="grid grid-cols-[1fr_auto] gap-4 border-b border-slate-100 px-4 py-3 transition hover:bg-slate-50 last:border-b-0 sm:grid-cols-[1fr_84px_92px]"
         >
           <div>
             <p className="text-sm font-semibold text-slate-950">{name}</p>
@@ -528,7 +531,7 @@ function InventoryMockup() {
 
 function CatalogMockup() {
   return (
-    <div className="rounded-lg border border-slate-800 bg-slate-950 p-4 shadow-xl shadow-slate-900/20">
+    <div className="premium-lift rounded-lg border border-slate-800 bg-slate-950 p-4 shadow-xl shadow-slate-900/20">
       <div className="mb-4 flex items-center justify-between">
         <div>
           <p className="text-xs font-semibold uppercase text-slate-500">
@@ -550,8 +553,11 @@ function CatalogMockup() {
           ["Cotton Tee", "NPR 600", "bg-slate-200"],
           ["Denim Jacket", "NPR 2,200", "bg-indigo-200"],
         ].map(([name, price, tone]) => (
-          <div key={name} className="rounded-md bg-white/8 p-2.5">
-            <div className={`mb-2 h-20 rounded-md ${tone}`} />
+          <div
+            key={name}
+            className="rounded-md bg-white/8 p-2.5 transition hover:bg-white/12"
+          >
+            <div className={`mb-2 h-20 rounded-md ${tone} motion-float-late`} />
             <p className="text-sm font-semibold text-white">{name}</p>
             <p className="mt-1 text-xs text-slate-400">{price}</p>
           </div>
@@ -565,7 +571,7 @@ function Features() {
   return (
     <section id="features" className="bg-white py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="motion-rise mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase text-blue-700">
             Product flow
           </p>
@@ -588,8 +594,12 @@ function Features() {
                   feature.reverse ? "lg:[direction:rtl]" : ""
                 }`}
               >
-                <div className={feature.reverse ? "lg:[direction:ltr]" : ""}>
-                  <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-md bg-blue-50 text-blue-700">
+                <div
+                  className={`motion-rise ${
+                    feature.reverse ? "lg:[direction:ltr]" : ""
+                  }`}
+                >
+                  <div className="premium-lift mb-5 inline-flex h-11 w-11 items-center justify-center rounded-md bg-blue-50 text-blue-700">
                     <Icon size={21} />
                   </div>
                   <p className="text-sm font-semibold uppercase text-blue-700">
@@ -602,7 +612,11 @@ function Features() {
                     {feature.body}
                   </p>
                 </div>
-                <div className={feature.reverse ? "lg:[direction:ltr]" : ""}>
+                <div
+                  className={`motion-rise-slow motion-delay-1 ${
+                    feature.reverse ? "lg:[direction:ltr]" : ""
+                  }`}
+                >
                   {feature.mockup}
                 </div>
               </div>
@@ -619,7 +633,7 @@ function OperationsSection() {
     <section id="security" className="border-y border-slate-200 bg-slate-950 py-16 text-white md:py-20">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-          <div>
+          <div className="motion-rise">
             <p className="text-sm font-semibold uppercase text-blue-300">
               Built for real operating conditions
             </p>
@@ -659,7 +673,7 @@ function OperationsSection() {
               return (
                 <div
                   key={item.title}
-                  className="rounded-lg border border-white/10 bg-white/6 p-5"
+                  className="motion-rise premium-lift rounded-lg border border-white/10 bg-white/6 p-5"
                 >
                   <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-white/10 text-blue-200">
                     <Icon size={19} />
@@ -684,7 +698,7 @@ function Pricing() {
   return (
     <section id="pricing" className="bg-slate-50 py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="motion-rise mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase text-blue-700">
             Pricing
           </p>
@@ -723,7 +737,7 @@ function Pricing() {
         </div>
 
         <div className="mx-auto mt-12 grid max-w-5xl gap-4 lg:grid-cols-[0.92fr_1.08fr]">
-          <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <div className="motion-rise premium-lift rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             <div className="mb-7">
               <h3 className="text-xl font-semibold text-slate-950">Free</h3>
               <p className="mt-2 text-sm leading-6 text-slate-600">
@@ -769,8 +783,8 @@ function Pricing() {
             </Link>
           </div>
 
-          <div className="relative overflow-hidden rounded-lg bg-blue-600 p-6 text-white shadow-xl shadow-blue-600/20 sm:p-8">
-            <div className="absolute right-0 top-0 h-40 w-40 rounded-lg bg-white/10 blur-2xl" />
+          <div className="motion-rise motion-delay-1 premium-lift premium-shine relative overflow-hidden rounded-lg bg-blue-600 p-6 text-white shadow-xl shadow-blue-600/20 sm:p-8">
+            <div className="motion-float absolute right-0 top-0 h-40 w-40 rounded-lg bg-white/10 blur-2xl" />
             <div className="relative mb-7 flex items-start justify-between gap-4">
               <div>
                 <div className="mb-3 inline-flex rounded-md bg-white/15 px-2.5 py-1 text-xs font-semibold text-blue-50">
@@ -804,7 +818,7 @@ function Pricing() {
 
             <Link
               to="/register"
-              className="relative mt-8 inline-flex h-11 w-full items-center justify-center rounded-md bg-white text-sm font-semibold text-blue-700 transition hover:bg-blue-50"
+              className="premium-lift relative mt-8 inline-flex h-11 w-full items-center justify-center rounded-md bg-white text-sm font-semibold text-blue-700 transition hover:bg-blue-50"
             >
               Start Pro trial
             </Link>
@@ -819,7 +833,7 @@ function CtaSection() {
   return (
     <section className="bg-white py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <div className="grid gap-8 rounded-lg border border-slate-200 bg-slate-50 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="motion-rise premium-lift grid gap-8 rounded-lg border border-slate-200 bg-slate-50 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <p className="text-sm font-semibold uppercase text-blue-700">
               Ready when you are
@@ -844,10 +858,10 @@ function CtaSection() {
           </div>
           <Link
             to="/register"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-blue-600 px-6 text-base font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
+            className="group premium-lift inline-flex h-12 items-center justify-center gap-2 rounded-md bg-blue-600 px-6 text-base font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
           >
             Create free store
-            <ArrowRight size={18} />
+            <ArrowRight size={18} className="transition group-hover:translate-x-1" />
           </Link>
         </div>
       </div>
