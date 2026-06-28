@@ -1,472 +1,893 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Receipt, Package, LayoutGrid, Check, X as XIcon } from 'lucide-react'
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  ArrowRight,
+  BarChart3,
+  Check,
+  CheckCircle2,
+  CircleSlash,
+  ClipboardList,
+  LayoutGrid,
+  MessageSquareText,
+  Package,
+  ReceiptText,
+  Search,
+  ShieldCheck,
+  Smartphone,
+  Store,
+  WifiOff,
+} from "lucide-react";
 
-// ── Navbar ────────────────────────────────────────────────────────────────────
-
-function Navbar() {
-  return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-slate-200">
-      <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center">
-            <span className="text-white text-xs font-bold">I</span>
-          </div>
-          <span className="font-bold text-slate-900 text-lg">Invo</span>
-        </Link>
-        <div className="flex items-center gap-3">
-          <Link to="/login" className="hidden sm:inline-block text-slate-600 hover:text-slate-900 text-sm font-medium transition-colors">
-            Sign in
-          </Link>
-          <Link to="/register" className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors">
-            Get started free
-          </Link>
-        </div>
-      </div>
-    </nav>
-  )
-}
-
-// ── Hero ──────────────────────────────────────────────────────────────────────
-
-function DashboardMockup() {
-  return (
-    <div className="bg-slate-800 rounded-xl p-3 shadow-2xl shadow-slate-900/30">
-      <div className="flex items-center gap-1.5 mb-3">
-        <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-        <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-        <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-        <div className="flex-1 bg-slate-700 rounded h-5 ml-2 flex items-center px-2">
-          <span className="text-slate-400 text-[10px]">invo-web.vercel.app/app</span>
-        </div>
-      </div>
-      <div className="bg-slate-50 rounded-lg overflow-hidden flex text-left">
-        <div className="w-36 bg-white border-r border-slate-200 p-3 flex-shrink-0 hidden sm:block">
-          <div className="font-bold text-slate-900 text-sm mb-3">Invo</div>
-          <div className="bg-blue-50 text-blue-600 rounded-md px-2 py-1 text-[11px] font-medium mb-1">Dashboard</div>
-          <div className="text-slate-500 px-2 py-1 text-[11px]">Products</div>
-          <div className="text-slate-500 px-2 py-1 text-[11px]">New Bill</div>
-          <div className="text-slate-500 px-2 py-1 text-[11px]">Customers</div>
-        </div>
-        <div className="flex-1 p-4">
-          <div className="text-xs font-semibold text-slate-900 mb-3">Good morning, Sapana 👋</div>
-          <div className="grid grid-cols-3 gap-1.5 mb-3">
-            {[
-              { label: 'TODAY', value: 'NPR 6,000' },
-              { label: 'BILLS', value: '3' },
-              { label: 'IN STOCK', value: '47' },
-            ].map((s) => (
-              <div key={s.label} className="bg-white border border-slate-200 rounded-md p-2">
-                <div className="text-[9px] text-slate-400 mb-0.5">{s.label}</div>
-                <div className="text-xs font-bold text-slate-900">{s.value}</div>
-              </div>
-            ))}
-          </div>
-          <div className="bg-white border border-slate-200 rounded-md overflow-hidden">
-            <div className="px-2.5 py-1.5 border-b border-slate-200 text-[10px] font-semibold text-slate-500">RECENT BILLS</div>
-            <div className="px-2.5 py-1.5 border-b border-slate-100 flex justify-between items-center text-[10px]">
-              <span className="text-slate-900">#4 · Priya Sharma</span>
-              <span className="bg-green-50 text-green-700 rounded px-1.5 py-0.5 text-[9px] font-medium">PAID</span>
-            </div>
-            <div className="px-2.5 py-1.5 flex justify-between items-center text-[10px]">
-              <span className="text-slate-900">#3 · Anita Rai</span>
-              <span className="bg-amber-50 text-amber-700 rounded px-1.5 py-0.5 text-[9px] font-medium">UNPAID</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function Hero() {
-  return (
-    <section className="bg-white py-16 md:py-24">
-      <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <span className="inline-block bg-blue-50 text-blue-700 rounded-full px-3 py-1 text-sm font-medium mb-6">
-            Built for Nepal's online sellers
-          </span>
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-4"
-            style={{ letterSpacing: '-0.02em' }}
-          >
-            Run your store.{' '}
-            <span className="text-slate-400">Not spreadsheets.</span>
-          </h1>
-          <p className="text-lg text-slate-600 leading-relaxed mb-8 max-w-lg">
-            Invo handles billing, inventory, and sales tracking — so you can focus on selling.
-            Built for Instagram and TikTok sellers in Nepal.
-          </p>
-          <div className="flex flex-wrap items-center gap-3 mb-4">
-            <Link
-              to="/register"
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium transition-colors"
-            >
-              Start for free
-            </Link>
-            <a
-              href="#features"
-              className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
-            >
-              See how it works ↓
-            </a>
-          </div>
-          <p className="text-slate-400 text-sm">Free forever for small sellers. No credit card required.</p>
-        </div>
-        <div className="hidden md:block">
-          <DashboardMockup />
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ── Pain points ───────────────────────────────────────────────────────────────
+const TRUST_STATS = [
+  { label: "Average billing time", value: "38 sec" },
+  { label: "Monthly bills included", value: "30" },
+  { label: "Currency support", value: "NPR" },
+];
 
 const PAIN_POINTS = [
   {
-    emoji: '📱',
-    title: '15 DMs asking the same thing',
-    body: 'Is this available? What size? What\'s the price? You spend more time answering questions than actually selling.',
+    icon: MessageSquareText,
+    title: "Customers ask before they buy",
+    body: "Sizes, colors, availability, delivery price, payment status. The same answers get repeated across DMs all day.",
   },
   {
-    emoji: '📦',
-    title: 'You sold something you didn\'t have',
-    body: 'Stock counts in your head, a notebook, and three WhatsApp messages. Sooner or later they don\'t match.',
+    icon: Package,
+    title: "Stock moves faster than notes",
+    body: "A sale, a return, and a restock can happen before the notebook or spreadsheet catches up.",
   },
   {
-    emoji: '🧾',
-    title: 'Billing over voice notes',
-    body: 'Screenshots, cash transfers, Khalti confirmations — scattered across apps with no record of who paid what.',
+    icon: ReceiptText,
+    title: "Billing lives in screenshots",
+    body: "Voice notes, transfer confirmations, and product photos become the only record of who paid what.",
   },
   {
-    emoji: '😰',
-    title: 'Month-end means chaos',
-    body: 'How much did you actually make? What\'s the profit after expenses? You don\'t know until you spend a Sunday finding out.',
+    icon: BarChart3,
+    title: "Profit is hard to see clearly",
+    body: "Sales look good, but cost, delivery, purchase, and expense records are scattered until month end.",
   },
-]
-
-function PainPoints() {
-  return (
-    <section id="pain" className="bg-slate-50 py-16 md:py-20">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="max-w-2xl mb-12">
-          <h2 className="text-3xl font-bold text-slate-900 mb-3">Every seller knows this feeling.</h2>
-          <p className="text-slate-600 text-lg">Managing a growing online store shouldn't feel like this.</p>
-        </div>
-        <div className="grid md:grid-cols-2 gap-4">
-          {PAIN_POINTS.map((p) => (
-            <div key={p.title} className="bg-white border border-slate-200 rounded-xl p-6">
-              <span className="text-2xl mb-3 block">{p.emoji}</span>
-              <h3 className="text-slate-900 font-semibold mb-2">{p.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{p.body}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ── Features ──────────────────────────────────────────────────────────────────
-
-function BillMockup() {
-  return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-sm font-semibold text-slate-900">New Bill</span>
-        <span className="text-xs text-slate-400">Bill #5</span>
-      </div>
-      <div className="border border-slate-200 rounded-lg overflow-hidden mb-3">
-        <div className="px-3 py-2 border-b border-slate-100 flex justify-between text-sm">
-          <span className="text-slate-900">Floral Maxi · Red/M</span>
-          <span className="text-slate-600">×2</span>
-        </div>
-        <div className="px-3 py-2 flex justify-between text-sm">
-          <span className="text-slate-900">Silk Kurta · Pink/S</span>
-          <span className="text-slate-600">×1</span>
-        </div>
-      </div>
-      <div className="flex justify-between text-sm font-semibold text-slate-900 mb-3">
-        <span>Total</span>
-        <span>NPR 6,100</span>
-      </div>
-      <div className="bg-blue-600 text-white text-center text-sm font-medium py-2.5 rounded-lg">
-        Confirm Bill
-      </div>
-    </div>
-  )
-}
-
-function InventoryMockup() {
-  return (
-    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-      <div className="px-4 py-3 border-b border-slate-200">
-        <span className="text-sm font-semibold text-slate-900">Products</span>
-        <span className="text-xs text-slate-400 ml-2">3 products</span>
-      </div>
-      {[
-        { name: 'Floral Maxi Dress', code: 'DRS-1042', stock: 23, price: 'NPR 1,800' },
-        { name: 'Silk Kurta Set', code: 'KRT-0001', stock: 8, price: 'NPR 2,500' },
-        { name: 'Cotton Tee', code: 'TEE-0055', stock: 2, price: 'NPR 600', low: true },
-      ].map((p) => (
-        <div key={p.code} className="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between text-sm">
-          <div>
-            <span className="text-slate-900 font-medium">{p.name}</span>
-            <span className="text-slate-400 text-xs ml-2">{p.code}</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className={`text-xs ${p.low ? 'text-amber-600 font-medium' : 'text-slate-500'}`}>
-              {p.stock} in stock
-            </span>
-            <span className="text-slate-600 text-xs">{p.price}</span>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function CatalogMockup() {
-  return (
-    <div className="bg-slate-900 rounded-xl p-4 shadow-sm">
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-white text-sm font-semibold">Sapana Closet</span>
-        <span className="text-slate-500 text-[10px]">/shop/sapana-closet</span>
-      </div>
-      <div className="grid grid-cols-2 gap-2">
-        {['Floral Maxi', 'Silk Kurta', 'Cotton Tee', 'Denim Jacket'].map((name) => (
-          <div key={name} className="bg-slate-800 rounded-lg p-2.5">
-            <div className="bg-slate-700 rounded h-16 mb-2 flex items-center justify-center">
-              <Package size={16} className="text-slate-500" />
-            </div>
-            <div className="text-white text-xs font-medium">{name}</div>
-            <div className="text-slate-400 text-[10px]">NPR 1,800</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
+];
 
 const FEATURES = [
   {
-    icon: Receipt,
-    title: 'Bill in seconds, not minutes.',
-    body: 'Search a product by code, pick the size and color, confirm the sale. Stock updates automatically. Share the bill link straight to their DM. Your customer gets a clean receipt — you get a record that doesn\'t live only in your memory.',
+    icon: ReceiptText,
+    eyebrow: "Billing",
+    title: "Create a bill while the customer is still in the chat.",
+    body: "Search product codes, choose variants, add customer details, mark payment status, and share a clean bill link in one flow.",
     mockup: <BillMockup />,
   },
   {
     icon: Package,
-    title: 'Always know what you have.',
-    body: 'Every sale reduces your stock. Every restock adds to it. One view shows you what\'s running low before it runs out. No spreadsheets, no notebook, no guessing.',
+    eyebrow: "Inventory",
+    title: "Know exactly what is available before you promise it.",
+    body: "Stock updates from sales and purchases. Low-stock items surface early, and every movement stays traceable.",
     mockup: <InventoryMockup />,
     reverse: true,
   },
   {
     icon: LayoutGrid,
-    title: 'Your store, shareable in one link.',
-    body: 'Every product you add gets a public catalog page at /shop/yourstore. Put it in your Instagram bio. Customers browse, DM you to order. No separate website needed.',
+    eyebrow: "Catalog",
+    title: "Turn products into a public store link without building a website.",
+    body: "Publish a mobile-first catalog for Instagram, TikTok, or Daraz customers to browse before they message you.",
     mockup: <CatalogMockup />,
   },
-]
+];
+
+const PRICING_FREE = [
+  { text: "Up to 30 bills/month", ok: true },
+  { text: "Up to 30 products", ok: true },
+  { text: "Public catalog page", ok: true },
+  { text: "Bill sharing links", ok: true },
+  { text: "Purchase tracking", ok: false },
+  { text: "Expense tracking", ok: false },
+  { text: "Profit dashboard", ok: false },
+];
+
+const PRICING_PRO = [
+  "Unlimited bills",
+  "Unlimited products",
+  "Public catalog page",
+  "Bill sharing links",
+  "Purchase and supplier tracking",
+  "Expense tracking",
+  "Profit dashboard",
+  "Multiple staff logins",
+  "Priority support",
+];
+
+function LogoMark({ small = false }: { small?: boolean }) {
+  return (
+    <div
+      className={`${small ? "h-7 w-7" : "h-8 w-8"} grid place-items-center rounded-md bg-blue-600 shadow-sm shadow-blue-600/20`}
+    >
+      <ReceiptText
+        size={small ? 15 : 17}
+        strokeWidth={2.4}
+        className="text-white"
+      />
+    </div>
+  );
+}
+
+function Navbar() {
+  return (
+    <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
+        <Link to="/" className="flex items-center gap-3" aria-label="Invo home">
+          <LogoMark small />
+          <span className="text-lg font-semibold text-slate-950">Invo</span>
+        </Link>
+
+        <div className="hidden items-center gap-7 text-sm font-medium text-slate-600 md:flex">
+          <a href="#features" className="transition hover:text-slate-950">
+            Product
+          </a>
+          <a href="#pricing" className="transition hover:text-slate-950">
+            Pricing
+          </a>
+          <a href="#security" className="transition hover:text-slate-950">
+            Trust
+          </a>
+        </div>
+
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Link
+            to="/login"
+            className="hidden rounded-md px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950 sm:inline-flex"
+          >
+            Sign in
+          </Link>
+          <Link
+            to="/register"
+            className="inline-flex h-10 items-center gap-2 rounded-md bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 transition hover:bg-blue-700"
+          >
+            Start free
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function DashboardMockup() {
+  return (
+    <div className="relative mx-auto max-w-[620px]">
+      <div className="absolute -left-5 top-10 hidden h-24 w-24 rounded-lg border border-blue-100 bg-blue-50/80 blur-2xl md:block" />
+      <div className="absolute -right-4 bottom-8 hidden h-28 w-28 rounded-lg border border-slate-100 bg-slate-100/80 blur-2xl md:block" />
+
+      <div className="relative overflow-hidden rounded-lg border border-slate-200 bg-slate-950 p-2 shadow-2xl shadow-slate-900/20">
+        <div className="flex items-center gap-2 border-b border-white/10 px-2 pb-2">
+          <div className="flex gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-slate-600" />
+            <span className="h-2.5 w-2.5 rounded-full bg-slate-600" />
+            <span className="h-2.5 w-2.5 rounded-full bg-slate-600" />
+          </div>
+          <div className="ml-2 flex h-7 flex-1 items-center rounded-md bg-white/8 px-3 text-[11px] text-slate-400">
+            invo.app/workspace/sapana-closet
+          </div>
+        </div>
+
+        <div className="grid min-h-[430px] overflow-hidden rounded-md bg-slate-50 text-left sm:grid-cols-[150px_1fr]">
+          <aside className="hidden border-r border-slate-200 bg-white p-4 sm:block">
+            <div className="mb-6 flex items-center gap-2">
+              <LogoMark small />
+              <span className="text-sm font-semibold text-slate-950">Invo</span>
+            </div>
+            {["Dashboard", "Products", "New bill", "Customers", "Expenses"].map(
+              (item, index) => (
+                <div
+                  key={item}
+                  className={`mb-1 rounded-md px-3 py-2 text-xs font-medium ${
+                    index === 0
+                      ? "bg-blue-50 text-blue-700"
+                      : "text-slate-500"
+                  }`}
+                >
+                  {item}
+                </div>
+              ),
+            )}
+          </aside>
+
+          <main className="p-4 sm:p-5">
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-[11px] font-semibold uppercase text-slate-400">
+                  Today in Kathmandu
+                </p>
+                <h2 className="mt-1 text-lg font-semibold text-slate-950">
+                  Sapana Closet
+                </h2>
+              </div>
+              <div className="inline-flex h-9 items-center gap-2 rounded-md bg-slate-950 px-3 text-xs font-semibold text-white">
+                <ReceiptText size={14} />
+                New bill
+              </div>
+            </div>
+
+            <div className="mb-4 grid grid-cols-3 gap-2">
+              {[
+                { label: "Revenue", value: "NPR 16,800", tone: "blue" },
+                { label: "Bills", value: "12", tone: "slate" },
+                { label: "Low stock", value: "4", tone: "amber" },
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="rounded-md border border-slate-200 bg-white p-3"
+                >
+                  <p className="text-[10px] font-semibold uppercase text-slate-400">
+                    {stat.label}
+                  </p>
+                  <p
+                    className={`mt-1 text-sm font-semibold ${
+                      stat.tone === "blue"
+                        ? "text-blue-700"
+                        : stat.tone === "amber"
+                          ? "text-amber-700"
+                          : "text-slate-950"
+                    }`}
+                  >
+                    {stat.value}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid gap-3 lg:grid-cols-[1.15fr_0.85fr]">
+              <div className="rounded-md border border-slate-200 bg-white">
+                <div className="flex items-center justify-between border-b border-slate-100 px-3 py-2.5">
+                  <span className="text-xs font-semibold text-slate-950">
+                    Recent bills
+                  </span>
+                  <span className="text-[11px] font-medium text-blue-700">
+                    View all
+                  </span>
+                </div>
+                {[
+                  ["#1208", "Priya Sharma", "Paid", "NPR 4,600"],
+                  ["#1207", "Maya Gurung", "Unpaid", "NPR 2,250"],
+                  ["#1206", "Anita Rai", "Paid", "NPR 7,800"],
+                ].map(([id, name, status, amount]) => (
+                  <div
+                    key={id}
+                    className="grid grid-cols-[46px_1fr_auto] items-center gap-3 border-b border-slate-100 px-3 py-3 last:border-b-0"
+                  >
+                    <span className="text-xs font-semibold text-slate-500">
+                      {id}
+                    </span>
+                    <div>
+                      <p className="text-xs font-semibold text-slate-950">
+                        {name}
+                      </p>
+                      <p className="text-[11px] text-slate-400">{status}</p>
+                    </div>
+                    <span className="text-xs font-semibold text-slate-900">
+                      {amount}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-md border border-slate-200 bg-white p-3">
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="text-xs font-semibold text-slate-950">
+                    Stock health
+                  </span>
+                  <span className="rounded bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-700">
+                    LIVE
+                  </span>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    ["Floral Maxi", "72%"],
+                    ["Silk Kurta", "48%"],
+                    ["Cotton Tee", "18%"],
+                  ].map(([name, value]) => (
+                    <div key={name}>
+                      <div className="mb-1 flex justify-between text-[11px]">
+                        <span className="font-medium text-slate-600">{name}</span>
+                        <span className="text-slate-400">{value}</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-slate-100">
+                        <div
+                          className="h-2 rounded-full bg-blue-600"
+                          style={{ width: value }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="relative overflow-hidden bg-white">
+      <div className="absolute inset-x-0 top-0 h-[520px] bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_72%)]" />
+      <div className="relative mx-auto grid max-w-7xl gap-12 px-5 pb-16 pt-14 sm:px-6 md:pb-20 md:pt-20 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
+        <div className="flex flex-col justify-center">
+          <div className="mb-6 inline-flex w-fit items-center gap-2 rounded-md border border-blue-100 bg-white px-3 py-2 text-sm font-semibold text-blue-700 shadow-sm">
+            <Store size={16} />
+            Built for Nepali social sellers
+          </div>
+          <h1 className="max-w-2xl text-5xl font-semibold leading-[1.05] text-slate-950 sm:text-6xl">
+            Run billing, stock, and sales from one calm workspace.
+          </h1>
+          <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+            Invo helps Instagram, TikTok, and Daraz sellers replace scattered
+            spreadsheets with fast billing, accurate inventory, and a shareable
+            catalog that works beautifully on mobile data.
+          </p>
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Link
+              to="/register"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-blue-600 px-6 text-base font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
+            >
+              Create free store
+              <ArrowRight size={18} />
+            </Link>
+            <a
+              href="#features"
+              className="inline-flex h-12 items-center justify-center rounded-md border border-slate-200 bg-white px-6 text-base font-semibold text-slate-800 transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              See product flow
+            </a>
+          </div>
+
+          <div className="mt-8 grid max-w-xl grid-cols-3 divide-x divide-slate-200 rounded-lg border border-slate-200 bg-white shadow-sm">
+            {TRUST_STATS.map((stat) => (
+              <div key={stat.label} className="p-4">
+                <p className="text-lg font-semibold text-slate-950">
+                  {stat.value}
+                </p>
+                <p className="mt-1 text-xs leading-5 text-slate-500">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <DashboardMockup />
+      </div>
+    </section>
+  );
+}
+
+function PainPoints() {
+  return (
+    <section className="border-y border-slate-200 bg-slate-50 py-16 md:py-20">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
+          <div>
+            <p className="text-sm font-semibold uppercase text-blue-700">
+              The daily friction
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold leading-tight text-slate-950 sm:text-4xl">
+              Built around how Nepali online sellers actually work.
+            </h2>
+            <p className="mt-4 text-base leading-7 text-slate-600">
+              Customers arrive from social channels. Orders move quickly. Invo
+              keeps the business record clean without slowing the seller down.
+            </p>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {PAIN_POINTS.map((point) => {
+              const Icon = point.icon;
+              return (
+                <div
+                  key={point.title}
+                  className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+                >
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-slate-100 text-slate-700">
+                    <Icon size={19} />
+                  </div>
+                  <h3 className="text-base font-semibold text-slate-950">
+                    {point.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    {point.body}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BillMockup() {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-xl shadow-slate-200/70">
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase text-slate-400">
+            Bill #1209
+          </p>
+          <h4 className="mt-1 text-base font-semibold text-slate-950">
+            New customer sale
+          </h4>
+        </div>
+        <span className="rounded-md bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
+          Draft
+        </span>
+      </div>
+
+      <div className="mb-4 rounded-md border border-slate-200">
+        <div className="flex items-center gap-2 border-b border-slate-100 px-3 py-2.5 text-sm text-slate-500">
+          <Search size={15} />
+          Search by product code
+        </div>
+        {[
+          ["DRS-1042", "Floral Maxi", "Red / M", "NPR 3,600"],
+          ["KRT-0001", "Silk Kurta", "Pink / S", "NPR 2,500"],
+        ].map(([code, name, variant, price]) => (
+          <div
+            key={code}
+            className="grid grid-cols-[68px_1fr_auto] items-center gap-3 border-b border-slate-100 px-3 py-3 last:border-b-0"
+          >
+            <span className="rounded bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-600">
+              {code}
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-slate-950">{name}</p>
+              <p className="text-xs text-slate-500">{variant}</p>
+            </div>
+            <span className="text-sm font-semibold text-slate-900">{price}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="mb-4 grid grid-cols-2 gap-2">
+        <div className="rounded-md bg-slate-50 p-3">
+          <p className="text-[11px] font-semibold uppercase text-slate-400">
+            Customer
+          </p>
+          <p className="mt-1 text-sm font-semibold text-slate-950">
+            Rachana Thapa
+          </p>
+        </div>
+        <div className="rounded-md bg-slate-50 p-3">
+          <p className="text-[11px] font-semibold uppercase text-slate-400">
+            Total
+          </p>
+          <p className="mt-1 text-sm font-semibold text-slate-950">
+            NPR 6,100
+          </p>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between rounded-md bg-slate-950 px-4 py-3 text-white">
+        <span className="text-sm font-semibold">Confirm and share bill</span>
+        <ArrowRight size={17} />
+      </div>
+    </div>
+  );
+}
+
+function InventoryMockup() {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-white shadow-xl shadow-slate-200/70">
+      <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+        <div>
+          <p className="text-xs font-semibold uppercase text-slate-400">
+            Inventory
+          </p>
+          <h4 className="mt-1 text-base font-semibold text-slate-950">
+            Product variants
+          </h4>
+        </div>
+        <span className="rounded-md bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
+          4 low
+        </span>
+      </div>
+
+      {[
+        ["Floral Maxi Dress", "DRS-1042", "Red / M", "23", "NPR 1,800"],
+        ["Silk Kurta Set", "KRT-0001", "Pink / S", "8", "NPR 2,500"],
+        ["Cotton Tee", "TEE-0055", "White / L", "2", "NPR 600"],
+      ].map(([name, code, variant, stock, price], index) => (
+        <div
+          key={code}
+          className="grid grid-cols-[1fr_auto] gap-4 border-b border-slate-100 px-4 py-3 last:border-b-0 sm:grid-cols-[1fr_84px_92px]"
+        >
+          <div>
+            <p className="text-sm font-semibold text-slate-950">{name}</p>
+            <p className="mt-1 text-xs text-slate-500">
+              {code} / {variant}
+            </p>
+          </div>
+          <span
+            className={`self-center rounded-md px-2.5 py-1 text-center text-xs font-semibold ${
+              index === 2
+                ? "bg-amber-50 text-amber-700"
+                : "bg-slate-100 text-slate-700"
+            }`}
+          >
+            {stock} left
+          </span>
+          <span className="hidden self-center text-right text-sm font-semibold text-slate-900 sm:block">
+            {price}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CatalogMockup() {
+  return (
+    <div className="rounded-lg border border-slate-800 bg-slate-950 p-4 shadow-xl shadow-slate-900/20">
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase text-slate-500">
+            Public catalog
+          </p>
+          <h4 className="mt-1 text-base font-semibold text-white">
+            Sapana Closet
+          </h4>
+        </div>
+        <span className="rounded-md bg-white/10 px-2.5 py-1 text-xs font-semibold text-slate-300">
+          /shop/sapana
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2">
+        {[
+          ["Floral Maxi", "NPR 1,800", "bg-blue-200"],
+          ["Silk Kurta", "NPR 2,500", "bg-rose-200"],
+          ["Cotton Tee", "NPR 600", "bg-slate-200"],
+          ["Denim Jacket", "NPR 2,200", "bg-indigo-200"],
+        ].map(([name, price, tone]) => (
+          <div key={name} className="rounded-md bg-white/8 p-2.5">
+            <div className={`mb-2 h-20 rounded-md ${tone}`} />
+            <p className="text-sm font-semibold text-white">{name}</p>
+            <p className="mt-1 text-xs text-slate-400">{price}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function Features() {
   return (
-    <section id="features" className="bg-white py-16 md:py-20">
-      <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-slate-900 mb-12">Everything you need. Nothing you don't.</h2>
-        <div className="space-y-20">
-          {FEATURES.map((f) => {
-            const Icon = f.icon
+    <section id="features" className="bg-white py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-sm font-semibold uppercase text-blue-700">
+            Product flow
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold leading-tight text-slate-950 sm:text-4xl">
+            A back office that matches the speed of social selling.
+          </h2>
+          <p className="mt-4 text-base leading-7 text-slate-600">
+            Each workflow is designed for fast entry, clear records, and fewer
+            follow-up messages.
+          </p>
+        </div>
+
+        <div className="mt-16 space-y-16 md:space-y-24">
+          {FEATURES.map((feature) => {
+            const Icon = feature.icon;
             return (
               <div
-                key={f.title}
-                className={`grid md:grid-cols-2 gap-10 items-center ${f.reverse ? 'md:[direction:rtl]' : ''}`}
+                key={feature.title}
+                className={`grid gap-8 lg:grid-cols-2 lg:items-center ${
+                  feature.reverse ? "lg:[direction:rtl]" : ""
+                }`}
               >
-                <div className={f.reverse ? 'md:[direction:ltr]' : ''}>
-                  <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
-                    <Icon size={20} className="text-blue-600" />
+                <div className={feature.reverse ? "lg:[direction:ltr]" : ""}>
+                  <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-md bg-blue-50 text-blue-700">
+                    <Icon size={21} />
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">{f.title}</h3>
-                  <p className="text-slate-600 leading-relaxed">{f.body}</p>
+                  <p className="text-sm font-semibold uppercase text-blue-700">
+                    {feature.eyebrow}
+                  </p>
+                  <h3 className="mt-3 max-w-xl text-3xl font-semibold leading-tight text-slate-950">
+                    {feature.title}
+                  </h3>
+                  <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
+                    {feature.body}
+                  </p>
                 </div>
-                <div className={f.reverse ? 'md:[direction:ltr]' : ''}>
-                  {f.mockup}
+                <div className={feature.reverse ? "lg:[direction:ltr]" : ""}>
+                  {feature.mockup}
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-// ── Pricing ───────────────────────────────────────────────────────────────────
+function OperationsSection() {
+  return (
+    <section id="security" className="border-y border-slate-200 bg-slate-950 py-16 text-white md:py-20">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+          <div>
+            <p className="text-sm font-semibold uppercase text-blue-300">
+              Built for real operating conditions
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
+              Fast on phones. Clear for owners. Limited for staff.
+            </h2>
+            <p className="mt-4 text-base leading-7 text-slate-300">
+              Invo keeps the interface direct for mobile use while protecting
+              sensitive cost and profit data from staff accounts.
+            </p>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              {
+                icon: Smartphone,
+                title: "Mobile-first workflows",
+                body: "Compact screens, large actions, and focused forms for sellers working from Android phones.",
+              },
+              {
+                icon: WifiOff,
+                title: "Patchy-network friendly",
+                body: "Pages stay lightweight and practical for mobile data and uneven 4G conditions.",
+              },
+              {
+                icon: ShieldCheck,
+                title: "Role-aware access",
+                body: "Owners see business performance. Staff can help sell without seeing cost prices.",
+              },
+              {
+                icon: ClipboardList,
+                title: "Historical records",
+                body: "Bills snapshot product details at sale time, so old receipts stay accurate.",
+              },
+            ].map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.title}
+                  className="rounded-lg border border-white/10 bg-white/6 p-5"
+                >
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-white/10 text-blue-200">
+                    <Icon size={19} />
+                  </div>
+                  <h3 className="font-semibold text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">
+                    {item.body}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function Pricing() {
-  const [yearly, setYearly] = useState(false)
+  const [yearly, setYearly] = useState(false);
 
   return (
-    <section id="pricing" className="bg-slate-50 py-16 md:py-20">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-slate-900 mb-3">Simple pricing. No surprises.</h2>
-          <p className="text-slate-600 text-lg mb-6">Start free. Upgrade when you're ready.</p>
-          <div className="inline-flex items-center bg-white border border-slate-200 rounded-full p-1">
+    <section id="pricing" className="bg-slate-50 py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-sm font-semibold uppercase text-blue-700">
+            Pricing
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold leading-tight text-slate-950 sm:text-4xl">
+            Start free, then upgrade when the store gets busier.
+          </h2>
+          <p className="mt-4 text-base leading-7 text-slate-600">
+            Pricing is in NPR and built for small sellers who need useful tools
+            before they need enterprise software.
+          </p>
+
+          <div className="mt-7 inline-flex rounded-md border border-slate-200 bg-white p-1 shadow-sm">
             <button
+              type="button"
               onClick={() => setYearly(false)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                !yearly ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
+              className={`h-9 rounded px-4 text-sm font-semibold transition ${
+                !yearly
+                  ? "bg-slate-950 text-white"
+                  : "text-slate-600 hover:text-slate-950"
               }`}
             >
               Monthly
             </button>
             <button
+              type="button"
               onClick={() => setYearly(true)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                yearly ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
+              className={`h-9 rounded px-4 text-sm font-semibold transition ${
+                yearly
+                  ? "bg-slate-950 text-white"
+                  : "text-slate-600 hover:text-slate-950"
               }`}
             >
-              Yearly <span className="text-green-600 text-xs font-medium">save 2 months</span>
+              Yearly
             </button>
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-          {/* Free */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8">
-            <h3 className="text-lg font-bold text-slate-900 mb-1">Free</h3>
-            <div className="mb-1">
-              <span className="text-4xl font-bold text-slate-900">NPR 0</span>
-              <span className="text-slate-500 text-sm"> / month</span>
+        <div className="mx-auto mt-12 grid max-w-5xl gap-4 lg:grid-cols-[0.92fr_1.08fr]">
+          <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <div className="mb-7">
+              <h3 className="text-xl font-semibold text-slate-950">Free</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                For new sellers moving away from notebooks and spreadsheets.
+              </p>
+              <div className="mt-5">
+                <span className="text-4xl font-semibold text-slate-950">
+                  NPR 0
+                </span>
+                <span className="text-sm font-medium text-slate-500">
+                  {" "}
+                  / month
+                </span>
+              </div>
             </div>
-            <p className="text-slate-500 text-sm mb-6">For small sellers just getting started.</p>
-            <ul className="space-y-3 mb-8">
-              {[
-                { text: 'Up to 30 bills/month', ok: true },
-                { text: 'Up to 30 products', ok: true },
-                { text: 'Public catalog page', ok: true },
-                { text: 'Bill sharing links', ok: true },
-                { text: 'Purchase tracking', ok: false },
-                { text: 'Expense tracking', ok: false },
-                { text: 'Profit dashboard', ok: false },
-              ].map((f) => (
-                <li key={f.text} className={`flex items-center gap-2.5 text-sm ${f.ok ? 'text-slate-700' : 'text-slate-400'}`}>
-                  {f.ok ? <Check size={16} className="text-green-600 flex-shrink-0" /> : <XIcon size={16} className="text-slate-300 flex-shrink-0" />}
-                  {f.text}
+
+            <ul className="space-y-3">
+              {PRICING_FREE.map((feature) => (
+                <li
+                  key={feature.text}
+                  className={`flex items-center gap-3 text-sm ${
+                    feature.ok ? "text-slate-700" : "text-slate-400"
+                  }`}
+                >
+                  {feature.ok ? (
+                    <CheckCircle2
+                      size={17}
+                      className="shrink-0 text-emerald-600"
+                    />
+                  ) : (
+                    <CircleSlash size={17} className="shrink-0 text-slate-300" />
+                  )}
+                  {feature.text}
                 </li>
               ))}
             </ul>
+
             <Link
               to="/register"
-              className="block text-center border-2 border-slate-200 hover:border-slate-300 text-slate-700 font-medium py-2.5 rounded-lg transition-colors"
+              className="mt-8 inline-flex h-11 w-full items-center justify-center rounded-md border border-slate-300 bg-white text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
             >
               Get started free
             </Link>
           </div>
 
-          {/* Pro */}
-          <div className="bg-blue-600 rounded-2xl p-6 md:p-8 relative">
-            <span className="absolute top-4 right-4 bg-blue-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">
-              Most popular
-            </span>
-            <h3 className="text-lg font-bold text-white mb-1">Pro</h3>
-            <div className="mb-1">
-              <span className="text-4xl font-bold text-white">
-                NPR {yearly ? '9,999' : '999'}
-              </span>
-              <span className="text-blue-200 text-sm"> / {yearly ? 'year' : 'month'}</span>
+          <div className="relative overflow-hidden rounded-lg bg-blue-600 p-6 text-white shadow-xl shadow-blue-600/20 sm:p-8">
+            <div className="absolute right-0 top-0 h-40 w-40 rounded-lg bg-white/10 blur-2xl" />
+            <div className="relative mb-7 flex items-start justify-between gap-4">
+              <div>
+                <div className="mb-3 inline-flex rounded-md bg-white/15 px-2.5 py-1 text-xs font-semibold text-blue-50">
+                  Most popular
+                </div>
+                <h3 className="text-xl font-semibold">Pro</h3>
+                <p className="mt-2 max-w-md text-sm leading-6 text-blue-100">
+                  For stores that need profit clarity, purchase history, staff
+                  access, and no operational limits.
+                </p>
+                <div className="mt-5">
+                  <span className="text-4xl font-semibold">
+                    NPR {yearly ? "9,999" : "999"}
+                  </span>
+                  <span className="text-sm font-medium text-blue-100">
+                    {" "}
+                    / {yearly ? "year" : "month"}
+                  </span>
+                </div>
+              </div>
             </div>
-            <p className="text-blue-200 text-sm mb-6">For sellers running a real business.</p>
-            <ul className="space-y-3 mb-8">
-              {[
-                'Unlimited bills',
-                'Unlimited products',
-                'Public catalog page',
-                'Bill sharing links',
-                'Purchase & supplier tracking',
-                'Expense tracking',
-                'Profit dashboard',
-                'Multiple staff logins',
-                'Priority support',
-              ].map((f) => (
-                <li key={f} className="flex items-center gap-2.5 text-sm text-white">
-                  <Check size={16} className="text-blue-200 flex-shrink-0" />
-                  {f}
+
+            <ul className="relative grid gap-3 sm:grid-cols-2">
+              {PRICING_PRO.map((feature) => (
+                <li key={feature} className="flex items-center gap-3 text-sm">
+                  <Check size={17} className="shrink-0 text-blue-100" />
+                  {feature}
                 </li>
               ))}
             </ul>
+
             <Link
               to="/register"
-              className="block text-center bg-white text-blue-600 font-medium py-2.5 rounded-lg hover:bg-blue-50 transition-colors"
+              className="relative mt-8 inline-flex h-11 w-full items-center justify-center rounded-md bg-white text-sm font-semibold text-blue-700 transition hover:bg-blue-50"
             >
-              Start Pro free for 14 days
+              Start Pro trial
             </Link>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
-
-// ── CTA ───────────────────────────────────────────────────────────────────────
 
 function CtaSection() {
   return (
     <section className="bg-white py-16 md:py-20">
-      <div className="max-w-6xl mx-auto px-6 text-center">
-        <h2 className="text-3xl font-bold text-slate-900 mb-3">Ready to run your store properly?</h2>
-        <p className="text-slate-600 text-lg mb-8 max-w-lg mx-auto">
-          Join sellers across Nepal who've stopped managing inventory in their head.
-        </p>
-        <Link
-          to="/register"
-          className="inline-block bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-8 py-4 text-lg font-medium transition-colors"
-        >
-          Create your free store →
-        </Link>
-        <p className="text-slate-400 text-sm mt-4">Free forever for small sellers. No credit card required.</p>
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div className="grid gap-8 rounded-lg border border-slate-200 bg-slate-50 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p className="text-sm font-semibold uppercase text-blue-700">
+              Ready when you are
+            </p>
+            <h2 className="mt-3 max-w-2xl text-3xl font-semibold leading-tight text-slate-950">
+              Give your store a cleaner operating system before the next busy
+              week starts.
+            </h2>
+            <div className="mt-5 flex flex-wrap gap-3 text-sm text-slate-600">
+              {["No credit card", "Free for small sellers", "Built in NPR"].map(
+                (item) => (
+                  <span
+                    key={item}
+                    className="inline-flex items-center gap-2 rounded-md bg-white px-3 py-2"
+                  >
+                    <CheckCircle2 size={16} className="text-emerald-600" />
+                    {item}
+                  </span>
+                ),
+              )}
+            </div>
+          </div>
+          <Link
+            to="/register"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-blue-600 px-6 text-base font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
+          >
+            Create free store
+            <ArrowRight size={18} />
+          </Link>
+        </div>
       </div>
     </section>
-  )
+  );
 }
-
-// ── Footer ────────────────────────────────────────────────────────────────────
 
 function Footer() {
   return (
-    <footer className="bg-white border-t border-slate-200 py-10">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center">
-            <span className="text-white text-[10px] font-bold">I</span>
+    <footer className="border-t border-slate-200 bg-white py-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <div className="flex items-center gap-3">
+          <LogoMark small />
+          <div>
+            <p className="text-sm font-semibold text-slate-950">Invo</p>
+            <p className="text-sm text-slate-500">
+              Built for online sellers in Nepal.
+            </p>
           </div>
-          <span className="text-slate-500 text-sm">© 2026 Invo. Made for Nepal 🇳🇵</span>
         </div>
-        <div className="flex items-center gap-6 text-sm text-slate-500">
-          <span className="hover:text-slate-700 cursor-pointer">Privacy</span>
-          <span className="hover:text-slate-700 cursor-pointer">Terms</span>
-          <span className="hover:text-slate-700 cursor-pointer">Contact</span>
+        <div className="flex items-center gap-5 text-sm font-medium text-slate-500">
+          <span className="hover:text-slate-800">Privacy</span>
+          <span className="hover:text-slate-800">Terms</span>
+          <span className="hover:text-slate-800">Contact</span>
         </div>
       </div>
     </footer>
-  )
+  );
 }
-
-// ── Main ──────────────────────────────────────────────────────────────────────
 
 export default function LandingPage() {
   return (
-    <div className="bg-white min-h-screen" style={{ color: '#0f172a' }}>
+    <div className="min-h-screen bg-white text-slate-950">
       <Navbar />
       <Hero />
       <PainPoints />
       <Features />
+      <OperationsSection />
       <Pricing />
       <CtaSection />
       <Footer />
     </div>
-  )
+  );
 }
