@@ -316,8 +316,9 @@ function Hero() {
             <Store size={16} />
             Built for Nepali social sellers
           </div>
-          <h1 className="max-w-2xl text-5xl font-semibold leading-[1.05] text-slate-950 sm:text-6xl">
-            Run billing, stock, and sales from one calm workspace.
+          <h1 className="max-w-2xl text-5xl font-bold leading-[1.05] tracking-tight text-slate-950 sm:text-6xl">
+            Run your store.{" "}
+            <span className="text-slate-400">Not spreadsheets.</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
             Invo helps Instagram, TikTok, and Daraz sellers replace scattered
@@ -370,7 +371,7 @@ function PainPoints() {
             <p className="text-sm font-semibold uppercase text-blue-700">
               The daily friction
             </p>
-            <h2 className="mt-3 text-3xl font-semibold leading-tight text-slate-950 sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-bold leading-tight tracking-tight text-slate-950 sm:text-4xl">
               Built around how Nepali online sellers actually work.
             </h2>
             <p className="mt-4 text-base leading-7 text-slate-600">
@@ -568,7 +569,7 @@ function Features() {
           <p className="text-sm font-semibold uppercase text-blue-700">
             Product flow
           </p>
-          <h2 className="mt-3 text-3xl font-semibold leading-tight text-slate-950 sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold leading-tight tracking-tight text-slate-950 sm:text-4xl">
             A back office that matches the speed of social selling.
           </h2>
           <p className="mt-4 text-base leading-7 text-slate-600">
@@ -594,7 +595,7 @@ function Features() {
                   <p className="text-sm font-semibold uppercase text-blue-700">
                     {feature.eyebrow}
                   </p>
-                  <h3 className="mt-3 max-w-xl text-3xl font-semibold leading-tight text-slate-950">
+                  <h3 className="mt-3 max-w-xl text-3xl font-bold leading-tight tracking-tight text-slate-950">
                     {feature.title}
                   </h3>
                   <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
@@ -622,7 +623,7 @@ function OperationsSection() {
             <p className="text-sm font-semibold uppercase text-blue-300">
               Built for real operating conditions
             </p>
-            <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
               Fast on phones. Clear for owners. Limited for staff.
             </h2>
             <p className="mt-4 text-base leading-7 text-slate-300">
@@ -687,7 +688,7 @@ function Pricing() {
           <p className="text-sm font-semibold uppercase text-blue-700">
             Pricing
           </p>
-          <h2 className="mt-3 text-3xl font-semibold leading-tight text-slate-950 sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold leading-tight tracking-tight text-slate-950 sm:text-4xl">
             Start free, then upgrade when the store gets busier.
           </h2>
           <p className="mt-4 text-base leading-7 text-slate-600">
@@ -823,7 +824,7 @@ function CtaSection() {
             <p className="text-sm font-semibold uppercase text-blue-700">
               Ready when you are
             </p>
-            <h2 className="mt-3 max-w-2xl text-3xl font-semibold leading-tight text-slate-950">
+            <h2 className="mt-3 max-w-2xl text-3xl font-bold leading-tight tracking-tight text-slate-950">
               Give your store a cleaner operating system before the next busy
               week starts.
             </h2>
