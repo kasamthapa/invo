@@ -7,14 +7,18 @@ import {
   CheckCircle2,
   CircleSlash,
   ClipboardList,
+  CreditCard,
   LayoutGrid,
   MessageSquareText,
   Package,
   ReceiptText,
   Search,
+  Send,
   ShieldCheck,
+  ShoppingBag,
   Smartphone,
   Store,
+  TrendingUp,
   WifiOff,
 } from "lucide-react";
 
@@ -72,6 +76,84 @@ const FEATURES = [
   },
 ];
 
+const WORKFLOW_STEPS = [
+  {
+    icon: MessageSquareText,
+    label: "DM inquiry",
+    detail: "Customer asks for size and price",
+  },
+  {
+    icon: ShoppingBag,
+    label: "Variant check",
+    detail: "Confirm stock before promising",
+  },
+  {
+    icon: ReceiptText,
+    label: "Bill link",
+    detail: "Share a clean receipt instantly",
+  },
+  {
+    icon: CreditCard,
+    label: "Payment status",
+    detail: "Track paid, unpaid, or partial",
+  },
+  {
+    icon: TrendingUp,
+    label: "Owner view",
+    detail: "See sales, expenses, and margin",
+  },
+];
+
+const DEMO_VIEWS = [
+  {
+    id: "sale",
+    icon: ReceiptText,
+    label: "Bill a sale",
+    title: "From product search to shareable bill in one focused flow.",
+    body: "Designed for the moment a customer says yes in DM. Search by code, select the variant, add quantity, and send the bill link before the chat goes cold.",
+    metric: "38 sec",
+    metricLabel: "average billing flow",
+    rows: [
+      ["DRS-1042", "Floral Maxi / Red M", "NPR 3,600"],
+      ["KRT-0001", "Silk Kurta / Pink S", "NPR 2,500"],
+      ["Delivery", "Kathmandu inside ring road", "NPR 150"],
+    ],
+    cta: "Bill ready to share",
+  },
+  {
+    id: "stock",
+    icon: Package,
+    label: "Control stock",
+    title: "Every sale, restock, and correction becomes a traceable movement.",
+    body: "Invo treats stock like an operating record, not a guess. Low stock surfaces early and staff can sell without seeing sensitive cost data.",
+    metric: "4 low",
+    metricLabel: "variants need attention",
+    rows: [
+      ["TEE-0055", "Cotton Tee / White L", "2 left"],
+      ["DRS-1042", "Floral Maxi / Red M", "23 left"],
+      ["KRT-0001", "Silk Kurta / Pink S", "8 left"],
+    ],
+    cta: "Stock ledger updated",
+  },
+  {
+    id: "catalog",
+    icon: LayoutGrid,
+    label: "Publish catalog",
+    title: "Give browsers a clean product link before they message you.",
+    body: "A public catalog turns product records into a mobile storefront for Instagram bios, TikTok messages, and repeat buyers.",
+    metric: "/shop",
+    metricLabel: "mobile catalog link",
+    rows: [
+      ["Published", "Floral Maxi", "NPR 1,800"],
+      ["Published", "Silk Kurta", "NPR 2,500"],
+      ["Hidden", "Cotton Tee", "Restocking"],
+    ],
+    cta: "Catalog changes live",
+  },
+] as const;
+
+type DemoViewId = (typeof DEMO_VIEWS)[number]["id"];
+
 const PRICING_FREE = [
   { text: "Up to 30 bills/month", ok: true },
   { text: "Up to 30 products", ok: true },
@@ -118,6 +200,9 @@ function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-7 text-sm font-medium text-slate-600 md:flex">
+          <a href="#demo" className="transition hover:text-slate-950">
+            Demo
+          </a>
           <a href="#features" className="transition hover:text-slate-950">
             Product
           </a>
@@ -181,9 +266,7 @@ function DashboardMockup() {
                 <div
                   key={item}
                   className={`mb-1 rounded-md px-3 py-2 text-xs font-medium transition ${
-                    index === 0
-                      ? "bg-blue-50 text-blue-700"
-                      : "text-slate-500"
+                    index === 0 ? "bg-blue-50 text-blue-700" : "text-slate-500"
                   }`}
                 >
                   {item}
@@ -288,7 +371,9 @@ function DashboardMockup() {
                   ].map(([name, value]) => (
                     <div key={name}>
                       <div className="mb-1 flex justify-between text-[11px]">
-                        <span className="font-medium text-slate-600">{name}</span>
+                        <span className="font-medium text-slate-600">
+                          {name}
+                        </span>
                         <span className="text-slate-400">{value}</span>
                       </div>
                       <div className="h-2 rounded-full bg-slate-100">
@@ -311,7 +396,7 @@ function DashboardMockup() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-white">
+    <section className="premium-grid-bg relative overflow-hidden bg-white">
       <div className="absolute inset-x-0 top-0 h-[520px] bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_72%)]" />
       <div className="relative mx-auto grid max-w-7xl gap-12 px-5 pb-16 pt-14 sm:px-6 md:pb-20 md:pt-20 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
         <div className="flex flex-col justify-center">
@@ -335,7 +420,10 @@ function Hero() {
               className="group premium-lift inline-flex h-12 items-center justify-center gap-2 rounded-md bg-blue-600 px-6 text-base font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
             >
               Create free store
-              <ArrowRight size={18} className="transition group-hover:translate-x-1" />
+              <ArrowRight
+                size={18}
+                className="transition group-hover:translate-x-1"
+              />
             </Link>
             <a
               href="#features"
@@ -360,6 +448,201 @@ function Hero() {
         </div>
 
         <DashboardMockup />
+      </div>
+    </section>
+  );
+}
+
+function WorkflowRibbon() {
+  return (
+    <section className="border-y border-slate-200 bg-white py-6">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div className="grid gap-3 md:grid-cols-5">
+          {WORKFLOW_STEPS.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <div
+                key={step.label}
+                className="motion-rise premium-lift group relative overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
+                style={{ animationDelay: `${index * 70}ms` }}
+              >
+                {index < WORKFLOW_STEPS.length - 1 ? (
+                  <div className="absolute right-[-22px] top-8 hidden h-px w-11 bg-blue-200 md:block" />
+                ) : null}
+                <div className="mb-3 flex items-center justify-between">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-50 text-blue-700 transition group-hover:bg-blue-600 group-hover:text-white">
+                    <Icon size={17} />
+                  </div>
+                  <span className="text-xs font-semibold text-slate-300">
+                    0{index + 1}
+                  </span>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-950">
+                  {step.label}
+                </h3>
+                <p className="mt-1 text-xs leading-5 text-slate-500">
+                  {step.detail}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function DemoPreview({
+  activeDemo,
+}: {
+  activeDemo: (typeof DEMO_VIEWS)[number];
+}) {
+  return (
+    <div className="premium-shine relative overflow-hidden rounded-lg border border-slate-800 bg-slate-950 p-3 shadow-2xl shadow-slate-950/20">
+      <div className="flex items-center gap-2 border-b border-white/10 px-2 pb-3">
+        <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+        <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+        <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+        <div className="ml-2 h-6 flex-1 rounded-md bg-white/8" />
+      </div>
+
+      <div className="grid gap-3 pt-3 sm:grid-cols-[0.88fr_1.12fr]">
+        <div className="rounded-md border border-white/10 bg-white/6 p-4">
+          <p className="text-xs font-semibold uppercase text-blue-200">
+            Live workspace
+          </p>
+          <h3 className="mt-2 text-xl font-bold tracking-tight text-white">
+            {activeDemo.metric}
+          </h3>
+          <p className="mt-1 text-xs leading-5 text-slate-400">
+            {activeDemo.metricLabel}
+          </p>
+
+          <div className="mt-5 space-y-3">
+            {["Product search", "Customer details", "Share link"].map(
+              (label, index) => (
+                <div key={label}>
+                  <div className="mb-1 flex justify-between text-[11px]">
+                    <span className="text-slate-300">{label}</span>
+                    <span className="text-slate-500">{index + 1}/3</span>
+                  </div>
+                  <div className="h-1.5 rounded-full bg-white/10">
+                    <div
+                      className="motion-progress h-1.5 rounded-full bg-blue-400"
+                      style={{ width: `${92 - index * 22}%` }}
+                    />
+                  </div>
+                </div>
+              ),
+            )}
+          </div>
+        </div>
+
+        <div className="rounded-md bg-white p-3 text-left">
+          <div className="mb-3 flex items-center justify-between">
+            <div>
+              <p className="text-[11px] font-semibold uppercase text-slate-400">
+                {activeDemo.label}
+              </p>
+              <p className="mt-1 text-sm font-semibold text-slate-950">
+                Sapana Closet
+              </p>
+            </div>
+            <span className="rounded-md bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-700">
+              Synced
+            </span>
+          </div>
+
+          <div className="overflow-hidden rounded-md border border-slate-200">
+            {activeDemo.rows.map(([code, name, value]) => (
+              <div
+                key={`${code}-${name}`}
+                className="grid grid-cols-[76px_1fr_auto] gap-3 border-b border-slate-100 px-3 py-3 text-xs last:border-b-0"
+              >
+                <span className="font-semibold text-slate-500">{code}</span>
+                <span className="font-medium text-slate-900">{name}</span>
+                <span className="font-semibold text-slate-900">{value}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-3 flex items-center justify-between rounded-md bg-slate-950 px-3 py-2 text-xs font-semibold text-white">
+            <span>{activeDemo.cta}</span>
+            <Send size={14} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InteractiveDemo() {
+  const [activeId, setActiveId] = useState<DemoViewId>("sale");
+  const activeDemo =
+    DEMO_VIEWS.find((demo) => demo.id === activeId) ?? DEMO_VIEWS[0];
+
+  return (
+    <section id="demo" className="bg-white py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+          <div className="motion-rise">
+            <p className="text-sm font-semibold uppercase text-blue-700">
+              Interactive product tour
+            </p>
+            <h2 className="mt-3 text-3xl font-bold leading-tight tracking-tight text-slate-950 sm:text-4xl">
+              One operating surface for the whole selling day.
+            </h2>
+            <p className="mt-4 text-base leading-7 text-slate-600">
+              Switch between the workflows sellers repeat all day and see how
+              each action stays connected to billing, stock, catalog, and owner
+              reporting.
+            </p>
+
+            <div className="mt-7 grid gap-2">
+              {DEMO_VIEWS.map((demo) => {
+                const Icon = demo.icon;
+                const active = demo.id === activeId;
+                return (
+                  <button
+                    key={demo.id}
+                    type="button"
+                    onClick={() => setActiveId(demo.id)}
+                    className={`premium-lift flex items-center gap-3 rounded-lg border p-3 text-left transition ${
+                      active
+                        ? "border-blue-200 bg-blue-50 text-blue-800 shadow-sm"
+                        : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
+                    }`}
+                  >
+                    <span
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-md ${
+                        active
+                          ? "bg-blue-600 text-white"
+                          : "bg-slate-100 text-slate-600"
+                      }`}
+                    >
+                      <Icon size={18} />
+                    </span>
+                    <span>
+                      <span className="block text-sm font-semibold">
+                        {demo.label}
+                      </span>
+                      <span className="mt-1 block text-xs leading-5 text-slate-500">
+                        {demo.title}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="motion-rise-slow motion-delay-1">
+            <DemoPreview activeDemo={activeDemo} />
+            <p className="mt-5 text-sm leading-6 text-slate-600">
+              {activeDemo.body}
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -447,7 +730,9 @@ function BillMockup() {
               <p className="text-sm font-semibold text-slate-950">{name}</p>
               <p className="text-xs text-slate-500">{variant}</p>
             </div>
-            <span className="text-sm font-semibold text-slate-900">{price}</span>
+            <span className="text-sm font-semibold text-slate-900">
+              {price}
+            </span>
           </div>
         ))}
       </div>
@@ -465,15 +750,16 @@ function BillMockup() {
           <p className="text-[11px] font-semibold uppercase text-slate-400">
             Total
           </p>
-          <p className="mt-1 text-sm font-semibold text-slate-950">
-            NPR 6,100
-          </p>
+          <p className="mt-1 text-sm font-semibold text-slate-950">NPR 6,100</p>
         </div>
       </div>
 
       <div className="group flex items-center justify-between rounded-md bg-slate-950 px-4 py-3 text-white transition hover:bg-blue-600">
         <span className="text-sm font-semibold">Confirm and share bill</span>
-        <ArrowRight size={17} className="transition group-hover:translate-x-1" />
+        <ArrowRight
+          size={17}
+          className="transition group-hover:translate-x-1"
+        />
       </div>
     </div>
   );
@@ -630,7 +916,10 @@ function Features() {
 
 function OperationsSection() {
   return (
-    <section id="security" className="border-y border-slate-200 bg-slate-950 py-16 text-white md:py-20">
+    <section
+      id="security"
+      className="border-y border-slate-200 bg-slate-950 py-16 text-white md:py-20"
+    >
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
           <div className="motion-rise">
@@ -768,7 +1057,10 @@ function Pricing() {
                       className="shrink-0 text-emerald-600"
                     />
                   ) : (
-                    <CircleSlash size={17} className="shrink-0 text-slate-300" />
+                    <CircleSlash
+                      size={17}
+                      className="shrink-0 text-slate-300"
+                    />
                   )}
                   {feature.text}
                 </li>
@@ -861,7 +1153,10 @@ function CtaSection() {
             className="group premium-lift inline-flex h-12 items-center justify-center gap-2 rounded-md bg-blue-600 px-6 text-base font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
           >
             Create free store
-            <ArrowRight size={18} className="transition group-hover:translate-x-1" />
+            <ArrowRight
+              size={18}
+              className="transition group-hover:translate-x-1"
+            />
           </Link>
         </div>
       </div>
@@ -897,6 +1192,8 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white text-slate-950">
       <Navbar />
       <Hero />
+      <WorkflowRibbon />
+      <InteractiveDemo />
       <PainPoints />
       <Features />
       <OperationsSection />
