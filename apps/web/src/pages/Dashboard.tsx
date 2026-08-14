@@ -1,5 +1,14 @@
 import { Link } from 'react-router-dom'
-import { AlertTriangle, Package } from 'lucide-react'
+import {
+  AlertTriangle,
+  Package,
+  Wallet,
+  Receipt,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  Layers,
+} from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useDashboard } from '../hooks/useDashboard'
 import { formatNPR } from '../utils/money'
@@ -44,11 +53,36 @@ function SectionHeading({ children }: { children: ReactNode }) {
   )
 }
 
-function StatCard({ label, value }: { label: string; value: string }) {
+type StatTone = 'accent' | 'success' | 'muted'
+
+const TONE_STYLES: Record<StatTone, string> = {
+  accent: 'bg-[var(--accent-light)] text-[var(--accent)]',
+  success: 'bg-[var(--success-light)] text-[var(--success)]',
+  muted: 'bg-[var(--bg-surface-2)] text-[var(--text-secondary)]',
+}
+
+function StatCard({
+  label,
+  value,
+  icon: Icon,
+  tone = 'muted',
+}: {
+  label: string
+  value: string
+  icon?: React.ElementType
+  tone?: StatTone
+}) {
   return (
     <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-4">
-      <p className="text-[var(--text-muted)] text-xs mb-1">{label}</p>
-      <p className="text-[var(--text-primary)] text-xl font-bold">{value}</p>
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[var(--text-muted)] text-xs">{label}</p>
+        {Icon && (
+          <span className={`flex items-center justify-center h-7 w-7 rounded-md flex-shrink-0 ${TONE_STYLES[tone]}`}>
+            <Icon size={14} strokeWidth={2} />
+          </span>
+        )}
+      </div>
+      <p className="text-[var(--text-primary)] text-xl font-bold tabular-nums">{value}</p>
     </div>
   )
 }
@@ -120,11 +154,12 @@ export default function Dashboard() {
       <div>
         <SectionHeading>Today</SectionHeading>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <StatCard label="Revenue" value={formatNPR(data?.todayRevenue ?? 0)} />
-          <StatCard label="Bills" value={String(data?.todayBillCount ?? 0)} />
+          <StatCard label="Revenue" value={formatNPR(data?.todayRevenue ?? 0)} icon={Wallet} tone="accent" />
+          <StatCard label="Bills" value={String(data?.todayBillCount ?? 0)} icon={Receipt} tone="muted" />
           {(data?.todayBillCount ?? 0) > 0 && (
-            <StatCard label="Avg Order" value={formatNPR(data?.todayAvgOrderValue ?? 0)} />
+            <StatCard label="Avg Order" value={formatNPR(data?.todayAvgOrderValue ?? 0)} icon={TrendingUp} tone="success" />
           )}
+          <StatCard label="Products" value={String(data?.totalProducts ?? 0)} icon={Package} tone="muted" />
         </div>
       </div>
 
@@ -133,16 +168,35 @@ export default function Dashboard() {
         <div>
           <SectionHeading>This month</SectionHeading>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3">
-            <StatCard label="Revenue" value={formatNPR(data!.monthRevenue!)} />
-            <StatCard label="Expenses" value={formatNPR(data!.monthExpenses ?? 0)} />
+            <StatCard label="Revenue" value={formatNPR(data!.monthRevenue!)} icon={Wallet} tone="accent" />
+            <StatCard label="Expenses" value={formatNPR(data!.monthExpenses ?? 0)} icon={Layers} tone="muted" />
             <div className="col-span-2 md:col-span-1 bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-4">
-              <p className="text-[var(--text-muted)] text-xs mb-1">Profit</p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-[var(--text-muted)] text-xs">Profit</p>
+                <span
+                  className={`flex items-center justify-center h-7 w-7 rounded-md flex-shrink-0 ${
+                    (data!.monthProfit ?? 0) > 0
+                      ? 'bg-[var(--success-light)] text-[var(--success)]'
+                      : (data!.monthProfit ?? 0) < 0
+                      ? 'bg-[var(--danger-light)] text-[var(--danger)]'
+                      : 'bg-[var(--bg-surface-2)] text-[var(--text-secondary)]'
+                  }`}
+                >
+                  {(data!.monthProfit ?? 0) > 0 ? (
+                    <TrendingUp size={14} strokeWidth={2} />
+                  ) : (data!.monthProfit ?? 0) < 0 ? (
+                    <TrendingDown size={14} strokeWidth={2} />
+                  ) : (
+                    <Minus size={14} strokeWidth={2} />
+                  )}
+                </span>
+              </div>
               <p
-                className={`text-xl font-bold ${
+                className={`text-xl font-bold tabular-nums ${
                   (data!.monthProfit ?? 0) > 0
                     ? 'text-[var(--success)]'
                     : (data!.monthProfit ?? 0) < 0
-                    ? 'text-red-400'
+                    ? 'text-[var(--danger)]'
                     : 'text-[var(--text-secondary)]'
                 }`}
               >
