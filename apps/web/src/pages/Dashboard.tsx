@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   AlertTriangle,
   Package,
@@ -40,8 +40,8 @@ function getNepalDateString(): string {
 
 function payBadgeColor(status: string): string {
   if (status === 'PAID') return 'bg-[var(--success-light)] text-[var(--success)]'
-  if (status === 'COD_PENDING') return 'bg-blue-500/20 text-blue-400'
-  if (status === 'UNPAID') return 'bg-amber-500/20 text-amber-400'
+  if (status === 'COD_PENDING') return 'bg-[var(--info-light)] text-[var(--info)]'
+  if (status === 'UNPAID') return 'bg-[var(--warning-light)] text-[var(--warning)]'
   return 'bg-[var(--border-2)] text-[var(--text-muted)]'
 }
 
@@ -115,6 +115,7 @@ function SkeletonDashboard() {
 export default function Dashboard() {
   const { user, store } = useAuth()
   const { data, isLoading, isError, refetch } = useDashboard()
+  const navigate = useNavigate()
 
   if (isLoading) return <SkeletonDashboard />
 
@@ -299,7 +300,8 @@ export default function Dashboard() {
               See all →
             </Link>
           </div>
-          <div className="space-y-2">
+          {/* Mobile: card list */}
+          <div className="space-y-2 md:hidden">
             {data!.recentBills.slice(0, 5).map((bill) => {
               const voided = bill.status === 'VOIDED'
               return (
@@ -328,6 +330,51 @@ export default function Dashboard() {
                 </Link>
               )
             })}
+          </div>
+
+          {/* Desktop: table */}
+          <div className="hidden md:block bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[var(--border)] bg-[var(--bg-surface-2)]/60">
+                  <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Bill</th>
+                  <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Customer</th>
+                  <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Status</th>
+                  <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Date</th>
+                  <th className="text-right font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data!.recentBills.slice(0, 5).map((bill, i) => {
+                  const voided = bill.status === 'VOIDED'
+                  return (
+                    <tr
+                      key={bill.id}
+                      onClick={() => navigate(`/app/bills/${bill.id}`)}
+                      className={`cursor-pointer hover:bg-[var(--bg-surface-2)]/60 transition-colors ${
+                        i !== 0 ? 'border-t border-[var(--border)]' : ''
+                      } ${voided ? 'opacity-50' : ''}`}
+                    >
+                      <td className={`px-4 py-3 font-medium text-[var(--text-primary)] ${voided ? 'line-through' : ''}`}>
+                        #{bill.billNumber}
+                      </td>
+                      <td className="px-4 py-3 text-[var(--text-secondary)]">{bill.customerName ?? '—'}</td>
+                      <td className="px-4 py-3">
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${payBadgeColor(bill.paymentStatus)}`}>
+                          {bill.paymentStatus.replace('_', ' ')}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-[var(--text-muted)]">
+                        {new Date(bill.createdAt).toLocaleDateString('en-NP', { month: 'short', day: 'numeric' })}
+                      </td>
+                      <td className="px-4 py-3 text-right font-semibold text-[var(--text-primary)] tabular-nums">
+                        {formatNPR(bill.total)}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
