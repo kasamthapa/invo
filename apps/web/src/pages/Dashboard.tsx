@@ -220,16 +220,18 @@ export default function Dashboard() {
             {(data?.unpaidBillCount ?? 0) > 0 && (
               <Link
                 to="/app/bills"
-                className="flex items-center gap-3 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3 active:opacity-70 hover:bg-amber-500/15 transition-colors"
+                className="flex items-center gap-3 bg-[var(--warning-light)] border border-[var(--warning)]/20 rounded-xl px-4 py-3 active:opacity-70 hover:brightness-95 transition-all"
               >
-                <AlertTriangle size={16} className="text-amber-400 flex-shrink-0" />
+                <span className="flex items-center justify-center h-8 w-8 rounded-lg bg-[var(--warning)]/15 text-[var(--warning)] flex-shrink-0">
+                  <AlertTriangle size={15} strokeWidth={2} />
+                </span>
                 <div className="flex-1">
-                  <p className="text-amber-300 text-sm font-medium">
+                  <p className="text-[var(--warning)] text-sm font-medium">
                     {data!.unpaidBillCount} unpaid{' '}
                     {data!.unpaidBillCount === 1 ? 'bill' : 'bills'}
                   </p>
                   {data!.unpaidTotal !== undefined && (
-                    <p className="text-amber-500 text-xs">{formatNPR(data!.unpaidTotal)}</p>
+                    <p className="text-[var(--warning)]/80 text-xs">{formatNPR(data!.unpaidTotal)}</p>
                   )}
                 </div>
               </Link>
@@ -237,10 +239,12 @@ export default function Dashboard() {
             {(data?.codPendingCount ?? 0) > 0 && (
               <Link
                 to="/app/bills"
-                className="flex items-center gap-3 bg-blue-500/10 border border-blue-500/20 rounded-xl px-4 py-3 active:opacity-70 hover:bg-blue-500/15 transition-colors"
+                className="flex items-center gap-3 bg-[var(--info-light)] border border-[var(--info)]/20 rounded-xl px-4 py-3 active:opacity-70 hover:brightness-95 transition-all"
               >
-                <Package size={16} className="text-blue-400 flex-shrink-0" />
-                <p className="text-blue-300 text-sm font-medium">
+                <span className="flex items-center justify-center h-8 w-8 rounded-lg bg-[var(--info)]/15 text-[var(--info)] flex-shrink-0">
+                  <Package size={15} strokeWidth={2} />
+                </span>
+                <p className="text-[var(--info)] text-sm font-medium">
                   {data!.codPendingCount} COD{' '}
                   {data!.codPendingCount === 1 ? 'delivery' : 'deliveries'} pending
                 </p>
@@ -258,14 +262,19 @@ export default function Dashboard() {
             {visibleAlerts.map((alert) => (
               <div
                 key={alert.variantId}
-                className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl px-4 py-3"
+                className="flex items-center gap-3 bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl px-4 py-3"
               >
-                <p className="text-[var(--text-primary)] text-sm font-medium">{alert.productName}</p>
-                <div className="flex items-center justify-between mt-0.5">
-                  <p className="text-[var(--text-muted)] text-xs">{alert.variantCode}</p>
-                  <p className="text-amber-400 text-xs font-medium">
-                    {alert.currentQty} left ⚠
-                  </p>
+                <span className="flex items-center justify-center h-8 w-8 rounded-lg bg-[var(--warning-light)] text-[var(--warning)] flex-shrink-0">
+                  <Package size={15} strokeWidth={2} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[var(--text-primary)] text-sm font-medium truncate">{alert.productName}</p>
+                  <div className="flex items-center justify-between mt-0.5">
+                    <p className="text-[var(--text-muted)] text-xs">{alert.variantCode}</p>
+                    <p className="text-[var(--warning)] text-xs font-medium flex-shrink-0">
+                      {alert.currentQty} left
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
