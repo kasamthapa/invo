@@ -1,5 +1,14 @@
-import { Link } from 'react-router-dom'
-import { AlertTriangle, Package } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import {
+  AlertTriangle,
+  Package,
+  Wallet,
+  Receipt,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  Layers,
+} from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useDashboard } from '../hooks/useDashboard'
 import { formatNPR } from '../utils/money'
@@ -31,8 +40,8 @@ function getNepalDateString(): string {
 
 function payBadgeColor(status: string): string {
   if (status === 'PAID') return 'bg-[var(--success-light)] text-[var(--success)]'
-  if (status === 'COD_PENDING') return 'bg-blue-500/20 text-blue-400'
-  if (status === 'UNPAID') return 'bg-amber-500/20 text-amber-400'
+  if (status === 'COD_PENDING') return 'bg-[var(--info-light)] text-[var(--info)]'
+  if (status === 'UNPAID') return 'bg-[var(--warning-light)] text-[var(--warning)]'
   return 'bg-[var(--border-2)] text-[var(--text-muted)]'
 }
 
@@ -44,11 +53,36 @@ function SectionHeading({ children }: { children: ReactNode }) {
   )
 }
 
-function StatCard({ label, value }: { label: string; value: string }) {
+type StatTone = 'accent' | 'success' | 'muted'
+
+const TONE_STYLES: Record<StatTone, string> = {
+  accent: 'bg-[var(--accent-light)] text-[var(--accent)]',
+  success: 'bg-[var(--success-light)] text-[var(--success)]',
+  muted: 'bg-[var(--bg-surface-2)] text-[var(--text-secondary)]',
+}
+
+function StatCard({
+  label,
+  value,
+  icon: Icon,
+  tone = 'muted',
+}: {
+  label: string
+  value: string
+  icon?: React.ElementType
+  tone?: StatTone
+}) {
   return (
     <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-4">
-      <p className="text-[var(--text-muted)] text-xs mb-1">{label}</p>
-      <p className="text-[var(--text-primary)] text-xl font-bold">{value}</p>
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[var(--text-muted)] text-xs">{label}</p>
+        {Icon && (
+          <span className={`flex items-center justify-center h-7 w-7 rounded-md flex-shrink-0 ${TONE_STYLES[tone]}`}>
+            <Icon size={14} strokeWidth={2} />
+          </span>
+        )}
+      </div>
+      <p className="text-[var(--text-primary)] text-xl font-bold tabular-nums">{value}</p>
     </div>
   )
 }
@@ -81,6 +115,7 @@ function SkeletonDashboard() {
 export default function Dashboard() {
   const { user, store } = useAuth()
   const { data, isLoading, isError, refetch } = useDashboard()
+  const navigate = useNavigate()
 
   if (isLoading) return <SkeletonDashboard />
 
@@ -120,11 +155,12 @@ export default function Dashboard() {
       <div>
         <SectionHeading>Today</SectionHeading>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <StatCard label="Revenue" value={formatNPR(data?.todayRevenue ?? 0)} />
-          <StatCard label="Bills" value={String(data?.todayBillCount ?? 0)} />
+          <StatCard label="Revenue" value={formatNPR(data?.todayRevenue ?? 0)} icon={Wallet} tone="accent" />
+          <StatCard label="Bills" value={String(data?.todayBillCount ?? 0)} icon={Receipt} tone="muted" />
           {(data?.todayBillCount ?? 0) > 0 && (
-            <StatCard label="Avg Order" value={formatNPR(data?.todayAvgOrderValue ?? 0)} />
+            <StatCard label="Avg Order" value={formatNPR(data?.todayAvgOrderValue ?? 0)} icon={TrendingUp} tone="success" />
           )}
+          <StatCard label="Products" value={String(data?.totalProducts ?? 0)} icon={Package} tone="muted" />
         </div>
       </div>
 
@@ -133,16 +169,35 @@ export default function Dashboard() {
         <div>
           <SectionHeading>This month</SectionHeading>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3">
-            <StatCard label="Revenue" value={formatNPR(data!.monthRevenue!)} />
-            <StatCard label="Expenses" value={formatNPR(data!.monthExpenses ?? 0)} />
+            <StatCard label="Revenue" value={formatNPR(data!.monthRevenue!)} icon={Wallet} tone="accent" />
+            <StatCard label="Expenses" value={formatNPR(data!.monthExpenses ?? 0)} icon={Layers} tone="muted" />
             <div className="col-span-2 md:col-span-1 bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-4">
-              <p className="text-[var(--text-muted)] text-xs mb-1">Profit</p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-[var(--text-muted)] text-xs">Profit</p>
+                <span
+                  className={`flex items-center justify-center h-7 w-7 rounded-md flex-shrink-0 ${
+                    (data!.monthProfit ?? 0) > 0
+                      ? 'bg-[var(--success-light)] text-[var(--success)]'
+                      : (data!.monthProfit ?? 0) < 0
+                      ? 'bg-[var(--danger-light)] text-[var(--danger)]'
+                      : 'bg-[var(--bg-surface-2)] text-[var(--text-secondary)]'
+                  }`}
+                >
+                  {(data!.monthProfit ?? 0) > 0 ? (
+                    <TrendingUp size={14} strokeWidth={2} />
+                  ) : (data!.monthProfit ?? 0) < 0 ? (
+                    <TrendingDown size={14} strokeWidth={2} />
+                  ) : (
+                    <Minus size={14} strokeWidth={2} />
+                  )}
+                </span>
+              </div>
               <p
-                className={`text-xl font-bold ${
+                className={`text-xl font-bold tabular-nums ${
                   (data!.monthProfit ?? 0) > 0
                     ? 'text-[var(--success)]'
                     : (data!.monthProfit ?? 0) < 0
-                    ? 'text-red-400'
+                    ? 'text-[var(--danger)]'
                     : 'text-[var(--text-secondary)]'
                 }`}
               >
@@ -166,16 +221,18 @@ export default function Dashboard() {
             {(data?.unpaidBillCount ?? 0) > 0 && (
               <Link
                 to="/app/bills"
-                className="flex items-center gap-3 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3 active:opacity-70 hover:bg-amber-500/15 transition-colors"
+                className="flex items-center gap-3 bg-[var(--warning-light)] border border-[var(--warning)]/20 rounded-xl px-4 py-3 active:opacity-70 hover:brightness-95 transition-all"
               >
-                <AlertTriangle size={16} className="text-amber-400 flex-shrink-0" />
+                <span className="flex items-center justify-center h-8 w-8 rounded-lg bg-[var(--warning)]/15 text-[var(--warning)] flex-shrink-0">
+                  <AlertTriangle size={15} strokeWidth={2} />
+                </span>
                 <div className="flex-1">
-                  <p className="text-amber-300 text-sm font-medium">
+                  <p className="text-[var(--warning)] text-sm font-medium">
                     {data!.unpaidBillCount} unpaid{' '}
                     {data!.unpaidBillCount === 1 ? 'bill' : 'bills'}
                   </p>
                   {data!.unpaidTotal !== undefined && (
-                    <p className="text-amber-500 text-xs">{formatNPR(data!.unpaidTotal)}</p>
+                    <p className="text-[var(--warning)]/80 text-xs">{formatNPR(data!.unpaidTotal)}</p>
                   )}
                 </div>
               </Link>
@@ -183,10 +240,12 @@ export default function Dashboard() {
             {(data?.codPendingCount ?? 0) > 0 && (
               <Link
                 to="/app/bills"
-                className="flex items-center gap-3 bg-blue-500/10 border border-blue-500/20 rounded-xl px-4 py-3 active:opacity-70 hover:bg-blue-500/15 transition-colors"
+                className="flex items-center gap-3 bg-[var(--info-light)] border border-[var(--info)]/20 rounded-xl px-4 py-3 active:opacity-70 hover:brightness-95 transition-all"
               >
-                <Package size={16} className="text-blue-400 flex-shrink-0" />
-                <p className="text-blue-300 text-sm font-medium">
+                <span className="flex items-center justify-center h-8 w-8 rounded-lg bg-[var(--info)]/15 text-[var(--info)] flex-shrink-0">
+                  <Package size={15} strokeWidth={2} />
+                </span>
+                <p className="text-[var(--info)] text-sm font-medium">
                   {data!.codPendingCount} COD{' '}
                   {data!.codPendingCount === 1 ? 'delivery' : 'deliveries'} pending
                 </p>
@@ -204,14 +263,19 @@ export default function Dashboard() {
             {visibleAlerts.map((alert) => (
               <div
                 key={alert.variantId}
-                className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl px-4 py-3"
+                className="flex items-center gap-3 bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl px-4 py-3"
               >
-                <p className="text-[var(--text-primary)] text-sm font-medium">{alert.productName}</p>
-                <div className="flex items-center justify-between mt-0.5">
-                  <p className="text-[var(--text-muted)] text-xs">{alert.variantCode}</p>
-                  <p className="text-amber-400 text-xs font-medium">
-                    {alert.currentQty} left ⚠
-                  </p>
+                <span className="flex items-center justify-center h-8 w-8 rounded-lg bg-[var(--warning-light)] text-[var(--warning)] flex-shrink-0">
+                  <Package size={15} strokeWidth={2} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[var(--text-primary)] text-sm font-medium truncate">{alert.productName}</p>
+                  <div className="flex items-center justify-between mt-0.5">
+                    <p className="text-[var(--text-muted)] text-xs">{alert.variantCode}</p>
+                    <p className="text-[var(--warning)] text-xs font-medium flex-shrink-0">
+                      {alert.currentQty} left
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -236,7 +300,8 @@ export default function Dashboard() {
               See all →
             </Link>
           </div>
-          <div className="space-y-2">
+          {/* Mobile: card list */}
+          <div className="space-y-2 md:hidden">
             {data!.recentBills.slice(0, 5).map((bill) => {
               const voided = bill.status === 'VOIDED'
               return (
@@ -265,6 +330,51 @@ export default function Dashboard() {
                 </Link>
               )
             })}
+          </div>
+
+          {/* Desktop: table */}
+          <div className="hidden md:block bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[var(--border)] bg-[var(--bg-surface-2)]/60">
+                  <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Bill</th>
+                  <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Customer</th>
+                  <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Status</th>
+                  <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Date</th>
+                  <th className="text-right font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data!.recentBills.slice(0, 5).map((bill, i) => {
+                  const voided = bill.status === 'VOIDED'
+                  return (
+                    <tr
+                      key={bill.id}
+                      onClick={() => navigate(`/app/bills/${bill.id}`)}
+                      className={`cursor-pointer hover:bg-[var(--bg-surface-2)]/60 transition-colors ${
+                        i !== 0 ? 'border-t border-[var(--border)]' : ''
+                      } ${voided ? 'opacity-50' : ''}`}
+                    >
+                      <td className={`px-4 py-3 font-medium text-[var(--text-primary)] ${voided ? 'line-through' : ''}`}>
+                        #{bill.billNumber}
+                      </td>
+                      <td className="px-4 py-3 text-[var(--text-secondary)]">{bill.customerName ?? '—'}</td>
+                      <td className="px-4 py-3">
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${payBadgeColor(bill.paymentStatus)}`}>
+                          {bill.paymentStatus.replace('_', ' ')}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-[var(--text-muted)]">
+                        {new Date(bill.createdAt).toLocaleDateString('en-NP', { month: 'short', day: 'numeric' })}
+                      </td>
+                      <td className="px-4 py-3 text-right font-semibold text-[var(--text-primary)] tabular-nums">
+                        {formatNPR(bill.total)}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
