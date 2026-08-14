@@ -1,5 +1,5 @@
-import { NavLink, Outlet } from 'react-router-dom'
-import { Home, Package, CirclePlus, Users, MoreHorizontal, Receipt, ShoppingCart, Truck, CreditCard, Settings } from 'lucide-react'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Home, Package, CirclePlus, Users, MoreHorizontal, Receipt, ShoppingCart, Truck, CreditCard, Settings, LogOut, Boxes } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 const MOBILE_NAV = [
@@ -9,17 +9,67 @@ const MOBILE_NAV = [
   { to: '/app/more', icon: MoreHorizontal, label: 'More', end: false },
 ]
 
-const SIDEBAR_NAV = [
-  { to: '/app', icon: Home, label: 'Home', end: true, ownerOnly: false },
-  { to: '/app/products', icon: Package, label: 'Products', end: false, ownerOnly: false },
-  { to: '/app/bill/new', icon: CirclePlus, label: 'New Bill', end: false, ownerOnly: false },
-  { to: '/app/bills', icon: Receipt, label: 'Bills', end: false, ownerOnly: false },
-  { to: '/app/customers', icon: Users, label: 'Customers', end: false, ownerOnly: false },
-  { to: '/app/purchases', icon: ShoppingCart, label: 'Purchases', end: false, ownerOnly: true },
-  { to: '/app/suppliers', icon: Truck, label: 'Suppliers', end: false, ownerOnly: true },
-  { to: '/app/expenses', icon: CreditCard, label: 'Expenses', end: false, ownerOnly: true },
-  { to: '/app/settings', icon: Settings, label: 'Settings', end: false, ownerOnly: false },
+const SIDEBAR_SECTIONS: {
+  label: string
+  items: { to: string; icon: React.ElementType; label: string; end: boolean; ownerOnly: boolean }[]
+}[] = [
+  {
+    label: 'Overview',
+    items: [{ to: '/app', icon: Home, label: 'Dashboard', end: true, ownerOnly: false }],
+  },
+  {
+    label: 'Sales',
+    items: [
+      { to: '/app/bill/new', icon: CirclePlus, label: 'New Bill', end: false, ownerOnly: false },
+      { to: '/app/bills', icon: Receipt, label: 'Bills', end: false, ownerOnly: false },
+      { to: '/app/customers', icon: Users, label: 'Customers', end: false, ownerOnly: false },
+    ],
+  },
+  {
+    label: 'Inventory',
+    items: [
+      { to: '/app/products', icon: Package, label: 'Products', end: false, ownerOnly: false },
+      { to: '/app/purchases', icon: ShoppingCart, label: 'Purchases', end: false, ownerOnly: true },
+      { to: '/app/suppliers', icon: Truck, label: 'Suppliers', end: false, ownerOnly: true },
+    ],
+  },
+  {
+    label: 'Finance',
+    items: [{ to: '/app/expenses', icon: CreditCard, label: 'Expenses', end: false, ownerOnly: true }],
+  },
+  {
+    label: 'System',
+    items: [{ to: '/app/settings', icon: Settings, label: 'Settings', end: false, ownerOnly: false }],
+  },
 ]
+
+const PAGE_TITLES: { match: (path: string) => boolean; title: string }[] = [
+  { match: (p) => p === '/app', title: 'Dashboard' },
+  { match: (p) => p === '/app/products/new', title: 'Add Product' },
+  { match: (p) => /^\/app\/products\/[^/]+\/edit$/.test(p), title: 'Edit Product' },
+  { match: (p) => /^\/app\/products\/[^/]+$/.test(p), title: 'Product' },
+  { match: (p) => p.startsWith('/app/products'), title: 'Products' },
+  { match: (p) => p === '/app/bill/new', title: 'New Bill' },
+  { match: (p) => /^\/app\/bills\/[^/]+$/.test(p), title: 'Bill' },
+  { match: (p) => p.startsWith('/app/bills'), title: 'Bills' },
+  { match: (p) => /^\/app\/customers\/[^/]+$/.test(p), title: 'Customer' },
+  { match: (p) => p.startsWith('/app/customers'), title: 'Customers' },
+  { match: (p) => p.startsWith('/app/purchases'), title: 'Purchases' },
+  { match: (p) => p.startsWith('/app/suppliers'), title: 'Suppliers' },
+  { match: (p) => p.startsWith('/app/expenses'), title: 'Expenses' },
+  { match: (p) => p.startsWith('/app/settings'), title: 'Settings' },
+  { match: (p) => p.startsWith('/app/more'), title: 'More' },
+]
+
+function getPageTitle(pathname: string): string {
+  return PAGE_TITLES.find((entry) => entry.match(pathname))?.title ?? 'Invo'
+}
+
+function initials(name?: string): string {
+  if (!name) return '?'
+  const parts = name.trim().split(/\s+/)
+  return ((parts[0]?.[0] ?? '') + (parts[1]?.[0] ?? '')).toUpperCase() || '?'
+}
 
 function SidebarLink({ to, icon: Icon, label, end }: { to: string; icon: React.ElementType; label: string; end: boolean }) {
   return (
@@ -27,41 +77,88 @@ function SidebarLink({ to, icon: Icon, label, end }: { to: string; icon: React.E
       to={to}
       end={end}
       className={({ isActive }) =>
-        `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+        `group flex items-center gap-2.5 pl-2.5 pr-3 py-2 rounded-lg text-sm font-medium transition-colors relative ${
           isActive
-            ? 'bg-[var(--bg-surface-2)] text-[var(--text-primary)]'
-            : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-2)]/50'
+            ? 'bg-[var(--accent-light)] text-[var(--accent)]'
+            : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-2)]'
         }`
       }
     >
-      <Icon size={18} strokeWidth={1.8} />
-      {label}
+      {({ isActive }) => (
+        <>
+          <span
+            className={`absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[3px] rounded-full transition-opacity ${
+              isActive ? 'bg-[var(--accent)] opacity-100' : 'opacity-0'
+            }`}
+          />
+          <Icon size={17} strokeWidth={1.8} />
+          {label}
+        </>
+      )}
     </NavLink>
   )
 }
 
 export default function AppShell() {
-  const { store, user } = useAuth()
+  const { store, user, logout } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
   const isOwner = user?.role === 'OWNER'
+  const pageTitle = getPageTitle(location.pathname)
+
+  async function handleLogout() {
+    await logout()
+    navigate('/login')
+  }
 
   return (
     <div className="flex h-screen bg-[var(--bg-app)]">
       {/* ── Desktop sidebar ── */}
       <aside className="hidden md:flex w-60 flex-col flex-shrink-0 border-r border-[var(--border)] bg-[var(--bg-surface)]">
-        <div className="px-5 pt-6 pb-4">
-          <p className="text-[var(--text-primary)] font-bold text-lg tracking-tight">Invo</p>
-          <p className="text-[var(--text-muted)] text-xs mt-0.5 truncate">{store?.name}</p>
+        <div className="flex items-center gap-2.5 px-5 pt-6 pb-4">
+          <span className="flex items-center justify-center h-8 w-8 rounded-lg bg-[var(--accent)] text-white flex-shrink-0">
+            <Boxes size={17} strokeWidth={2} />
+          </span>
+          <div className="min-w-0">
+            <p className="text-[var(--text-primary)] font-bold text-base leading-tight tracking-tight">Invo</p>
+            <p className="text-[var(--text-muted)] text-xs truncate leading-tight">{store?.name}</p>
+          </div>
         </div>
 
-        <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
-          {SIDEBAR_NAV.filter((item) => !item.ownerOnly || isOwner).map((item) => (
-            <SidebarLink key={item.to} {...item} />
-          ))}
+        <nav className="flex-1 px-3 space-y-4 overflow-y-auto pt-1">
+          {SIDEBAR_SECTIONS.map((section) => {
+            const items = section.items.filter((item) => !item.ownerOnly || isOwner)
+            if (items.length === 0) return null
+            return (
+              <div key={section.label}>
+                <p className="px-2.5 mb-1 text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+                  {section.label}
+                </p>
+                <div className="space-y-0.5">
+                  {items.map((item) => (
+                    <SidebarLink key={item.to} {...item} />
+                  ))}
+                </div>
+              </div>
+            )
+          })}
         </nav>
 
-        <div className="px-5 py-4 border-t border-[var(--border)]">
-          <p className="text-[var(--text-primary)] text-sm font-medium truncate">{user?.name}</p>
-          <p className="text-[var(--text-muted)] text-xs capitalize">{user?.role?.toLowerCase()}</p>
+        <div className="flex items-center gap-2.5 px-4 py-4 border-t border-[var(--border)]">
+          <span className="flex items-center justify-center h-8 w-8 rounded-full bg-[var(--bg-surface-2)] text-[var(--text-secondary)] text-xs font-semibold flex-shrink-0">
+            {initials(user?.name)}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-[var(--text-primary)] text-sm font-medium truncate leading-tight">{user?.name}</p>
+            <p className="text-[var(--text-muted)] text-xs capitalize leading-tight">{user?.role?.toLowerCase()}</p>
+          </div>
+          <button
+            onClick={() => void handleLogout()}
+            title="Log out"
+            className="flex items-center justify-center h-7 w-7 rounded-md text-[var(--text-muted)] hover:text-[var(--danger)] hover:bg-[var(--danger-light)] transition-colors flex-shrink-0"
+          >
+            <LogOut size={15} strokeWidth={1.8} />
+          </button>
         </div>
       </aside>
 
@@ -75,6 +172,25 @@ export default function AppShell() {
           <span className="text-[var(--text-muted)] text-xs uppercase tracking-wider font-medium">
             INVO
           </span>
+        </header>
+
+        {/* Desktop topbar */}
+        <header className="hidden md:flex items-center justify-between px-8 h-14 border-b border-[var(--border)] bg-[var(--bg-surface)] flex-shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
+            <h1 className="text-[var(--text-primary)] text-[15px] font-semibold truncate">{pageTitle}</h1>
+          </div>
+          <div className="flex items-center gap-4 flex-shrink-0">
+            <span
+              className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${
+                isOwner
+                  ? 'bg-[var(--accent-light)] text-[var(--accent)]'
+                  : 'bg-[var(--bg-surface-2)] text-[var(--text-secondary)]'
+              }`}
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-current" />
+              {isOwner ? 'Owner' : 'Staff'}
+            </span>
+          </div>
         </header>
 
         {/* Page content */}
