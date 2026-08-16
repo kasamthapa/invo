@@ -1,29 +1,28 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, Receipt } from 'lucide-react'
 import { useBills } from '../hooks/useBills'
 import { formatNPR } from '../utils/money'
 import { formatDate } from '../utils/money'
 import type { Bill } from '../types/bill'
 
+function payBadgeColor(status: string): string {
+  if (status === 'PAID') return 'bg-[var(--success-light)] text-[var(--success)]'
+  if (status === 'COD_PENDING') return 'bg-[var(--info-light)] text-[var(--info)]'
+  return 'bg-[var(--warning-light)] text-[var(--warning)]'
+}
+
 function statusBadge(bill: Bill) {
   const badges: React.ReactNode[] = []
 
-  const payColor =
-    bill.paymentStatus === 'PAID'
-      ? 'bg-[var(--success-light)] text-[var(--success)]'
-      : bill.paymentStatus === 'COD_PENDING'
-      ? 'bg-blue-500/20 text-blue-400'
-      : 'bg-amber-500/20 text-amber-400'
-
   badges.push(
-    <span key="pay" className={`text-xs px-2 py-0.5 rounded-full font-medium ${payColor}`}>
+    <span key="pay" className={`text-xs px-2 py-0.5 rounded-full font-medium ${payBadgeColor(bill.paymentStatus)}`}>
       {bill.paymentStatus.replace('_', ' ')}
     </span>,
   )
 
   if (bill.status === 'VOIDED') {
     badges.push(
-      <span key="void" className="text-xs px-2 py-0.5 rounded-full font-medium bg-red-500/20 text-red-400">
+      <span key="void" className="text-xs px-2 py-0.5 rounded-full font-medium bg-[var(--danger-light)] text-[var(--danger)]">
         VOIDED
       </span>,
     )
@@ -63,6 +62,31 @@ function BillRow({ bill }: { bill: Bill }) {
       </div>
       <ChevronRight size={16} className="text-[var(--text-muted)] flex-shrink-0" />
     </Link>
+  )
+}
+
+function BillTableRow({ bill }: { bill: Bill }) {
+  const voided = bill.status === 'VOIDED'
+  const navigate = useNavigate()
+  return (
+    <tr
+      onClick={() => navigate(`/app/bills/${bill.id}`)}
+      className={`cursor-pointer border-t border-[var(--border)] hover:bg-[var(--bg-surface-2)]/60 transition-colors ${voided ? 'opacity-60' : ''}`}
+    >
+      <td className={`px-4 py-2.5 font-medium text-[var(--text-primary)] text-sm ${voided ? 'line-through' : ''}`}>
+        #{bill.billNumber}
+      </td>
+      <td className="px-4 py-2.5 text-[var(--text-secondary)] text-sm">
+        {[bill.customerName, bill.customerPhone].filter(Boolean).join(' · ') || '—'}
+      </td>
+      <td className="px-4 py-2.5">
+        <div className="flex gap-1.5">{statusBadge(bill)}</div>
+      </td>
+      <td className="px-4 py-2.5 text-[var(--text-muted)] text-sm">{formatDate(bill.createdAt)}</td>
+      <td className="px-4 py-2.5 text-right font-semibold text-[var(--text-primary)] text-sm tabular-nums">
+        {formatNPR(bill.total)}
+      </td>
+    </tr>
   )
 }
 
@@ -112,11 +136,36 @@ export default function Bills() {
       )}
 
       {!isLoading && !isError && bills && bills.length > 0 && (
-        <div className="divide-y divide-[var(--border)]">
-          {bills.map((bill) => (
-            <BillRow key={bill.id} bill={bill} />
-          ))}
-        </div>
+        <>
+          {/* Mobile: list */}
+          <div className="md:hidden divide-y divide-[var(--border)]">
+            {bills.map((bill) => (
+              <BillRow key={bill.id} bill={bill} />
+            ))}
+          </div>
+
+          {/* Desktop: table */}
+          <div className="hidden md:block px-4 pb-6">
+            <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl overflow-hidden">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-[var(--bg-surface-2)]/60 border-b border-[var(--border)]">
+                    <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Bill</th>
+                    <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Customer</th>
+                    <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Status</th>
+                    <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Date</th>
+                    <th className="text-right font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bills.map((bill) => (
+                    <BillTableRow key={bill.id} bill={bill} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
       )}
     </div>
   )

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Package, ChevronRight, Search, Plus } from 'lucide-react'
 import { useProducts } from '../hooks/useProducts'
 import { formatNPR } from '../utils/money'
@@ -67,7 +67,7 @@ function ProductRow({ product }: { product: Product }) {
           </span>
           <span className="text-[var(--text-muted)] text-xs">·</span>
           {stock === 0 ? (
-            <span className="text-red-400 text-xs">Out of stock</span>
+            <span className="text-[var(--danger)] text-xs">Out of stock</span>
           ) : (
             <span className="text-[var(--text-muted)] text-xs">{stock} in stock</span>
           )}
@@ -77,6 +77,53 @@ function ProductRow({ product }: { product: Product }) {
 
       <ChevronRight size={16} className="text-[var(--text-muted)] flex-shrink-0" />
     </Link>
+  )
+}
+
+function ProductTableRow({ product }: { product: Product }) {
+  const stock = totalStock(product)
+  const lowStock = hasLowStock(product)
+  const thumbnail = product.images[0]?.url ?? null
+  const navigate = useNavigate()
+
+  return (
+    <tr
+      onClick={() => navigate(`/app/products/${product.id}`)}
+      className="cursor-pointer border-t border-[var(--border)] hover:bg-[var(--bg-surface-2)]/60 transition-colors"
+    >
+      <td className="px-4 py-2.5">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-10 h-10 rounded-lg bg-[var(--bg-surface-2)] flex-shrink-0 overflow-hidden flex items-center justify-center">
+            {thumbnail ? (
+              <img src={thumbnail} alt={product.name} className="w-full h-full object-cover" />
+            ) : (
+              <Package size={16} className="text-[var(--text-muted)]" />
+            )}
+          </div>
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5">
+              <p className="text-[var(--text-primary)] text-sm font-medium truncate">{product.name}</p>
+              {lowStock && <span className="w-1.5 h-1.5 rounded-full bg-[var(--warning)] flex-shrink-0" />}
+            </div>
+            <p className="text-[var(--text-muted)] text-xs truncate">{product.code}</p>
+          </div>
+        </div>
+      </td>
+      <td className="px-4 py-2.5 text-[var(--text-secondary)] text-sm">{product.category ?? '—'}</td>
+      <td className="px-4 py-2.5 text-[var(--text-secondary)] text-sm">
+        {product.variants.length} {product.variants.length === 1 ? 'variant' : 'variants'}
+      </td>
+      <td className="px-4 py-2.5 text-sm">
+        {stock === 0 ? (
+          <span className="text-[var(--danger)]">Out of stock</span>
+        ) : (
+          <span className={lowStock ? 'text-[var(--warning)]' : 'text-[var(--text-secondary)]'}>{stock} in stock</span>
+        )}
+      </td>
+      <td className="px-4 py-2.5 text-right text-[var(--text-primary)] text-sm font-semibold tabular-nums">
+        {formatNPR(product.basePrice)}
+      </td>
+    </tr>
   )
 }
 
@@ -164,11 +211,36 @@ export default function Products() {
         )}
 
         {!isLoading && !isError && filtered.length > 0 && (
-          <div className="divide-y divide-[var(--border)]">
-            {filtered.map((product) => (
-              <ProductRow key={product.id} product={product} />
-            ))}
-          </div>
+          <>
+            {/* Mobile: list */}
+            <div className="md:hidden divide-y divide-[var(--border)]">
+              {filtered.map((product) => (
+                <ProductRow key={product.id} product={product} />
+              ))}
+            </div>
+
+            {/* Desktop: table */}
+            <div className="hidden md:block px-4 pb-6">
+              <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-[var(--bg-surface-2)]/60 border-b border-[var(--border)]">
+                      <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Product</th>
+                      <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Category</th>
+                      <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Variants</th>
+                      <th className="text-left font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Stock</th>
+                      <th className="text-right font-medium text-[var(--text-muted)] text-xs uppercase tracking-wider px-4 py-2.5">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map((product) => (
+                      <ProductTableRow key={product.id} product={product} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>
