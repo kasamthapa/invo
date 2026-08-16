@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { v4 as uuidv4 } from 'uuid'
 import { prisma } from '../../lib/prisma.js'
-import { signAccessToken, generateRefreshToken } from '../../utils/tokens.js'
+import { signAccessToken, generateRefreshToken, hashRefreshToken } from '../../utils/tokens.js'
 import type { RegisterInput, LoginInput, AuthResponse } from './auth.types.js'
 
 const REFRESH_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
@@ -49,7 +49,7 @@ export async function register(input: RegisterInput): Promise<AuthResponse> {
 
   await prisma.refreshToken.create({
     data: {
-      token: refreshToken,
+      token: hashRefreshToken(refreshToken),
       userId: user.id,
       expiresAt: refreshExpiresAt(),
     },
@@ -81,7 +81,7 @@ export async function login(input: LoginInput): Promise<AuthResponse> {
 
   await prisma.refreshToken.create({
     data: {
-      token: refreshToken,
+      token: hashRefreshToken(refreshToken),
       userId: user.id,
       expiresAt: refreshExpiresAt(),
     },
@@ -95,7 +95,7 @@ export async function login(input: LoginInput): Promise<AuthResponse> {
 }
 
 export async function refresh(token: string): Promise<{ accessToken: string }> {
-  const record = await prisma.refreshToken.findUnique({ where: { token } })
+  const record = await prisma.refreshToken.findUnique({ where: { token: hashRefreshToken(token) } })
   if (!record) throw new Error('INVALID_REFRESH_TOKEN')
   if (record.expiresAt < new Date()) throw new Error('REFRESH_TOKEN_EXPIRED')
 
@@ -107,7 +107,7 @@ export async function refresh(token: string): Promise<{ accessToken: string }> {
 }
 
 export async function logout(token: string): Promise<void> {
-  await prisma.refreshToken.deleteMany({ where: { token } })
+  await prisma.refreshToken.deleteMany({ where: { token: hashRefreshToken(token) } })
 }
 
 export async function changePassword(
